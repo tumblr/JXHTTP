@@ -43,16 +43,14 @@ typedef enum {
     
     if ([fileNameOrNil length])
         [preString appendFormat:@"; filename=\"%@\"", fileNameOrNil];
-
-    [preString appendString:@"\r\n"];
     
     if ([contentTypeOrNil length]) {
-        [preString appendFormat:@"Content-Type: %@", contentTypeOrNil];
+        [preString appendFormat:@"\r\nContent-Type: %@", contentTypeOrNil];
     } else if(part.multipartType == JXHTTPMultipartFile) {
-        [preString appendString:@"Content-Type: application/octet-stream"];
+        [preString appendString:@"\r\nContent-Type: application/octet-stream"];
     }
     
-    [preString appendString:@"\r\n"];
+    [preString appendString:@"\r\n\r\n"];
     
     part.preData = [preString dataUsingEncoding:NSUTF8StringEncoding];
     part.contentData = data;
@@ -98,37 +96,46 @@ typedef enum {
     return length;
 }
 
-- (void)loadMutableData:(NSMutableData *)mutableData withRange:(NSRange)searchRange
+- (NSUInteger)loadMutableData:(NSMutableData *)mutableData withRange:(NSRange)searchRange
 {
     NSUInteger dataOffset = 0;
+    NSUInteger bytesAppended = 0;
 
     for (NSData *data in [NSArray arrayWithObjects:self.preData, self.contentData, self.postData, nil]) {
         NSUInteger dataLength = data == self.contentData ? [self contentLength] : [data length];
         NSRange dataRange = NSMakeRange(dataOffset, dataLength);
         NSRange intersection = NSIntersectionRange(dataRange, searchRange);
         
-        if (intersection.length != 0) {
+        if (intersection.length > 0) {
             NSRange rangeInPart = NSMakeRange(intersection.location - dataOffset, intersection.length);
-
+            NSData *dataToAppend = nil;
+            
             if (data == self.preData || data == self.postData) {
-                [mutableData appendData:[data subdataWithRange:rangeInPart]];
+                dataToAppend = [data subdataWithRange:rangeInPart];
             } else if (data == self.contentData) {
                 if (self.multipartType == JXHTTPMultipartData) {
-                    [mutableData appendData:[data subdataWithRange:rangeInPart]];
+                    dataToAppend = [data subdataWithRange:rangeInPart];
                 } else if (self.multipartType == JXHTTPMultipartFile) {
                     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:[self filePath]];
                     if (!fileHandle)
-                        return;
+                        return bytesAppended;
                     
                     [fileHandle seekToFileOffset:rangeInPart.location];
-                    [mutableData appendData:[fileHandle readDataOfLength:rangeInPart.length]];
+                    dataToAppend = [fileHandle readDataOfLength:rangeInPart.length];
                     [fileHandle closeFile];
                 }
+            }
+            
+            if (dataToAppend) {
+                [mutableData appendData:dataToAppend];
+                bytesAppended += [dataToAppend length];
             }
         }
 
         dataOffset += dataLength;
     }
+
+    return bytesAppended;
 }
 
 @end
@@ -139,6 +146,7 @@ typedef enum {
 @interface JXHTTPMultipartBody ()
 @property (nonatomic, retain) NSMutableArray *partsArray;
 @property (nonatomic, retain) NSString *boundaryString;
+@property (nonatomic, retain) NSData *finalBoundaryData;
 @property (nonatomic, retain) NSString *httpContentType;
 @property (nonatomic, retain) NSInputStream *httpInputStream;
 @property (nonatomic, retain) NSOutputStream *httpOutputStream;
@@ -150,7 +158,8 @@ typedef enum {
 
 @implementation JXHTTPMultipartBody
 
-@synthesize partsArray, boundaryString, httpContentType, httpInputStream, httpOutputStream, bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
+@synthesize partsArray, boundaryString, finalBoundaryData, httpContentType, httpInputStream, httpOutputStream,
+            bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
 
 #pragma mark -
 #pragma mark Initialization
@@ -162,6 +171,7 @@ typedef enum {
     
     [partsArray release];    
     [boundaryString release];
+    [finalBoundaryData release];
     [httpContentType release];
     [httpInputStream release];
     [httpOutputStream release];
@@ -181,10 +191,11 @@ typedef enum {
         CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
         CFStringRef uuidString = CFUUIDCreateString(kCFAllocatorDefault, uuid);
         NSString *dateString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
-        self.boundaryString = [NSString stringWithFormat:@"JXHTTP-%@-%@\r\n", dateString, uuidString];
+        self.boundaryString = [NSString stringWithFormat:@"--JXHTTP-%@-%@", uuidString, dateString];
         CFRelease(uuidString);
         CFRelease(uuid);
 
+        self.finalBoundaryData = [[NSString stringWithFormat:@"%@--\r\n", self.boundaryString] dataUsingEncoding:NSUTF8StringEncoding];
         self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", self.boundaryString];
         self.partsArray = [NSMutableArray array];
         self.streamBufferLength = 0x10000; //64K
@@ -208,10 +219,8 @@ typedef enum {
         newLength += [part dataLength];
     }
     
-    if (newLength > 0) {
-        NSString *finalBoundary = [NSString stringWithFormat:@"%@\r\n", self.boundaryString];
-        newLength += [[finalBoundary dataUsingEncoding:NSUTF8StringEncoding] length];
-    }
+    if (newLength > 0)
+        newLength += [self.finalBoundaryData length];
     
     self.httpContentLength = newLength;
     
@@ -308,8 +317,8 @@ typedef enum {
     NSUInteger bytesRemaining = self.httpContentLength - self.bytesWritten;
     NSUInteger length = MIN(bytesRemaining, self.streamBufferLength);
     
-    [self loadMutableData:self.bodyDataBuffer withRange:NSMakeRange(self.bytesWritten, length)];
-    NSInteger bytesOutput = [self.bodyDataBuffer length] ? [self.httpOutputStream write:[self.bodyDataBuffer bytes] maxLength:length] : 0;
+    NSUInteger bytesLoaded = [self loadMutableData:self.bodyDataBuffer withRange:NSMakeRange(self.bytesWritten, length)];
+    NSInteger bytesOutput = bytesLoaded ? [self.httpOutputStream write:[self.bodyDataBuffer bytes] maxLength:bytesLoaded] : 0;
     
     if (bytesOutput > 0) {
         self.bytesWritten += bytesOutput;
@@ -318,24 +327,38 @@ typedef enum {
     }
 }
 
-- (void)loadMutableData:(NSMutableData *)data withRange:(NSRange)searchRange
+- (NSUInteger)loadMutableData:(NSMutableData *)data withRange:(NSRange)searchRange
 {
     [data setLength:0];
     
     NSUInteger partOffset = 0;
+    NSUInteger bytesLoaded = 0;
     
     for (JXHTTPMultipartPart *part in self.partsArray) {
         NSUInteger partLength = [part dataLength];
         NSRange partRange = NSMakeRange(partOffset, partLength);
 
         NSRange intersection = NSIntersectionRange(partRange, searchRange);
-        if (intersection.length != 0) {
+        if (intersection.length > 0) {
             NSRange rangeInPart = NSMakeRange(intersection.location - partOffset, intersection.length);
-            [part loadMutableData:data withRange:rangeInPart];
+            bytesLoaded += [part loadMutableData:data withRange:rangeInPart];
         }
         
         partOffset += partLength;
     }
+
+    NSRange finalRange = NSMakeRange(partOffset, [self.finalBoundaryData length]);
+    NSRange intersection = NSIntersectionRange(finalRange, searchRange);
+    if (intersection.length > 0) {
+        NSRange range = NSMakeRange(intersection.location - partOffset, intersection.length);
+        NSData *dataToAppend = [self.finalBoundaryData subdataWithRange:range];
+        if (dataToAppend) {
+            [data appendData:dataToAppend];
+            bytesLoaded += [dataToAppend length];
+        }
+    }
+    
+    return bytesLoaded;
 }
 
 #pragma mark -
