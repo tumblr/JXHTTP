@@ -3,7 +3,7 @@
 @interface JXHTTPMultipartBody : NSObject <NSStreamDelegate, JXHTTPRequestBody>
 
 + (id)emptyBody;
-+ (id)withDictionary:(NSDictionary *)parameters;
++ (id)withDictionary:(NSDictionary *)stringParameters;
 
 - (void)addString:(NSString *)string forKey:(NSString *)key;
 - (void)setString:(NSString *)string forKey:(NSString *)key;

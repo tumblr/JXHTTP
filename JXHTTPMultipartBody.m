@@ -205,12 +205,12 @@ typedef enum {
     return [[[self alloc] init] autorelease];
 }
 
-+ (id)withDictionary:(NSDictionary *)parameters
++ (id)withDictionary:(NSDictionary *)stringParameters
 {
     id body = [[self alloc] init];
     
-    for (NSString *key in [parameters allKeys]) {
-        [body addString:[parameters objectForKey:key] forKey:key];
+    for (NSString *key in [stringParameters allKeys]) {
+        [body addString:[stringParameters objectForKey:key] forKey:key];
     }
     
     return [body autorelease];
