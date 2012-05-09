@@ -37,7 +37,7 @@
 
 - (NSString *)httpContentType
 {
-    return @"application/x-www-form-urlencoded";
+    return @"application/x-www-form-urlencoded; charset=utf-8";
 }
 
 - (long long)httpContentLength

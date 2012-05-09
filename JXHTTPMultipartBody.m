@@ -192,7 +192,7 @@ typedef enum {
         
         self.boundaryString = [NSString stringWithFormat:@"--%@", plainBoundaryString];
         self.finalBoundaryData = [[NSString stringWithFormat:@"--%@--\r\n", plainBoundaryString] dataUsingEncoding:NSUTF8StringEncoding];
-        self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", plainBoundaryString];
+        self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; charset=utf-8; boundary=%@", plainBoundaryString];
         self.partsArray = [NSMutableArray array];
         self.streamBufferLength = 0x10000; //64K
 
@@ -378,12 +378,12 @@ typedef enum {
 
 - (void)addString:(NSString *)string forKey:(NSString *)key
 {
-    [self addData:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:key contentType:nil fileName:nil];
+    [self addData:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:key contentType:@"text/plain; charset=utf-8" fileName:nil];
 }
 
 - (void)setString:(NSString *)string forKey:(NSString *)key
 {
-    [self setData:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:key contentType:nil fileName:nil];
+    [self setData:[string dataUsingEncoding:NSUTF8StringEncoding] forKey:key contentType:@"text/plain; charset=utf-8" fileName:nil];
 }
 
 - (void)addData:(NSData *)data forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil

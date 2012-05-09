@@ -50,7 +50,7 @@
 
 - (NSString *)httpContentType
 {
-    return @"application/json";
+    return @"application/json; charset=utf-8";
 }
 
 - (long long)httpContentLength
