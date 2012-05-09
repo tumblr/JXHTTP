@@ -180,11 +180,6 @@ typedef enum {
     [super dealloc];
 }
 
-+ (id)emptyBody
-{
-    return [[[self alloc] init] autorelease];
-}
-
 - (id)init
 {
     if ((self = [super init])) {
@@ -203,6 +198,22 @@ typedef enum {
         [self recreateStreams];
     }
     return self;
+}
+
++ (id)emptyBody
+{
+    return [[[self alloc] init] autorelease];
+}
+
++ (id)withDictionary:(NSDictionary *)parameters
+{
+    id body = [[self alloc] init];
+    
+    for (NSString *key in [parameters allKeys]) {
+        [body addString:[parameters objectForKey:key] forKey:key];
+    }
+    
+    return [body autorelease];
 }
 
 #pragma mark -
