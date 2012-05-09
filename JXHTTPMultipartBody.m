@@ -186,12 +186,13 @@ typedef enum {
         CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
         CFStringRef uuidString = CFUUIDCreateString(kCFAllocatorDefault, uuid);
         NSString *dateString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
-        self.boundaryString = [NSString stringWithFormat:@"--JXHTTP-%@-%@", uuidString, dateString];
+        NSString *plainBoundaryString = [NSString stringWithFormat:@"JXHTTP-%@-%@", uuidString, dateString];
         CFRelease(uuidString);
         CFRelease(uuid);
-
-        self.finalBoundaryData = [[NSString stringWithFormat:@"%@--\r\n", self.boundaryString] dataUsingEncoding:NSUTF8StringEncoding];
-        self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", self.boundaryString];
+        
+        self.boundaryString = [NSString stringWithFormat:@"--%@", plainBoundaryString];
+        self.finalBoundaryData = [[NSString stringWithFormat:@"--%@--\r\n", plainBoundaryString] dataUsingEncoding:NSUTF8StringEncoding];
+        self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", plainBoundaryString];
         self.partsArray = [NSMutableArray array];
         self.streamBufferLength = 0x10000; //64K
 
