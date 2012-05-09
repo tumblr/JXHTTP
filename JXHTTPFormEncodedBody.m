@@ -19,18 +19,12 @@
     [super dealloc];
 }
 
-- (id)initWithDictionary:(NSDictionary *)dictionary
-{
-    if ((self = [self init])) {
-        NSString *requestString = [JXURLEncoding formEncodedDictionary:dictionary];        
-        self.requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
-    }
-    return self;
-}
-
 + (id)withDictionary:(NSDictionary *)dictionary
 {
-    return [[[self alloc] initWithDictionary:dictionary] autorelease];
+    id body = [[self alloc] init];
+    NSString *requestString = [JXURLEncoding formEncodedDictionary:dictionary]; 
+    [body setRequestData:[requestString dataUsingEncoding:NSUTF8StringEncoding]];
+    return [body autorelease];
 }
 
 #pragma mark -
