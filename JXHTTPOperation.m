@@ -56,9 +56,6 @@
 
 - (NSData *)responseData
 {
-    if (!self.isFinished)
-        return nil;
-    
     NSData *data = [self.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
     if (data)
         return data;
@@ -69,6 +66,25 @@
 - (NSString *)responseString
 {
     return [[[NSString alloc] initWithData:[self responseData] encoding:NSUTF8StringEncoding] autorelease];
+}
+
+- (id)responseJSON
+{
+    NSError *error;
+    id json = [NSJSONSerialization JSONObjectWithData:[self responseData] options:0 error:&error];
+    if (error)
+        NSLog(@"%@", error);
+    return json;
+}
+
+- (NSDictionary *)responseHeaders
+{
+    return [(NSHTTPURLResponse *)self.response allHeaderFields];
+}
+
+- (NSInteger)responseStatusCode
+{
+    return [(NSHTTPURLResponse *)self.response statusCode];
 }
 
 #pragma mark -

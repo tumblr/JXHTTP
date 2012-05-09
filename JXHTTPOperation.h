@@ -14,7 +14,11 @@
 + (id)withURLString:(NSString *)urlString;
 
 - (void)streamResponseDataToFilePath:(NSString *)filePath append:(BOOL)append;
+
 - (NSData *)responseData;
 - (NSString *)responseString;
+- (id)responseJSON;
+- (NSDictionary *)responseHeaders;
+- (NSInteger)responseStatusCode;
 
 @end
