@@ -1,30 +1,28 @@
 #import "JXURLConnectionOperation.h"
 
 @interface JXURLConnectionOperation ()
+@property (retain) NSURLConnection *connection;
 @property (retain) NSMutableURLRequest *request;
 @property (retain) NSURLResponse *response;
 @property (retain) NSError *error;
 @property (assign) long long bytesReceived;
 @property (assign) long long bytesSent;
-@property (retain) NSURLConnection *connection;
-@property (retain) NSPort *runLoopPort;
 @end
 
 @implementation JXURLConnectionOperation
 
-@synthesize request, response, error, bytesReceived, bytesSent, outputStream, connection, runLoopPort;
+@synthesize connection, request, response, error, bytesReceived, bytesSent, outputStream;
 
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
-{    
+{
+    [connection release];
     [request release];
     [response release];
     [error release];
     [outputStream release];
-    [connection release];
-    [runLoopPort release];
 
     [super dealloc];
 }
@@ -44,9 +42,6 @@
 
 - (void)main
 {
-    self.runLoopPort = [NSPort port]; 
-    [[NSRunLoop currentRunLoop] addPort:self.runLoopPort forMode:NSRunLoopCommonModes];
-
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
     
@@ -55,8 +50,9 @@
     self.connection = [[[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO] autorelease];
     [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection start];
-    
-    [[NSRunLoop currentRunLoop] run];
+
+    if ([NSRunLoop currentRunLoop] != [NSRunLoop mainRunLoop])
+        [[NSRunLoop currentRunLoop] run];
 }
 
 - (void)finish
@@ -65,8 +61,6 @@
     [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
     [self.outputStream close];
-    
-    [[NSRunLoop currentRunLoop] removePort:self.runLoopPort forMode:NSRunLoopCommonModes];
     
     [super finish];
 }
