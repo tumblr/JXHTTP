@@ -92,6 +92,9 @@
 
 - (void)performDelegateMethod:(SEL)selector
 {
+    if (self.isCancelled)
+        return;
+
     if (self.performDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
@@ -112,6 +115,8 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    
     if (object == self && [keyPath isEqualToString:@"requestBody"] && self.requestBody) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
         if (!inputStream)
@@ -180,6 +185,9 @@
 {
     [super connection:connection didReceiveData:data];
     
+    if (self.isCancelled)
+        return;
+    
     long long bytesExpected = [self.response expectedContentLength];
     if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
         self.downloadProgress = [NSNumber numberWithDouble:(self.bytesReceived / (double)bytesExpected)];
@@ -201,6 +209,9 @@
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
 {
     [super connection:connection didSendBodyData:bytes totalBytesWritten:total totalBytesExpectedToWrite:expected];
+    
+    if (self.isCancelled)
+        return;
 
     long long bytesExpected = [self.requestBody httpContentLength];
     if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
@@ -211,6 +222,11 @@
 
 - (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request
 {
+    if (self.isCancelled) {
+        [self finish];
+        return nil;
+    }
+    
     [self performDelegateMethod:@selector(httpOperationWillNeedNewBodyStream:)];
 
     return [self.requestBody httpInputStream];

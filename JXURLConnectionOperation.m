@@ -42,6 +42,11 @@
 
 - (void)main
 {
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
+    
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
     
@@ -81,12 +86,22 @@
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {
     self.response = urlResponse;
+    
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
 
     [self.outputStream open];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
+    
     if ([self.outputStream hasSpaceAvailable]) {
         NSInteger bytesWritten = [self.outputStream write:[data bytes] maxLength:[data length]];
 
@@ -105,6 +120,11 @@
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
 {
     self.bytesSent += bytes;
+    
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
 }
 
 @end

@@ -12,31 +12,13 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (void)dealloc
-{
-    [self removeObserver:self forKeyPath:@"isCancelled"];
-    
-    [super dealloc];
-}
-
 - (id)init
 {
     if ((self = [super init])) {
         self.isExecuting = NO;
         self.isFinished = NO;
-        
-        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:NULL];
     }
     return self;
-}
-
-#pragma mark -
-#pragma mark <NSKeyValueObserving>
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == self && [keyPath isEqualToString:@"isCancelled"] && self.isCancelled)
-        [self finish];
 }
 
 #pragma mark -
@@ -52,9 +34,13 @@
     [self willChangeValueForKey:@"isExecuting"];
     self.isExecuting = YES;
     [self didChangeValueForKey:@"isExecuting"];
-
-    @autoreleasepool {
-        [self main];
+    
+    if (self.isCancelled) {
+        [self finish];
+    } else {
+        @autoreleasepool {
+            [self main];
+        }
     }
 }
 
