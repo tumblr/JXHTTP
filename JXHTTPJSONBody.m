@@ -22,7 +22,7 @@
 {
     id body = [[self alloc] init];
     [body setRequestData:data];
-    return body;
+    return [body autorelease];
 }
 
 + (id)withString:(NSString *)string
