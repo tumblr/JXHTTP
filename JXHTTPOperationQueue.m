@@ -15,7 +15,6 @@
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"suspended"];
     [self removeObserver:self forKeyPath:@"operationCount"];
     [self removeObserver:self forKeyPath:@"operations"];    
 
@@ -30,8 +29,7 @@
     if ((self = [super init])) {
         self.downloadProgress = [NSNumber numberWithFloat:0.0];
         self.uploadProgress = [NSNumber numberWithFloat:0.0];
-        
-        [self addObserver:self forKeyPath:@"suspended" options:0 context:NULL];        
+    
         [self addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)  context:NULL];
     }
@@ -48,11 +46,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self && [keyPath isEqualToString:@"suspended"]) {
-        if (!self.isSuspended && [self.delegate respondsToSelector:@selector(httpOperationQueueWillStart:)])
-            [self.delegate httpOperationQueueWillStart:self];
-    }
-    
     if (object == self && [keyPath isEqualToString:@"operationCount"]) {
         if (self.operationCount == 0 && [self.delegate respondsToSelector:@selector(httpOperationQueueDidFinish:)])
             [self.delegate httpOperationQueueDidFinish:self];
