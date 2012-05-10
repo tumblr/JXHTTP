@@ -97,9 +97,11 @@
         }
     }
     
-    if (object == self && [keyPath isEqualToString:@"isFinished"] && self.backgroundTaskID != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-        self.backgroundTaskID = UIBackgroundTaskInvalid;
+    if (object == self && [keyPath isEqualToString:@"isFinished"]) {
+        if (self.isFinished && self.backgroundTaskID != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+            self.backgroundTaskID = UIBackgroundTaskInvalid;
+        }
     }
 }
 
