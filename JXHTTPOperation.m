@@ -4,11 +4,12 @@
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (copy) NSString *responseDataFilePath;
+@property (copy) NSString *uniqueIDString;
 @end
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath;
+@synthesize delegate, performDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString;
 
 #pragma mark -
 #pragma mark Initialization
@@ -16,11 +17,12 @@
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"requestBody"];
-    
+
     [requestBody release];
     [downloadProgress release];
     [uploadProgress release];
     [responseDataFilePath release];
+    [uniqueIDString release];
 
     [super dealloc];
 }
@@ -28,9 +30,10 @@
 - (id)init
 {
     if ((self = [super init])) {
-        self.downloadProgress = [NSNumber numberWithDouble:0.0];
-        self.uploadProgress = [NSNumber numberWithDouble:0.0];  
+        self.downloadProgress = [NSNumber numberWithFloat:0.0];
+        self.uploadProgress = [NSNumber numberWithFloat:0.0];  
         self.responseDataFilePath = nil;
+        self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
 
         [self addObserver:self forKeyPath:@"requestBody" options:0 context:NULL];
     }
@@ -194,7 +197,7 @@
     
     long long bytesExpected = [self.response expectedContentLength];
     if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
-        self.downloadProgress = [NSNumber numberWithDouble:(self.bytesReceived / (double)bytesExpected)];
+        self.downloadProgress = [NSNumber numberWithFloat:(self.bytesReceived / (float)bytesExpected)];
     
     [self performDelegateMethod:@selector(httpOperationDidReceiveData:)];
 }
@@ -206,11 +209,11 @@
         return;
     }
     
-    if ([self.downloadProgress doubleValue] != 1.0)
-        self.downloadProgress = [NSNumber numberWithDouble:1.0];
+    if ([self.downloadProgress floatValue] != 1.0)
+        self.downloadProgress = [NSNumber numberWithFloat:1.0];
     
-    if ([self.uploadProgress doubleValue] != 1.0)
-        self.uploadProgress = [NSNumber numberWithDouble:1.0];
+    if ([self.uploadProgress floatValue] != 1.0)
+        self.uploadProgress = [NSNumber numberWithFloat:1.0];
 
     [super connectionDidFinishLoading:connection];
 }
@@ -224,7 +227,7 @@
 
     long long bytesExpected = [self.requestBody httpContentLength];
     if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
-        self.uploadProgress = [NSNumber numberWithDouble:(self.bytesSent / (double)bytesExpected)];
+        self.uploadProgress = [NSNumber numberWithFloat:(self.bytesSent / (float)bytesExpected)];
     
     [self performDelegateMethod:@selector(httpOperationDidSendData:)];
 }

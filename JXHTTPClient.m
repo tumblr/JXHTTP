@@ -1,15 +1,17 @@
 #import "JXHTTPClient.h"
+#import "JXHTTPOperation.h"
+#import "JXHTTPOperationQueue.h"
 
 @implementation JXHTTPClient
 
-@synthesize connectionQueue;
+@synthesize operationQueue;
 
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    [connectionQueue release];
+    [operationQueue release];
 
     [super dealloc];
 }
@@ -17,7 +19,7 @@
 - (id)init
 {
     if ((self = [super init])) {
-        self.connectionQueue = [[[NSOperationQueue alloc] init] autorelease];
+        self.operationQueue = [[[JXHTTPOperationQueue alloc] init] autorelease];
     }
     return self;
 }

@@ -25,12 +25,14 @@ SOFTWARE.
 #endif
 
 #import "JXHTTPClient.h"
-#import "JXHTTPDelegate.h"
 #import "JXHTTPFileBody.h"
 #import "JXHTTPFormEncodedBody.h"
 #import "JXHTTPJSONBody.h"
 #import "JXHTTPMultipartBody.h"
 #import "JXHTTPOperation.h"
+#import "JXHTTPOperationDelegate.h"
+#import "JXHTTPOperationQueue.h"
+#import "JXHTTPOperationQueueDelegate.h"
 #import "JXHTTPRequestBody.h"
 #import "JXOperation.h"
 #import "JXURLConnectionOperation.h"

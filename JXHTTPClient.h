@@ -1,12 +1,13 @@
 #import "JXHTTPRequestBody.h"
 
 @class JXHTTPOperation;
+@class JXHTTPOperationQueue;
 
 typedef void (^JXHTTPOperationBlock)(JXHTTPOperation *operation);
 
 @interface JXHTTPClient : NSObject
 
-@property (retain) NSOperationQueue *connectionQueue;
+@property (retain) JXHTTPOperationQueue *operationQueue;
 
 + (id)sharedClient;
 

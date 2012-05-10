@@ -59,7 +59,7 @@
 }
 
 #pragma mark -
-#pragma mark <JXHTTPDelegate>
+#pragma mark <JXHTTPOperationDelegate>
 
 - (void)httpOperationDidFinish:(JXHTTPOperation *)operation
 {

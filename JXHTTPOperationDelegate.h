@@ -1,6 +1,6 @@
 @class JXHTTPOperation;
 
-@protocol JXHTTPDelegate <NSObject>
+@protocol JXHTTPOperationDelegate <NSObject>
 @optional
 - (void)httpOperationWillStart:(JXHTTPOperation *)operation;
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation;

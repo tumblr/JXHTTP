@@ -240,7 +240,7 @@ typedef enum {
 }
 
 #pragma mark -
-#pragma mark <JXHTTPDelegate>
+#pragma mark <JXHTTPOperationDelegate>
 
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation
 {

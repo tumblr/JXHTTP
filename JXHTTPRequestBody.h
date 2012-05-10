@@ -1,6 +1,6 @@
-#import "JXHTTPDelegate.h"
+#import "JXHTTPOperationDelegate.h"
 
-@protocol JXHTTPRequestBody <JXHTTPDelegate>
+@protocol JXHTTPRequestBody <JXHTTPOperationDelegate>
 @required
 - (NSInputStream *)httpInputStream;
 - (NSString *)httpContentType;

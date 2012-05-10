@@ -1,15 +1,16 @@
 #import "JXURLConnectionOperation.h"
-#import "JXHTTPDelegate.h"
+#import "JXHTTPOperationDelegate.h"
 #import "JXHTTPRequestBody.h"
 
 @interface JXHTTPOperation : JXURLConnectionOperation
 
-@property (assign) NSObject <JXHTTPDelegate> *delegate;
+@property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (assign) BOOL performDelegateMethodsOnMainThread;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
 @property (copy, readonly) NSString *responseDataFilePath;
+@property (copy, readonly) NSString *uniqueIDString;
 
 + (id)withURLString:(NSString *)urlString;
 
