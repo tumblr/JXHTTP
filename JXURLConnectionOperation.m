@@ -75,6 +75,11 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
+    
     self.error = connectionError;
 
     [self finish];
@@ -85,12 +90,12 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {
-    self.response = urlResponse;
-    
     if (self.isCancelled) {
         [self finish];
         return;
     }
+
+    self.response = urlResponse;
 
     [self.outputStream open];
 }
@@ -119,12 +124,12 @@
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
 {
-    self.bytesSent += bytes;
-    
     if (self.isCancelled) {
         [self finish];
         return;
     }
+
+    self.bytesSent += bytes;
 }
 
 @end

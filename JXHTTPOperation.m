@@ -74,6 +74,7 @@
     id json = [NSJSONSerialization JSONObjectWithData:[self responseData] options:0 error:&error];
     if (error)
         NSLog(@"%@", error);
+
     return json;
 }
 
@@ -162,7 +163,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
     [super connection:connection didFailWithError:connectionError];
-    
+
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
 
@@ -177,6 +178,9 @@
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {
     [super connection:connection didReceiveResponse:urlResponse];
+    
+    if (self.isCancelled)
+        return;
     
     [self performDelegateMethod:@selector(httpOperationDidReceiveResponse:)];
 }
@@ -197,6 +201,11 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    if (self.isCancelled) {
+        [self finish];
+        return;
+    }
+    
     if ([self.downloadProgress doubleValue] != 1.0)
         self.downloadProgress = [NSNumber numberWithDouble:1.0];
     
@@ -207,7 +216,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
-{
+{    
     [super connection:connection didSendBodyData:bytes totalBytesWritten:total totalBytesExpectedToWrite:expected];
     
     if (self.isCancelled)
