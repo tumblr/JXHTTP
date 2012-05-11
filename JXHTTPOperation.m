@@ -1,4 +1,5 @@
 #import "JXHTTPOperation.h"
+#import "JXHTTPIndicatorManager.h"
 
 @interface JXHTTPOperation ()
 @property (retain) NSNumber *downloadProgress;
@@ -150,12 +151,16 @@
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
     
+    [[JXHTTPIndicatorManager sharedManager] incrementActivityCount];
+
     [super main];
 }
 
 - (void)finish
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
+    
+    [[JXHTTPIndicatorManager sharedManager] decrementActivityCount];
 
     [super finish];
 }
