@@ -27,6 +27,7 @@ SOFTWARE.
 #import "JXHTTPClient.h"
 #import "JXHTTPFileBody.h"
 #import "JXHTTPFormEncodedBody.h"
+#import "JXHTTPIndicatorManager.h"
 #import "JXHTTPJSONBody.h"
 #import "JXHTTPMultipartBody.h"
 #import "JXHTTPOperation.h"
