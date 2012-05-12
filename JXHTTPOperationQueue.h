@@ -2,9 +2,11 @@
 
 @interface JXHTTPOperationQueue : NSOperationQueue
 
-@property (retain, readonly) NSNumber *downloadProgress;
-@property (retain, readonly) NSNumber *uploadProgress;
-@property (assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
+@property (nonatomic, assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
+@property (nonatomic, assign) BOOL performsDelegateMethodsOnMainThread;
+
+@property (nonatomic, retain, readonly) NSNumber *downloadProgress;
+@property (nonatomic, retain, readonly) NSNumber *uploadProgress;
 
 + (id)queue;
 

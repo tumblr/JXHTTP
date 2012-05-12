@@ -2,13 +2,18 @@
 #import "JXHTTPOperation.h"
 
 @interface JXHTTPOperationQueue ()
-@property (retain) NSNumber *downloadProgress;
-@property (retain) NSNumber *uploadProgress;
+@property (nonatomic, retain) NSMutableDictionary *bytesReceivedPerOperation;
+@property (nonatomic, retain) NSMutableDictionary *bytesSentPerOperation;
+@property (nonatomic, retain) NSNumber *downloadProgress;
+@property (nonatomic, retain) NSNumber *uploadProgress;
+@property (nonatomic, assign) long long expectedDownloadBytes;
+@property (nonatomic, assign) long long expectedUploadBytes;
 @end
 
 @implementation JXHTTPOperationQueue
 
-@synthesize downloadProgress, uploadProgress, delegate;
+@synthesize downloadProgress, uploadProgress, expectedDownloadBytes, expectedUploadBytes, delegate,
+            bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainThread;
 
 #pragma mark -
 #pragma mark Initialization
@@ -16,10 +21,12 @@
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"operationCount"];
-    [self removeObserver:self forKeyPath:@"operations"];    
+    [self removeObserver:self forKeyPath:@"operations"]; 
 
     [downloadProgress release];
     [uploadProgress release];
+    [bytesReceivedPerOperation release];
+    [bytesSentPerOperation release];
     
     [super dealloc];
 }
@@ -27,8 +34,12 @@
 - (id)init
 {
     if ((self = [super init])) {
+        self.bytesReceivedPerOperation = [NSMutableDictionary dictionary];
+        self.bytesSentPerOperation = [NSMutableDictionary dictionary];
         self.downloadProgress = [NSNumber numberWithFloat:0.0];
         self.uploadProgress = [NSNumber numberWithFloat:0.0];
+        self.expectedDownloadBytes = 0;
+        self.expectedUploadBytes = 0;
     
         [self addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)  context:NULL];
@@ -42,13 +53,31 @@
 }
 
 #pragma mark -
+#pragma mark Private Methods
+
+- (void)performDelegateMethod:(SEL)selector
+{
+    if (self.performsDelegateMethodsOnMainThread) {
+        if ([self.delegate respondsToSelector:selector])
+            [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
+    } else {
+        if ([self.delegate respondsToSelector:selector])
+            [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
+    }
+}
+
+#pragma mark -
 #pragma mark <NSKeyValueObserving>
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self && [keyPath isEqualToString:@"operationCount"]) {
-        if (self.operationCount == 0 && [self.delegate respondsToSelector:@selector(httpOperationQueueDidFinish:)])
-            [self.delegate httpOperationQueueDidFinish:self];
+        @synchronized(self) {
+            if (self.operationCount > 0)
+                return;
+        }
+        
+        [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
     }
     
     if (object == self && [keyPath isEqualToString:@"operations"]) {
@@ -58,35 +87,62 @@
             NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
 
             for (JXHTTPOperation *op in insertedArray) {
-                [op addObserver:self forKeyPath:@"downloadProgress" options:0 context:NULL];
-                [op addObserver:self forKeyPath:@"uploadProgress" options:0 context:NULL];
+                [op addObserver:self forKeyPath:@"bytesReceived" options:0 context:NULL];
+                [op addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
+                [op addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
+                
+                @synchronized(self) {
+                    self.expectedUploadBytes += op.requestBody.httpContentLength;
+                }
             }
             
             for (JXHTTPOperation *op in removedArray) {
-                [op removeObserver:self forKeyPath:@"downloadProgress"];
-                [op removeObserver:self forKeyPath:@"uploadProgress"];
+                [op removeObserver:self forKeyPath:@"bytesReceived"];
+                [op removeObserver:self forKeyPath:@"bytesSent"];
+                [op removeObserver:self forKeyPath:@"response.expectedContentLength"];
+                
+                if (op.isCancelled) {
+                    @synchronized(self) {
+                        [self.bytesReceivedPerOperation removeObjectForKey:op.uniqueIDString];
+                        [self.bytesSentPerOperation removeObjectForKey:op.uniqueIDString];
+                    }
+                }
             }
         }  
     }
     
-    if ([keyPath isEqualToString:@"downloadProgress"] || [keyPath isEqualToString:@"uploadProgress"]) {
-        long long expectedDownloadBytes = 0;
-        long long expectedUploadBytes = 0;        
-        long long bytesDownloaded = 0;
-        long long bytesUploaded = 0;
-        
-        for (JXHTTPOperation *op in self.operations) {
-            expectedDownloadBytes += op.response.expectedContentLength;
-            expectedUploadBytes += op.requestBody.httpContentLength;            
-            bytesDownloaded += op.bytesReceived;
-            bytesUploaded += op.bytesSent;
+    if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
+        long long length = [(NSHTTPURLResponse *)[object response] expectedContentLength];
+
+        @synchronized(self) {
+            if (length && length != NSURLResponseUnknownLength)
+                self.expectedDownloadBytes += length;
         }
+    }
+    
+    if ([keyPath isEqualToString:@"bytesReceived"] || [keyPath isEqualToString:@"bytesSent"]) {
+        JXHTTPOperation *op = (JXHTTPOperation *)object;
 
-        self.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0];
-        self.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0];
+        @synchronized(self) {            
+            [self.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:op.bytesReceived] forKey:op.uniqueIDString];
+            [self.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:op.bytesSent] forKey:op.uniqueIDString];
 
-        if ([self.delegate respondsToSelector:@selector(httpOperationQueueDidMakeProgress:)])
-            [self.delegate httpOperationQueueDidMakeProgress:self];
+            long long bytesDownloaded = 0;
+            long long bytesUploaded = 0;
+            
+            for (NSString *opID in [self.bytesReceivedPerOperation allKeys]) {
+                bytesDownloaded += [[self.bytesReceivedPerOperation objectForKey:opID] longLongValue];
+            }
+            
+            for (NSString *opID in [self.bytesSentPerOperation allKeys]) {
+                bytesUploaded += [[self.bytesSentPerOperation objectForKey:opID] longLongValue];
+            }
+            
+            self.downloadProgress = [NSNumber numberWithFloat:self.expectedDownloadBytes ? (bytesDownloaded / (float)self.expectedDownloadBytes) : 0.0];
+            self.uploadProgress = [NSNumber numberWithFloat:self.expectedUploadBytes ? (bytesUploaded / (float)self.expectedUploadBytes) : 0.0];
+        }
+        
+        [self performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
     }
 }
 

@@ -5,7 +5,7 @@
 @interface JXHTTPOperation : JXURLConnectionOperation
 
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
-@property (assign) BOOL performDelegateMethodsOnMainThread;
+@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;

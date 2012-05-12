@@ -10,7 +10,7 @@
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString;
+@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString;
 
 #pragma mark -
 #pragma mark Initialization
@@ -100,7 +100,7 @@
     if (self.isCancelled)
         return;
 
-    if (self.performDelegateMethodsOnMainThread) {
+    if (self.performsDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
         
