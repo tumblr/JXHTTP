@@ -1,11 +1,11 @@
 #import "JXHTTPOperation.h"
+#import "JXURLEncoding.h"
 
 static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
-@property (copy) NSString *responseDataFilePath;
 @property (copy) NSString *uniqueIDString;
 @end
 
@@ -19,6 +19,7 @@ static NSInteger operationCount = 0;
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"requestBody"];
+    [self removeObserver:self forKeyPath:@"responseDataFilePath"];
     
     [requestBody release];
     [downloadProgress release];
@@ -33,11 +34,12 @@ static NSInteger operationCount = 0;
 {
     if ((self = [super init])) {
         self.downloadProgress = [NSNumber numberWithFloat:0.0];
-        self.uploadProgress = [NSNumber numberWithFloat:0.0];  
+        self.uploadProgress = [NSNumber numberWithFloat:0.0];
         self.responseDataFilePath = nil;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
 
         [self addObserver:self forKeyPath:@"requestBody" options:0 context:NULL];
+        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:NULL];
     }
     return self;
 }
@@ -45,6 +47,21 @@ static NSInteger operationCount = 0;
 + (id)withURLString:(NSString *)urlString
 {
     return [[[self alloc] initWithURL:[NSURL URLWithString:urlString]] autorelease];
+}
+
++ (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
+{
+    NSMutableString *string = [NSMutableString stringWithFormat:@"%@?", urlString];
+    NSArray *sortedKeys = [[parameters allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    NSString *lastKey = [sortedKeys lastObject];
+
+    for (NSString *key in sortedKeys) {
+        NSString *encodedKey = [JXURLEncoding encodedString:key];
+        NSString *encodedValue = [JXURLEncoding encodedString:[parameters objectForKey:key]];
+        [string appendFormat:@"%@=%@%@", encodedKey, encodedValue, key == lastKey ? @"" : @"&"];
+    }
+
+    return [self withURLString:string];
 }
 
 #pragma mark -
@@ -56,15 +73,6 @@ static NSInteger operationCount = 0;
     [tempQueue addOperation:self];
     [tempQueue waitUntilAllOperationsAreFinished];
     [tempQueue release];
-}
-
-- (void)streamResponseDataToFilePath:(NSString *)filePath append:(BOOL)append
-{
-    if (self.isCancelled || self.isExecuting || self.isFinished)
-        return;
-
-    self.responseDataFilePath = filePath;
-    self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:append];
 }
 
 - (NSData *)responseData
@@ -150,6 +158,17 @@ static NSInteger operationCount = 0;
         long long expectedLength = [self.requestBody httpContentLength];
         if (expectedLength > 0 && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
+    }
+    
+    if (object == self && [keyPath isEqualToString:@"responseDataFilePath"]) {
+        if (self.isCancelled || self.isExecuting || self.isFinished)
+            return;
+        
+        if ([self.responseDataFilePath length]) {
+            self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:NO];
+        } else {
+            self.outputStream = [NSOutputStream outputStreamToMemory];
+        }
     }
 }
 

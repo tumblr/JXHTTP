@@ -9,16 +9,15 @@ typedef void (^JXHTTPCompletionBlock)(JXHTTPOperation *operation);
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
+@property (copy) NSString *responseDataFilePath;
+@property (copy, readonly) NSString *uniqueIDString;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
-@property (copy, readonly) NSString *responseDataFilePath;
-@property (copy, readonly) NSString *uniqueIDString;
 
 + (id)withURLString:(NSString *)urlString;
++ (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
 - (void)performSynchronously;
-
-- (void)streamResponseDataToFilePath:(NSString *)filePath append:(BOOL)append;
 
 - (NSData *)responseData;
 - (NSString *)responseString;
