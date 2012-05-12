@@ -2,8 +2,6 @@
 #import "JXHTTPOperationDelegate.h"
 #import "JXHTTPRequestBody.h"
 
-typedef void (^JXHTTPCompletionBlock)(JXHTTPOperation *operation);
-
 @interface JXHTTPOperation : JXURLConnectionOperation
 
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
