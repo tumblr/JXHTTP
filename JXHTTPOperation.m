@@ -146,11 +146,11 @@ static NSInteger operationCount = 0;
 - (void)main
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
-    
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+    @synchronized (self) {
         operationCount++;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
-    }];
+    }
 
     [super main];
 }
@@ -159,10 +159,10 @@ static NSInteger operationCount = 0;
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
     
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    @synchronized (self) {
         operationCount--;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
-    }];
+    }
 
     [super finish];
 }

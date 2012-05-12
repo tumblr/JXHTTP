@@ -90,7 +90,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self && [keyPath isEqualToString:@"operationCount"]) {
-        @synchronized(self) {
+        @synchronized (self) {
             if (self.operationCount > 0)
                 return;
         }
@@ -114,7 +114,7 @@
                 [op addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
                 [op addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
                 
-                @synchronized(self) {
+                @synchronized (self) {
                     self.expectedUploadBytes += op.requestBody.httpContentLength;
                 }
             }
@@ -128,7 +128,7 @@
                 [op removeObserver:self forKeyPath:@"response.expectedContentLength"];
                 
                 if (op.isCancelled) {
-                    @synchronized(self) {
+                    @synchronized (self) {
                         [self.bytesReceivedPerOperation removeObjectForKey:op.uniqueIDString];
                         [self.bytesSentPerOperation removeObjectForKey:op.uniqueIDString];
                     }
@@ -140,7 +140,7 @@
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
         long long length = [(NSHTTPURLResponse *)[object response] expectedContentLength];
 
-        @synchronized(self) {
+        @synchronized (self) {
             if (length && length != NSURLResponseUnknownLength)
                 self.expectedDownloadBytes += length;
         }
@@ -149,7 +149,7 @@
     if ([keyPath isEqualToString:@"bytesReceived"] || [keyPath isEqualToString:@"bytesSent"]) {
         JXHTTPOperation *op = (JXHTTPOperation *)object;
 
-        @synchronized(self) {            
+        @synchronized (self) {            
             [self.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:op.bytesReceived] forKey:op.uniqueIDString];
             [self.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:op.bytesSent] forKey:op.uniqueIDString];
 
