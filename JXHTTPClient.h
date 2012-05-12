@@ -7,7 +7,7 @@ typedef void (^JXHTTPOperationBlock)(JXHTTPOperation *operation);
 
 @interface JXHTTPClient : NSObject
 
-@property (retain) JXHTTPOperationQueue *operationQueue;
+@property (nonatomic, retain) JXHTTPOperationQueue *operationQueue;
 
 + (id)sharedClient;
 

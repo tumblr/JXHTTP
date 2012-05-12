@@ -41,7 +41,10 @@
 
 - (void)performOperationSynchronously:(JXHTTPOperation *)httpOperation
 {
-    NSAssert(NO, @"under construction");
+    NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
+    [tempQueue addOperation:httpOperation];
+    [tempQueue waitUntilAllOperationsAreFinished];
+    [tempQueue release];
 }
 
 @end
