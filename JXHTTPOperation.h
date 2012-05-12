@@ -11,16 +11,11 @@
 @property (copy, readonly) NSString *uniqueIDString;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
+@property (retain) id userObject;
 
 + (id)withURLString:(NSString *)urlString;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
-- (void)performSynchronously;
-
-- (NSData *)responseData;
-- (NSString *)responseString;
-- (id)responseJSON;
-- (NSDictionary *)responseHeaders;
-- (NSInteger)responseStatusCode;
+- (void)startAndWaitUntilFinished;
 
 @end

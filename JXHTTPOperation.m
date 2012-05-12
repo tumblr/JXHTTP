@@ -11,7 +11,7 @@ static NSInteger operationCount = 0;
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString;
+@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString, userObject;
 
 #pragma mark -
 #pragma mark Initialization
@@ -26,6 +26,7 @@ static NSInteger operationCount = 0;
     [uploadProgress release];
     [responseDataFilePath release];
     [uniqueIDString release];
+    [userObject release];
 
     [super dealloc];
 }
@@ -37,6 +38,7 @@ static NSInteger operationCount = 0;
         self.uploadProgress = [NSNumber numberWithFloat:0.0];
         self.responseDataFilePath = nil;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
+        self.userObject = nil;
 
         [self addObserver:self forKeyPath:@"requestBody" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:NULL];
@@ -67,46 +69,12 @@ static NSInteger operationCount = 0;
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)performSynchronously
+- (void)startAndWaitUntilFinished
 {
     NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
     [tempQueue addOperation:self];
     [tempQueue waitUntilAllOperationsAreFinished];
     [tempQueue release];
-}
-
-- (NSData *)responseData
-{
-    NSData *data = [self.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-    if (data)
-        return data;
-    
-    return [NSData dataWithContentsOfMappedFile:self.responseDataFilePath];
-}
-
-- (NSString *)responseString
-{
-    return [[[NSString alloc] initWithData:[self responseData] encoding:NSUTF8StringEncoding] autorelease];
-}
-
-- (id)responseJSON
-{
-    NSError *error;
-    id json = [NSJSONSerialization JSONObjectWithData:[self responseData] options:0 error:&error];
-    if (error)
-        NSLog(@"%@", error);
-
-    return json;
-}
-
-- (NSDictionary *)responseHeaders
-{
-    return [(NSHTTPURLResponse *)self.response allHeaderFields];
-}
-
-- (NSInteger)responseStatusCode
-{
-    return [(NSHTTPURLResponse *)self.response statusCode];
 }
 
 #pragma mark -

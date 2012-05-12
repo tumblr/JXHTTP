@@ -28,6 +28,7 @@ SOFTWARE.
 #import "JXHTTPFormEncodedBody.h"
 #import "JXHTTPJSONBody.h"
 #import "JXHTTPMultipartBody.h"
+#import "JXHTTPOperation+Convenience.h"
 #import "JXHTTPOperation.h"
 #import "JXHTTPOperationDelegate.h"
 #import "JXHTTPOperationQueue.h"
