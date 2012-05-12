@@ -1,5 +1,6 @@
 #import "JXHTTPOperation.h"
-#import "JXHTTPIndicatorManager.h"
+
+static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
 @property (retain) NSNumber *downloadProgress;
@@ -151,7 +152,10 @@
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
     
-    [[JXHTTPIndicatorManager sharedManager] incrementActivityCount];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        operationCount++;
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
+    }];
 
     [super main];
 }
@@ -160,7 +164,10 @@
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
     
-    [[JXHTTPIndicatorManager sharedManager] decrementActivityCount];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        operationCount--;
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
+    }];
 
     [super finish];
 }
