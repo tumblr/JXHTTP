@@ -20,9 +20,11 @@
 #pragma mark Initialization
 
 - (void)dealloc
-{
+{    
     [self removeObserver:self forKeyPath:@"operationCount"];
-    [self removeObserver:self forKeyPath:@"operations"]; 
+    [self removeObserver:self forKeyPath:@"operations"];
+    
+    self.delegate = nil;
 
     [downloadProgress release];
     [uploadProgress release];
