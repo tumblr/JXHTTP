@@ -8,6 +8,7 @@
 @property (nonatomic, retain) NSNumber *uploadProgress;
 @property (nonatomic, assign) long long expectedDownloadBytes;
 @property (nonatomic, assign) long long expectedUploadBytes;
+- (void)resetProgress;
 @end
 
 @implementation JXHTTPOperationQueue
@@ -34,12 +35,7 @@
 - (id)init
 {
     if ((self = [super init])) {
-        self.bytesReceivedPerOperation = [NSMutableDictionary dictionary];
-        self.bytesSentPerOperation = [NSMutableDictionary dictionary];
-        self.downloadProgress = [NSNumber numberWithFloat:0.0];
-        self.uploadProgress = [NSNumber numberWithFloat:0.0];
-        self.expectedDownloadBytes = 0;
-        self.expectedUploadBytes = 0;
+        [self resetProgress];
     
         [self addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)  context:NULL];
@@ -50,6 +46,18 @@
 + (id)queue
 {
     return [[[self alloc] init] autorelease];
+}
+
++ (id)sharedQueue
+{
+    static id sharedQueue;
+    static dispatch_once_t predicate;
+
+    dispatch_once(&predicate, ^{
+        sharedQueue = [[self alloc] init];
+    });
+    
+    return sharedQueue;
 }
 
 #pragma mark -
@@ -66,6 +74,16 @@
     }
 }
 
+- (void)resetProgress
+{
+    self.bytesReceivedPerOperation = [NSMutableDictionary dictionary];
+    self.bytesSentPerOperation = [NSMutableDictionary dictionary];
+    self.downloadProgress = [NSNumber numberWithFloat:0.0];
+    self.uploadProgress = [NSNumber numberWithFloat:0.0];
+    self.expectedDownloadBytes = 0;
+    self.expectedUploadBytes = 0;
+}
+
 #pragma mark -
 #pragma mark <NSKeyValueObserving>
 
@@ -78,6 +96,8 @@
         }
         
         [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
+        
+        [self resetProgress];
     }
     
     if (object == self && [keyPath isEqualToString:@"operations"]) {
@@ -87,6 +107,9 @@
             NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
 
             for (JXHTTPOperation *op in insertedArray) {
+                if (![op isKindOfClass:[JXHTTPOperation class]])
+                    continue;
+
                 [op addObserver:self forKeyPath:@"bytesReceived" options:0 context:NULL];
                 [op addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
                 [op addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
@@ -97,6 +120,9 @@
             }
             
             for (JXHTTPOperation *op in removedArray) {
+                if (![op isKindOfClass:[JXHTTPOperation class]])
+                    continue;
+                
                 [op removeObserver:self forKeyPath:@"bytesReceived"];
                 [op removeObserver:self forKeyPath:@"bytesSent"];
                 [op removeObserver:self forKeyPath:@"response.expectedContentLength"];

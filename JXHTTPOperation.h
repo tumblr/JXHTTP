@@ -2,6 +2,8 @@
 #import "JXHTTPOperationDelegate.h"
 #import "JXHTTPRequestBody.h"
 
+typedef void (^JXHTTPCompletionBlock)(JXHTTPOperation *operation);
+
 @interface JXHTTPOperation : JXURLConnectionOperation
 
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
@@ -13,6 +15,8 @@
 @property (copy, readonly) NSString *uniqueIDString;
 
 + (id)withURLString:(NSString *)urlString;
+
+- (void)performSynchronously;
 
 - (void)streamResponseDataToFilePath:(NSString *)filePath append:(BOOL)append;
 

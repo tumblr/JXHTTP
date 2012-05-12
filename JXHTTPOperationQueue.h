@@ -8,6 +8,7 @@
 @property (nonatomic, retain, readonly) NSNumber *downloadProgress;
 @property (nonatomic, retain, readonly) NSNumber *uploadProgress;
 
++ (id)sharedQueue;
 + (id)queue;
 
 @end

@@ -19,7 +19,7 @@ static NSInteger operationCount = 0;
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"requestBody"];
-
+    
     [requestBody release];
     [downloadProgress release];
     [uploadProgress release];
@@ -49,6 +49,14 @@ static NSInteger operationCount = 0;
 
 #pragma mark -
 #pragma mark Public Methods
+
+- (void)performSynchronously
+{
+    NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
+    [tempQueue addOperation:self];
+    [tempQueue waitUntilAllOperationsAreFinished];
+    [tempQueue release];
+}
 
 - (void)streamResponseDataToFilePath:(NSString *)filePath append:(BOOL)append
 {

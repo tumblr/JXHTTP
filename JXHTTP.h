@@ -24,7 +24,6 @@ SOFTWARE.
     #error "JXHTTP requries iOS 5.0 or later"
 #endif
 
-#import "JXHTTPClient.h"
 #import "JXHTTPFileBody.h"
 #import "JXHTTPFormEncodedBody.h"
 #import "JXHTTPJSONBody.h"
