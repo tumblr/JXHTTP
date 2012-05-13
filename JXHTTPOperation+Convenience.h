@@ -20,5 +20,10 @@
 - (id)responseJSON;
 - (NSDictionary *)responseHeaders;
 - (NSInteger)responseStatusCode;
+- (long long)responseExpectedContentLength;
+- (NSString *)responseExpectedFileName;
+- (NSString *)responseMIMEType;
+- (NSString *)responseTextEncodingName;
+- (NSURL *)responseURL;
 
 @end

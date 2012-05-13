@@ -142,4 +142,29 @@
     return [(NSHTTPURLResponse *)self.response statusCode];
 }
 
+- (long long)responseExpectedContentLength
+{
+    return self.response.expectedContentLength;
+}
+
+- (NSString *)responseExpectedFileName
+{
+    return self.response.suggestedFilename;
+}
+
+- (NSString *)responseMIMEType
+{
+    return self.response.MIMEType;
+}
+
+- (NSString *)responseTextEncodingName
+{
+    return self.response.textEncodingName;
+}
+
+- (NSURL *)responseURL
+{
+    return self.response.URL;
+}
+
 @end
