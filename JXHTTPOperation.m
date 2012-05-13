@@ -104,12 +104,12 @@ static NSInteger operationCount = 0;
 
 - (void)incrementOperationCount
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:++operationCount > 0];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(++operationCount > 0)];
 }
 
 - (void)decrementOperationCount
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:--operationCount > 0];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(--operationCount > 0)];
 }
 
 #pragma mark -
