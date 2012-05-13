@@ -7,6 +7,8 @@ static NSInteger operationCount = 0;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (copy) NSString *uniqueIDString;
+- (void)incrementOperationCount;
+- (void)decrementOperationCount;
 @end
 
 @implementation JXHTTPOperation
@@ -100,6 +102,16 @@ static NSInteger operationCount = 0;
     }
 }
 
+- (void)incrementOperationCount
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:++operationCount > 0];
+}
+
+- (void)decrementOperationCount
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:--operationCount > 0];
+}
+
 #pragma mark -
 #pragma mark <NSKeyValueObserving>
 
@@ -147,10 +159,7 @@ static NSInteger operationCount = 0;
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
-    @synchronized (self) {
-        operationCount++;
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
-    }
+    [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
 
     [super main];
 }
@@ -159,10 +168,7 @@ static NSInteger operationCount = 0;
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
     
-    @synchronized (self) {
-        operationCount--;
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:operationCount > 0];
-    }
+    [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:NO];
 
     [super finish];
 }
