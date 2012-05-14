@@ -20,7 +20,6 @@ static NSInteger operationCount = 0;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"requestBody"];
     [self removeObserver:self forKeyPath:@"responseDataFilePath"];
     
     [requestBody release];
@@ -42,7 +41,6 @@ static NSInteger operationCount = 0;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.userObject = nil;
 
-        [self addObserver:self forKeyPath:@"requestBody" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:NULL];
     }
     return self;
@@ -109,28 +107,7 @@ static NSInteger operationCount = 0;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    
-    if (object == self && [keyPath isEqualToString:@"requestBody"] && self.requestBody) {
-        NSInputStream *inputStream = [self.requestBody httpInputStream];
-        if (!inputStream)
-            return;
 
-        self.request.HTTPBodyStream = inputStream;
-        
-        if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
-            [self.request setHTTPMethod:@"POST"];        
-        
-        NSString *contentType = [self.requestBody httpContentType];
-        if (![contentType length])
-            contentType = @"application/octet-stream";
-        
-        [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
-        
-        long long expectedLength = [self.requestBody httpContentLength];
-        if (expectedLength > 0 && expectedLength != NSURLResponseUnknownLength)
-            [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
-    }
-    
     if (object == self && [keyPath isEqualToString:@"responseDataFilePath"]) {
         if (self.isCancelled || self.isExecuting || self.isFinished)
             return;
@@ -151,6 +128,26 @@ static NSInteger operationCount = 0;
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
     [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
+    
+    if (self.requestBody && !self.isCancelled) {
+        NSInputStream *inputStream = [self.requestBody httpInputStream];
+        if (inputStream)
+            self.request.HTTPBodyStream = inputStream;
+
+        if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
+            [self.request setHTTPMethod:@"POST"];        
+        
+        NSString *contentType = [self.requestBody httpContentType];
+        if (![contentType length])
+            contentType = @"application/octet-stream";
+
+        if (![self.request valueForHTTPHeaderField:@"Content-Type"])
+            [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
+        
+        long long expectedLength = [self.requestBody httpContentLength];
+        if (expectedLength > 0 && expectedLength != NSURLResponseUnknownLength)
+            [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
+    }
 
     [super main];
 }
