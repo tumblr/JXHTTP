@@ -55,16 +55,7 @@ static NSInteger operationCount = 0;
 
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
 {
-    NSMutableString *string = [NSMutableString stringWithFormat:@"%@?", urlString];
-    NSArray *sortedKeys = [[parameters allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    NSString *lastKey = [sortedKeys lastObject];
-
-    for (NSString *key in sortedKeys) {
-        NSString *encodedKey = [JXURLEncoding encodedString:key];
-        NSString *encodedValue = [JXURLEncoding encodedString:[parameters objectForKey:key]];
-        [string appendFormat:@"%@=%@%@", encodedKey, encodedValue, key == lastKey ? @"" : @"&"];
-    }
-
+    NSString *string = [NSString stringWithFormat:@"%@?%@", urlString, [JXURLEncoding encodedDictionary:parameters]];
     return [self withURLString:string];
 }
 

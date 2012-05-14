@@ -31,8 +31,9 @@
         return nil;
 
     NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:[dictionary count]];
-    
-    for (NSString *key in [dictionary allKeys]) {
+
+    NSArray *sortedKeys = [[dictionary allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    for (NSString *key in sortedKeys) {
         [self encodeObject:[dictionary objectForKey:key] withKey:key andSubKey:nil intoArray:arguments];
     }
     
@@ -58,7 +59,8 @@
     }
     
     if ([object respondsToSelector:@selector(objectForKey:)]) {
-        for (NSString *insideKey in object) {
+        NSArray *sortedKeys = [[object allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        for (NSString *insideKey in sortedKeys) {
             [self encodeObject:[object objectForKey:insideKey] withKey:objectKey andSubKey:insideKey intoArray:array];
         }
     } else {
