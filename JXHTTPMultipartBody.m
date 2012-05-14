@@ -55,7 +55,7 @@ typedef enum {
     part.preData = [preString dataUsingEncoding:NSUTF8StringEncoding];
     part.contentData = data;
     part.postData = [@"\r\n" dataUsingEncoding:NSUTF8StringEncoding];    
-
+    
     return [part autorelease];
 }
 
@@ -100,7 +100,7 @@ typedef enum {
 {
     NSUInteger dataOffset = 0;
     NSUInteger bytesAppended = 0;
-
+    
     for (NSData *data in [NSArray arrayWithObjects:self.preData, self.contentData, self.postData, nil]) {
         NSUInteger dataLength = data == self.contentData ? [self contentLength] : [data length];
         NSRange dataRange = NSMakeRange(dataOffset, dataLength);
@@ -131,10 +131,10 @@ typedef enum {
                 bytesAppended += [dataToAppend length];
             }
         }
-
+        
         dataOffset += dataLength;
     }
-
+    
     return bytesAppended;
 }
 
@@ -159,7 +159,7 @@ typedef enum {
 @implementation JXHTTPMultipartBody
 
 @synthesize partsArray, boundaryString, finalBoundaryData, httpContentType, httpInputStream, httpOutputStream,
-            bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
+bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
 
 #pragma mark -
 #pragma mark Initialization
@@ -195,8 +195,6 @@ typedef enum {
         self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; charset=utf-8; boundary=%@", plainBoundaryString];
         self.partsArray = [NSMutableArray array];
         self.streamBufferLength = 0x10000; //64K
-
-        [self recreateStreams];
     }
     return self;
 }
@@ -224,7 +222,7 @@ typedef enum {
 {
     if (httpContentLength != NSURLResponseUnknownLength)
         return httpContentLength;
-
+    
     long long newLength = 0;
     
     for (JXHTTPMultipartPart *part in self.partsArray) {
@@ -243,6 +241,11 @@ typedef enum {
 #pragma mark <JXHTTPOperationDelegate>
 
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation
+{
+    [self recreateStreams];
+}
+
+- (void)httpOperationWillStart:(JXHTTPOperation *)operation
 {
     [self recreateStreams];
 }
@@ -349,7 +352,7 @@ typedef enum {
     for (JXHTTPMultipartPart *part in self.partsArray) {
         NSUInteger partLength = [part dataLength];
         NSRange partRange = NSMakeRange(partOffset, partLength);
-
+        
         NSRange intersection = NSIntersectionRange(partRange, searchRange);
         if (intersection.length > 0) {
             NSRange rangeInPart = NSMakeRange(intersection.location - partOffset, intersection.length);
@@ -358,7 +361,7 @@ typedef enum {
         
         partOffset += partLength;
     }
-
+    
     NSRange finalRange = NSMakeRange(partOffset, [self.finalBoundaryData length]);
     NSRange intersection = NSIntersectionRange(finalRange, searchRange);
     if (intersection.length > 0) {
