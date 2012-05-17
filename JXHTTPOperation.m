@@ -37,8 +37,8 @@ static NSInteger operationCount = 0;
     if ((self = [super init])) {
         self.downloadProgress = [NSNumber numberWithFloat:0.0];
         self.uploadProgress = [NSNumber numberWithFloat:0.0];
-        self.responseDataFilePath = nil;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
+        self.responseDataFilePath = nil;
         self.userObject = nil;
 
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:NULL];
