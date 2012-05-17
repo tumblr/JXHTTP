@@ -16,7 +16,8 @@
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"continuesInAppBackground"];
-    [self removeObserver:self forKeyPath:@"isFinished"];    
+    [self removeObserver:self forKeyPath:@"isCancelled"];
+    [self removeObserver:self forKeyPath:@"isFinished"];
     
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
@@ -34,6 +35,7 @@
         self.backgroundTaskID = UIBackgroundTaskInvalid;
         
         [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:NULL];
+        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:NULL];
         [self addObserver:self forKeyPath:@"isFinished" options:0 context:NULL];
     }
     return self;
@@ -97,8 +99,8 @@
         }
     }
     
-    if (object == self && [keyPath isEqualToString:@"isFinished"]) {
-        if (self.isFinished && self.backgroundTaskID != UIBackgroundTaskInvalid) {
+    if (object == self && ([keyPath isEqualToString:@"isFinished"] || [keyPath isEqualToString:@"isCancelled"])) {
+        if ((self.isFinished || self.isCancelled) && self.backgroundTaskID != UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
             self.backgroundTaskID = UIBackgroundTaskInvalid;
         }
