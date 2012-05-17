@@ -87,7 +87,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
-        if (self.continuesInAppBackground && !self.isCancelled) {
+        if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid && !self.isCancelled) {
             UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
             taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
                 [[UIApplication sharedApplication] endBackgroundTask:taskID];
