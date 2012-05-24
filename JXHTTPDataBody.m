@@ -1,9 +1,5 @@
 #import "JXHTTPDataBody.h"
 
-@interface JXHTTPDataBody ()
-
-@end
-
 @implementation JXHTTPDataBody
 
 @synthesize data, httpContentType;
