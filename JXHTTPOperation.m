@@ -6,7 +6,7 @@ static NSInteger operationCount = 0;
 @interface JXHTTPOperation ()
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
-@property (copy) NSString *uniqueIDString;
+@property (retain) NSString *uniqueIDString;
 - (void)incrementOperationCount;
 - (void)decrementOperationCount;
 @end

@@ -6,6 +6,7 @@
 @property (assign) BOOL continuesInAppBackground;
 
 + (id)operation;
+
 - (void)finish;
 
 @end
