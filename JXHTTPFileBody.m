@@ -14,6 +14,11 @@
     [super dealloc];
 }
 
++ (id)emptyBody
+{
+    return [self withFilePath:nil andContentType:nil];
+}
+
 + (id)withFilePath:(NSString *)filePath
 {
     return [self withFilePath:filePath andContentType:nil];
@@ -37,6 +42,9 @@
 
 - (long long)httpContentLength
 {
+    if (![self.filePath length])
+        return NSURLResponseUnknownLength;
+
     NSError *error = nil;
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.filePath error:&error];
     if (error != nil)

@@ -4,7 +4,7 @@
 
 @property (nonatomic, retain, readonly) NSMutableDictionary *dictionary;
 
-- (id)initWithDictionary:(NSDictionary *)dictionary;
++ (id)emptyBody;
 + (id)withDictionary:(NSDictionary *)dictionary;
 
 @end

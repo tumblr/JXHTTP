@@ -3,6 +3,7 @@
 
 @interface JXHTTPFormEncodedBody ()
 @property (nonatomic, retain) NSMutableDictionary *dictionary;
+- (id)initWithDictionary:(NSDictionary *)dict;
 - (NSData *)requestData;
 @end
 
@@ -31,6 +32,11 @@
 + (id)withDictionary:(NSDictionary *)dictionary
 {
     return [[[self alloc] initWithDictionary:dictionary] autorelease];
+}
+
++ (id)emptyBody
+{
+    return [self withDictionary:nil];
 }
 
 #pragma mark -

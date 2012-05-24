@@ -5,13 +5,14 @@
 @interface JXHTTPOperation : JXURLConnectionOperation
 
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
-@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
+@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (copy) NSString *responseDataFilePath;
-@property (copy, readonly) NSString *uniqueIDString;
+@property (retain) id userObject;
+
+@property (retain, readonly) NSString *uniqueIDString;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
-@property (retain) id userObject;
 
 + (id)withURLString:(NSString *)urlString;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;

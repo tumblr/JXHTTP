@@ -2,9 +2,10 @@
 
 @interface JXHTTPFileBody : NSObject <JXHTTPRequestBody>
 
-@property (nonatomic, retain) NSString *filePath;
-@property (nonatomic, retain) NSString *httpContentType;
+@property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, copy) NSString *httpContentType;
 
++ (id)emptyBody;
 + (id)withFilePath:(NSString *)filePath;
 + (id)withFilePath:(NSString *)filePath andContentType:(NSString *)contentType;
 

@@ -199,11 +199,6 @@ bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
     return self;
 }
 
-+ (id)emptyBody
-{
-    return [[[self alloc] init] autorelease];
-}
-
 + (id)withDictionary:(NSDictionary *)stringParameters
 {
     id body = [[self alloc] init];
@@ -213,6 +208,11 @@ bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
     }
     
     return [body autorelease];
+}
+
++ (id)emptyBody
+{
+    return [[[self alloc] init] autorelease];
 }
 
 #pragma mark -

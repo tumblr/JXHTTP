@@ -41,6 +41,11 @@
     return self;
 }
 
++ (id)operation
+{
+    return [[[self alloc] init] autorelease];
+}
+
 #pragma mark -
 #pragma mark NSOperation
 

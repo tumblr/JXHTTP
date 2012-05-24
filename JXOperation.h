@@ -5,6 +5,7 @@
 @property (assign) BOOL startsOnMainThread;
 @property (assign) BOOL continuesInAppBackground;
 
++ (id)operation;
 - (void)finish;
 
 @end
