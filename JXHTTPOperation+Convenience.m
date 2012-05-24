@@ -102,7 +102,7 @@
 
 - (void)setValue:(NSString *)valueString forRequestHeader:(NSString *)headerFieldString
 {
-    [self.request setValue:valueString forKey:headerFieldString];
+    [self.request setValue:valueString forHTTPHeaderField:headerFieldString];
 }
 
 #pragma mark -
