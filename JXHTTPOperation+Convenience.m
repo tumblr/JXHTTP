@@ -124,7 +124,11 @@
 
 - (id)responseJSON
 {
-    NSError *error;
+    NSData *data = [self responseData];
+    if (!data)
+        return nil;
+
+    NSError *error = nil;
     id json = [NSJSONSerialization JSONObjectWithData:[self responseData] options:0 error:&error];
     if (error)
         NSLog(@"%@", error);

@@ -32,7 +32,7 @@
 
 + (id)withJSONObject:(id)dictionaryOrArray
 {
-    NSError *error;
+    NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionaryOrArray options:0 error:&error];
     if (error)
         NSLog(@"%@", error);
