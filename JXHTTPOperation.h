@@ -17,6 +17,4 @@
 + (id)withURLString:(NSString *)urlString;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
-- (void)startAndWaitUntilFinished;
-
 @end

@@ -58,17 +58,6 @@ static NSInteger operationCount = 0;
 }
 
 #pragma mark -
-#pragma mark Public Methods
-
-- (void)startAndWaitUntilFinished
-{
-    NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
-    [tempQueue addOperation:self];
-    [tempQueue waitUntilAllOperationsAreFinished];
-    [tempQueue release];
-}
-
-#pragma mark -
 #pragma mark Private Methods
 
 - (void)performDelegateMethod:(SEL)selector

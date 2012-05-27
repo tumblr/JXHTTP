@@ -74,6 +74,9 @@
     NSAssert(NO, @"subclasses must implement and eventually call finish");
 }
 
+#pragma mark -
+#pragma mark Public Methods
+
 - (void)finish
 {
     [self willChangeValueForKey:@"isExecuting"];
@@ -84,6 +87,14 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
+}
+
+- (void)startAndWaitUntilFinished
+{
+    NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
+    [tempQueue addOperation:self];
+    [tempQueue waitUntilAllOperationsAreFinished];
+    [tempQueue release];
 }
 
 #pragma mark -

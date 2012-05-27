@@ -7,6 +7,7 @@
 
 + (id)operation;
 
+- (void)startAndWaitUntilFinished;
 - (void)finish;
 
 @end
