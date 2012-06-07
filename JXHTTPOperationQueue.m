@@ -4,17 +4,17 @@
 @interface JXHTTPOperationQueue ()
 @property (nonatomic, retain) NSMutableDictionary *bytesReceivedPerOperation;
 @property (nonatomic, retain) NSMutableDictionary *bytesSentPerOperation;
+@property (nonatomic, retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
+@property (nonatomic, retain) NSMutableDictionary *expectedUploadBytesPerOperation;
 @property (nonatomic, retain) NSNumber *downloadProgress;
 @property (nonatomic, retain) NSNumber *uploadProgress;
-@property (nonatomic, assign) long long expectedDownloadBytes;
-@property (nonatomic, assign) long long expectedUploadBytes;
 - (void)resetProgress;
 @end
 
 @implementation JXHTTPOperationQueue
 
-@synthesize downloadProgress, uploadProgress, expectedDownloadBytes, expectedUploadBytes, delegate,
-bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainThread;
+@synthesize downloadProgress, uploadProgress, delegate, bytesReceivedPerOperation, bytesSentPerOperation,
+            performsDelegateMethodsOnMainThread, expectedDownloadBytesPerOperation, expectedUploadBytesPerOperation;
 
 #pragma mark -
 #pragma mark Initialization
@@ -80,10 +80,10 @@ bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainT
 {
     self.bytesReceivedPerOperation = [NSMutableDictionary dictionary];
     self.bytesSentPerOperation = [NSMutableDictionary dictionary];
+    self.expectedDownloadBytesPerOperation = [NSMutableDictionary dictionary];
+    self.expectedUploadBytesPerOperation = [NSMutableDictionary dictionary];
     self.downloadProgress = [NSNumber numberWithFloat:0.0];
     self.uploadProgress = [NSNumber numberWithFloat:0.0];
-    self.expectedDownloadBytes = 0;
-    self.expectedUploadBytes = 0;
 }
 
 #pragma mark -
@@ -108,31 +108,32 @@ bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainT
             NSArray *insertedArray = [change objectForKey:NSKeyValueChangeNewKey];
             NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
             
-            for (JXHTTPOperation *op in insertedArray) {
-                if (![op isKindOfClass:[JXHTTPOperation class]])
+            for (JXHTTPOperation *operation in insertedArray) {
+                if (![operation isKindOfClass:[JXHTTPOperation class]])
                     continue;
                 
-                [op addObserver:self forKeyPath:@"bytesReceived" options:0 context:NULL];
-                [op addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
-                [op addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
-                
+                [operation addObserver:self forKeyPath:@"bytesReceived" options:0 context:NULL];
+                [operation addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
+                [operation addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
+
                 @synchronized (self) {
-                    self.expectedUploadBytes += op.requestBody.httpContentLength;
+                    NSNumber *expectedUp = [NSNumber numberWithLongLong:operation.requestBody.httpContentLength];
+                    [self.expectedUploadBytesPerOperation setObject:expectedUp forKey:operation.uniqueIDString];
                 }
             }
             
-            for (JXHTTPOperation *op in removedArray) {
-                if (![op isKindOfClass:[JXHTTPOperation class]])
+            for (JXHTTPOperation *operation in removedArray) {
+                if (![operation isKindOfClass:[JXHTTPOperation class]])
                     continue;
                 
-                [op removeObserver:self forKeyPath:@"bytesReceived"];
-                [op removeObserver:self forKeyPath:@"bytesSent"];
-                [op removeObserver:self forKeyPath:@"response.expectedContentLength"];
+                [operation removeObserver:self forKeyPath:@"bytesReceived"];
+                [operation removeObserver:self forKeyPath:@"bytesSent"];
+                [operation removeObserver:self forKeyPath:@"response.expectedContentLength"];
                 
-                if (op.isCancelled) {
+                if (operation.isCancelled) {
                     @synchronized (self) {
-                        [self.bytesReceivedPerOperation removeObjectForKey:op.uniqueIDString];
-                        [self.bytesSentPerOperation removeObjectForKey:op.uniqueIDString];
+                        [self.bytesReceivedPerOperation removeObjectForKey:operation.uniqueIDString];
+                        [self.bytesSentPerOperation removeObjectForKey:operation.uniqueIDString];
                     }
                 }
             }
@@ -140,25 +141,33 @@ bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainT
     }
     
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
-        long long length = [(NSHTTPURLResponse *)[object response] expectedContentLength];
-        
+        JXHTTPOperation *operation = object;
+        long long length = [operation responseExpectedContentLength];
+
         @synchronized (self) {
-            if (length && length != NSURLResponseUnknownLength)
-                self.expectedDownloadBytes += length;
+            if (length && length != NSURLResponseUnknownLength) {
+                NSNumber *expectedDown = [NSNumber numberWithLongLong:length];
+                [self.expectedDownloadBytesPerOperation setObject:expectedDown forKey:operation.uniqueIDString];
+            }
         }
     }
     
     if ([keyPath isEqualToString:@"bytesReceived"]) {
         @synchronized (self) {
-            JXHTTPOperation *op = (JXHTTPOperation *)object;
-            [self.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:op.bytesReceived] forKey:op.uniqueIDString];
+            JXHTTPOperation *operation = (JXHTTPOperation *)object;
+            [self.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:operation.bytesReceived] forKey:operation.uniqueIDString];
             
             long long bytesDownloaded = 0;            
             for (NSString *opID in [self.bytesReceivedPerOperation allKeys]) {
                 bytesDownloaded += [[self.bytesReceivedPerOperation objectForKey:opID] longLongValue];
             }
             
-            self.downloadProgress = [NSNumber numberWithFloat:self.expectedDownloadBytes ? (bytesDownloaded / (float)self.expectedDownloadBytes) : 0.0];
+            long long expectedDownloadBytes = 0;
+            for (NSString *opID in [self.expectedDownloadBytesPerOperation allKeys]) {
+                expectedDownloadBytes += [[self.expectedDownloadBytesPerOperation objectForKey:opID] longLongValue];
+            }
+            
+            self.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0];
         }
         
         [self performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
@@ -166,15 +175,20 @@ bytesReceivedPerOperation, bytesSentPerOperation, performsDelegateMethodsOnMainT
     
     if ([keyPath isEqualToString:@"bytesSent"]) {
         @synchronized (self) {
-            JXHTTPOperation *op = (JXHTTPOperation *)object;
-            [self.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:op.bytesSent] forKey:op.uniqueIDString];
+            JXHTTPOperation *operation = (JXHTTPOperation *)object;
+            [self.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:operation.bytesSent] forKey:operation.uniqueIDString];
             
             long long bytesUploaded = 0;
             for (NSString *opID in [self.bytesSentPerOperation allKeys]) {
                 bytesUploaded += [[self.bytesSentPerOperation objectForKey:opID] longLongValue];
             }
             
-            self.uploadProgress = [NSNumber numberWithFloat:self.expectedUploadBytes ? (bytesUploaded / (float)self.expectedUploadBytes) : 0.0];
+            long long expectedUploadBytes = 0;
+            for (NSString *opID in [self.expectedUploadBytesPerOperation allKeys]) {
+                expectedUploadBytes += [[self.expectedUploadBytesPerOperation objectForKey:opID] longLongValue];
+            }
+            
+            self.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0];
         }
         
         [self performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
