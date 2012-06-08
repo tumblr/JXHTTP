@@ -1,6 +1,8 @@
 #import "JXHTTPOperationQueue.h"
 #import "JXHTTPOperation.h"
 
+static void * JXHTTPOperationQueueKVOContext;
+
 @interface JXHTTPOperationQueue ()
 @property (nonatomic, retain) NSMutableDictionary *bytesReceivedPerOperation;
 @property (nonatomic, retain) NSMutableDictionary *bytesSentPerOperation;
@@ -21,8 +23,8 @@
 
 - (void)dealloc
 {    
-    [self removeObserver:self forKeyPath:@"operationCount"];
-    [self removeObserver:self forKeyPath:@"operations"];
+    [self removeObserver:self forKeyPath:@"operationCount" context:JXHTTPOperationQueueKVOContext];
+    [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueKVOContext];
     
     self.delegate = nil;
     
@@ -39,8 +41,8 @@
     if ((self = [super init])) {
         [self resetProgress];
         
-        [self addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
-        [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)  context:NULL];
+        [self addObserver:self forKeyPath:@"operationCount" options:0 context:JXHTTPOperationQueueKVOContext];
+        [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
     }
     return self;
 }
@@ -91,6 +93,9 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    if (context != JXHTTPOperationQueueKVOContext)
+        return;
+
     if (object == self && [keyPath isEqualToString:@"operationCount"]) {
         @synchronized (self) {
             if (self.operationCount > 0)
@@ -100,6 +105,8 @@
         [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
         
         [self resetProgress];
+        
+        return;
     }
     
     if (object == self && [keyPath isEqualToString:@"operations"]) {
@@ -137,7 +144,9 @@
                     }
                 }
             }
-        }  
+        }
+        
+        return;
     }
     
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
@@ -150,6 +159,8 @@
                 [self.expectedDownloadBytesPerOperation setObject:expectedDown forKey:operation.uniqueIDString];
             }
         }
+        
+        return;
     }
     
     if ([keyPath isEqualToString:@"bytesReceived"]) {
@@ -171,6 +182,8 @@
         }
         
         [self performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+        
+        return;
     }
     
     if ([keyPath isEqualToString:@"bytesSent"]) {
@@ -192,6 +205,8 @@
         }
         
         [self performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+        
+        return;
     }
 }
 
