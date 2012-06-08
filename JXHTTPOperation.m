@@ -1,6 +1,7 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
 
+static void * JXHTTPOperationKVOContext;
 static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
@@ -20,7 +21,7 @@ static NSInteger operationCount = 0;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"responseDataFilePath"];
+    [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
     
     [requestBody release];
     [downloadProgress release];
@@ -41,7 +42,7 @@ static NSInteger operationCount = 0;
         self.responseDataFilePath = nil;
         self.userObject = nil;
 
-        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:NULL];
+        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
     }
     return self;
 }
@@ -95,8 +96,11 @@ static NSInteger operationCount = 0;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-
+    if (context != JXHTTPOperationKVOContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+    
     if (object == self && [keyPath isEqualToString:@"responseDataFilePath"]) {
         if (self.isCancelled || self.isExecuting || self.isFinished)
             return;
@@ -106,6 +110,8 @@ static NSInteger operationCount = 0;
         } else {
             self.outputStream = [NSOutputStream outputStreamToMemory];
         }
+        
+        return;
     }
 }
 

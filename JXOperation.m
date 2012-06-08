@@ -1,5 +1,7 @@
 #import "JXOperation.h"
 
+static void * JXOperationKVOContext;
+
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
@@ -15,9 +17,9 @@
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"continuesInAppBackground"];
-    [self removeObserver:self forKeyPath:@"isCancelled"];
-    [self removeObserver:self forKeyPath:@"isFinished"];
+    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationKVOContext];
+    [self removeObserver:self forKeyPath:@"isCancelled" context:JXOperationKVOContext];
+    [self removeObserver:self forKeyPath:@"isFinished" context:JXOperationKVOContext];
     
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
@@ -34,9 +36,9 @@
         self.continuesInAppBackground = NO;
         self.backgroundTaskID = UIBackgroundTaskInvalid;
         
-        [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:NULL];
-        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:NULL];
-        [self addObserver:self forKeyPath:@"isFinished" options:0 context:NULL];
+        [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationKVOContext];
+        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXOperationKVOContext];
+        [self addObserver:self forKeyPath:@"isFinished" options:0 context:JXOperationKVOContext];
     }
     return self;
 }
@@ -102,6 +104,9 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    if (context != JXOperationKVOContext)
+        return;
+    
     if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
         if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid && !self.isCancelled) {
             UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
@@ -113,6 +118,8 @@
             [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
             self.backgroundTaskID = UIBackgroundTaskInvalid;
         }
+        
+        return;
     }
     
     if (object == self && ([keyPath isEqualToString:@"isFinished"] || [keyPath isEqualToString:@"isCancelled"])) {
@@ -120,6 +127,8 @@
             [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
             self.backgroundTaskID = UIBackgroundTaskInvalid;
         }
+        
+        return;
     }
 }
 
