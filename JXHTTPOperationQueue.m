@@ -119,10 +119,10 @@ static void * JXHTTPOperationQueueKVOContext;
                 if (![operation isKindOfClass:[JXHTTPOperation class]])
                     continue;
                 
-                [operation addObserver:self forKeyPath:@"bytesReceived" options:0 context:NULL];
-                [operation addObserver:self forKeyPath:@"bytesSent" options:0 context:NULL];
-                [operation addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:NULL];
-
+                [operation addObserver:self forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
+                [operation addObserver:self forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
+                [operation addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:JXHTTPOperationQueueKVOContext];
+                
                 @synchronized (self) {
                     NSNumber *expectedUp = [NSNumber numberWithLongLong:operation.requestBody.httpContentLength];
                     [self.expectedUploadBytesPerOperation setObject:expectedUp forKey:operation.uniqueIDString];
@@ -133,9 +133,9 @@ static void * JXHTTPOperationQueueKVOContext;
                 if (![operation isKindOfClass:[JXHTTPOperation class]])
                     continue;
                 
-                [operation removeObserver:self forKeyPath:@"bytesReceived"];
-                [operation removeObserver:self forKeyPath:@"bytesSent"];
-                [operation removeObserver:self forKeyPath:@"response.expectedContentLength"];
+                [operation removeObserver:self forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
+                [operation removeObserver:self forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
+                [operation removeObserver:self forKeyPath:@"response.expectedContentLength" context:JXHTTPOperationQueueKVOContext];
                 
                 if (operation.isCancelled) {
                     @synchronized (self) {
