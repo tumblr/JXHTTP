@@ -1,5 +1,7 @@
 #import "JXURLConnectionOperation.h"
 
+static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
+
 @interface JXURLConnectionOperation ()
 @property (retain) NSURLConnection *connection;
 @property (retain) NSMutableURLRequest *request;
@@ -18,6 +20,8 @@
 
 - (void)dealloc
 {
+    [self removeObserver:self forKeyPath:@"isCancelled" context:JXURLConnectionKVOContext];
+    
     [connection release];
     [request release];
     [response release];
@@ -27,12 +31,21 @@
     [super dealloc];
 }
 
+- (id)init
+{
+    if ((self = [super init])) {
+        self.bytesReceived = 0;
+        self.bytesSent = 0;
+        
+        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXURLConnectionKVOContext];
+    }
+    return self;
+}
+
 - (id)initWithURL:(NSURL *)url
 {
     if ((self = [self init])) {
         self.request = [NSMutableURLRequest requestWithURL:url];
-        self.bytesReceived = 0;
-        self.bytesSent = 0;
     }
     return self;
 }
@@ -68,6 +81,22 @@
     [self.outputStream close];
     
     [super finish];
+}
+
+#pragma mark -
+#pragma mark <NSKeyValueObserving>
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context != JXURLConnectionKVOContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+    
+    if (object == self && [keyPath isEqualToString:@"isCancelled"]) {
+        [self finish];
+        return;
+    }
 }
 
 #pragma mark -

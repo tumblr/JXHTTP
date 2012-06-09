@@ -1,6 +1,6 @@
 #import "JXOperation.h"
 
-static void * JXOperationKVOContext;
+static void * JXOperationKVOContext = &JXOperationKVOContext;
 
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
@@ -23,7 +23,7 @@ static void * JXOperationKVOContext;
     
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-    
+
     [super dealloc];
 }
 

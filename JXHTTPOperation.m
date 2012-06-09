@@ -1,7 +1,7 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
 
-static void * JXHTTPOperationKVOContext;
+static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
