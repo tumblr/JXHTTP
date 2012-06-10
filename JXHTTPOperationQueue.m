@@ -1,7 +1,7 @@
 #import "JXHTTPOperationQueue.h"
 #import "JXHTTPOperation.h"
 
-static void * JXHTTPOperationQueueKVOContext;
+static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
 
 @interface JXHTTPOperationQueue ()
 @property (nonatomic, retain) NSMutableDictionary *bytesReceivedPerOperation;
@@ -16,7 +16,7 @@ static void * JXHTTPOperationQueueKVOContext;
 @implementation JXHTTPOperationQueue
 
 @synthesize downloadProgress, uploadProgress, delegate, bytesReceivedPerOperation, bytesSentPerOperation,
-            performsDelegateMethodsOnMainThread, expectedDownloadBytesPerOperation, expectedUploadBytesPerOperation;
+performsDelegateMethodsOnMainThread, expectedDownloadBytesPerOperation, expectedUploadBytesPerOperation;
 
 #pragma mark -
 #pragma mark Initialization
@@ -39,9 +39,7 @@ static void * JXHTTPOperationQueueKVOContext;
 - (id)init
 {
     if ((self = [super init])) {
-        [self resetProgress];
-        
-        [self addObserver:self forKeyPath:@"operationCount" options:0 context:JXHTTPOperationQueueKVOContext];
+        [self addObserver:self forKeyPath:@"operationCount" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
     }
     return self;
@@ -95,16 +93,16 @@ static void * JXHTTPOperationQueueKVOContext;
 {
     if (context != JXHTTPOperationQueueKVOContext)
         return;
-
+    
     if (object == self && [keyPath isEqualToString:@"operationCount"]) {
-        @synchronized (self) {
-            if (self.operationCount > 0)
-                return;
+        NSNumber *newCount = [change objectForKey:NSKeyValueChangeNewKey];
+        NSNumber *oldCount = [change objectForKey:NSKeyValueChangeOldKey];
+        
+        if ([oldCount integerValue] < 1 && [newCount integerValue] > 1) {
+            [self resetProgress];
+        } else if ([oldCount integerValue] > 1 && [newCount integerValue] < 1) {
+            [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
         }
-        
-        [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
-        
-        [self resetProgress];
         
         return;
     }
@@ -152,7 +150,7 @@ static void * JXHTTPOperationQueueKVOContext;
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
         JXHTTPOperation *operation = object;
         long long length = [operation responseExpectedContentLength];
-
+        
         @synchronized (self) {
             if (length && length != NSURLResponseUnknownLength) {
                 NSNumber *expectedDown = [NSNumber numberWithLongLong:length];
