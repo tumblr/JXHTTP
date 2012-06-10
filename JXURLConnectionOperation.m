@@ -34,8 +34,8 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
 - (id)init
 {
     if ((self = [super init])) {
-        self.bytesReceived = 0;
-        self.bytesSent = 0;
+        self.bytesReceived = 0LL;
+        self.bytesSent = 0LL;
         
         [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXURLConnectionKVOContext];
     }

@@ -69,7 +69,7 @@ typedef enum {
 
 - (long long)dataLength
 {
-    long long length = 0;
+    long long length = 0LL;
     length += [self.preData length];
     length += [self contentLength];
     length += [self.postData length];
@@ -78,7 +78,7 @@ typedef enum {
 
 - (long long)contentLength
 {
-    long long length = 0;
+    long long length = 0LL;
     
     if (self.multipartType == JXHTTPMultipartData) {
         length += [self.contentData length];
@@ -159,7 +159,7 @@ typedef enum {
 @implementation JXHTTPMultipartBody
 
 @synthesize partsArray, boundaryString, finalBoundaryData, httpContentType, httpInputStream, httpOutputStream,
-bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
+            bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
 
 #pragma mark -
 #pragma mark Initialization
@@ -223,13 +223,13 @@ bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
     if (httpContentLength != NSURLResponseUnknownLength)
         return httpContentLength;
     
-    long long newLength = 0;
+    long long newLength = 0LL;
     
     for (JXHTTPMultipartPart *part in self.partsArray) {
         newLength += [part dataLength];
     }
     
-    if (newLength > 0)
+    if (newLength > 0LL)
         newLength += [self.finalBoundaryData length];
     
     self.httpContentLength = newLength;
@@ -257,7 +257,7 @@ bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
 {
     self.bodyDataBuffer = [NSMutableData dataWithCapacity:self.streamBufferLength];    
     self.httpContentLength = NSURLResponseUnknownLength;
-    self.bytesWritten = 0;
+    self.bytesWritten = 0LL;
     
     self.httpOutputStream.delegate = nil;
     [self.httpOutputStream close];

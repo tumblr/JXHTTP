@@ -36,8 +36,8 @@ static NSInteger operationCount = 0;
 - (id)init
 {
     if ((self = [super init])) {
-        self.downloadProgress = [NSNumber numberWithFloat:0.0];
-        self.uploadProgress = [NSNumber numberWithFloat:0.0];
+        self.downloadProgress = [NSNumber numberWithFloat:0.0f];
+        self.uploadProgress = [NSNumber numberWithFloat:0.0f];
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.responseDataFilePath = nil;
         self.userObject = nil;
@@ -140,7 +140,7 @@ static NSInteger operationCount = 0;
             [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
         
         long long expectedLength = [self.requestBody httpContentLength];
-        if (expectedLength > 0 && expectedLength != NSURLResponseUnknownLength)
+        if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
 
@@ -192,7 +192,7 @@ static NSInteger operationCount = 0;
         return;
     
     long long bytesExpected = [self.response expectedContentLength];
-    if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
+    if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
         self.downloadProgress = [NSNumber numberWithFloat:(self.bytesReceived / (float)bytesExpected)];
     
     [self performDelegateMethod:@selector(httpOperationDidReceiveData:)];
@@ -205,11 +205,11 @@ static NSInteger operationCount = 0;
         return;
     }
     
-    if ([self.downloadProgress floatValue] != 1.0)
-        self.downloadProgress = [NSNumber numberWithFloat:1.0];
+    if ([self.downloadProgress floatValue] != 1.0f)
+        self.downloadProgress = [NSNumber numberWithFloat:1.0f];
     
-    if ([self.uploadProgress floatValue] != 1.0)
-        self.uploadProgress = [NSNumber numberWithFloat:1.0];
+    if ([self.uploadProgress floatValue] != 1.0f)
+        self.uploadProgress = [NSNumber numberWithFloat:1.0f];
 
     [super connectionDidFinishLoading:connection];
 }
@@ -222,7 +222,7 @@ static NSInteger operationCount = 0;
         return;
 
     long long bytesExpected = [self.requestBody httpContentLength];
-    if (bytesExpected > 0 && bytesExpected != NSURLResponseUnknownLength)
+    if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
         self.uploadProgress = [NSNumber numberWithFloat:(self.bytesSent / (float)bytesExpected)];
     
     [self performDelegateMethod:@selector(httpOperationDidSendData:)];
