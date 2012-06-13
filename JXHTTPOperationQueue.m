@@ -98,9 +98,9 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
         NSNumber *newCount = [change objectForKey:NSKeyValueChangeNewKey];
         NSNumber *oldCount = [change objectForKey:NSKeyValueChangeOldKey];
         
-        if ([oldCount integerValue] < 1 && [newCount integerValue] > 1) {
+        if ([oldCount integerValue] < 1 && [newCount integerValue] >= 1) {
             [self resetProgress];
-        } else if ([oldCount integerValue] > 1 && [newCount integerValue] < 1) {
+        } else if ([oldCount integerValue] >= 1 && [newCount integerValue] < 1) {
             [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
         }
         
