@@ -59,7 +59,9 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
         [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
         return;
     }
-    
+
+    self.didStart = YES;
+
     [self willChangeValueForKey:@"isExecuting"];
     self.isExecuting = YES;
     [self didChangeValueForKey:@"isExecuting"];
