@@ -5,12 +5,13 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+@property (assign) BOOL didStart;
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 @end
 
 @implementation JXOperation
 
-@synthesize isExecuting, isFinished, startsOnMainThread, continuesInAppBackground, backgroundTaskID;
+@synthesize isExecuting, isFinished, startsOnMainThread, continuesInAppBackground, backgroundTaskID, didStart;
 
 #pragma mark -
 #pragma mark Initialization
@@ -23,7 +24,7 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
     
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-
+    
     [super dealloc];
 }
 
@@ -32,6 +33,7 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
     if ((self = [super init])) {
         self.isExecuting = NO;
         self.isFinished = NO;
+        self.didStart = NO;
         self.startsOnMainThread = NO;
         self.continuesInAppBackground = NO;
         self.backgroundTaskID = UIBackgroundTaskInvalid;
@@ -57,7 +59,7 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
         [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
         return;
     }
-
+    
     [self willChangeValueForKey:@"isExecuting"];
     self.isExecuting = YES;
     [self didChangeValueForKey:@"isExecuting"];
@@ -81,6 +83,9 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 
 - (void)finish
 {
+    if (!self.didStart)
+        return;
+    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     

@@ -2,6 +2,7 @@
 
 @property (assign, readonly) BOOL isExecuting;
 @property (assign, readonly) BOOL isFinished;
+@property (assign, readonly) BOOL didStart;
 @property (assign) BOOL startsOnMainThread;
 @property (assign) BOOL continuesInAppBackground;
 
