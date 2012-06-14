@@ -93,7 +93,7 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
         return;
     }
     
-    if (object == self && [keyPath isEqualToString:@"isCancelled"]) {
+    if (object == self && [keyPath isEqualToString:@"isCancelled"] && self.isCancelled) {
         [self finish];
         return;
     }
