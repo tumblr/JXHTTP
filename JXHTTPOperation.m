@@ -8,13 +8,16 @@ static NSInteger operationCount = 0;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueIDString;
+@property (assign) BOOL incremented;
+@property (assign) BOOL decremented;
 - (void)incrementOperationCount;
 - (void)decrementOperationCount;
 @end
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, uniqueIDString, userObject;
+@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath,
+uniqueIDString, userObject, incremented, decremented;
 
 #pragma mark -
 #pragma mark Initialization
@@ -29,7 +32,7 @@ static NSInteger operationCount = 0;
     [responseDataFilePath release];
     [uniqueIDString release];
     [userObject release];
-
+    
     [super dealloc];
 }
 
@@ -41,7 +44,9 @@ static NSInteger operationCount = 0;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.responseDataFilePath = nil;
         self.userObject = nil;
-
+        self.incremented = NO;
+        self.decremented = NO;
+        
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
     }
     return self;
@@ -65,7 +70,7 @@ static NSInteger operationCount = 0;
 {
     if (self.isCancelled)
         return;
-
+    
     if (self.performsDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
@@ -83,12 +88,22 @@ static NSInteger operationCount = 0;
 
 - (void)incrementOperationCount
 {
+    if (self.incremented)
+        return;
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(++operationCount > 0)];
+    
+    self.incremented = YES;
 }
 
 - (void)decrementOperationCount
 {
+    if (self.decremented)
+        return;
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(--operationCount > 0)];
+    
+    self.decremented = YES;
 }
 
 #pragma mark -
@@ -121,21 +136,21 @@ static NSInteger operationCount = 0;
 - (void)main
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
-
+    
     [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
     
     if (self.requestBody && !self.isCancelled) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
         if (inputStream)
             self.request.HTTPBodyStream = inputStream;
-
+        
         if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
             [self.request setHTTPMethod:@"POST"];        
         
         NSString *contentType = [self.requestBody httpContentType];
         if (![contentType length])
             contentType = @"application/octet-stream";
-
+        
         if (![self.request valueForHTTPHeaderField:@"Content-Type"])
             [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
         
@@ -143,7 +158,7 @@ static NSInteger operationCount = 0;
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
-
+    
     [super main];
 }
 
@@ -152,7 +167,7 @@ static NSInteger operationCount = 0;
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
     
     [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:NO];
-
+    
     [super finish];
 }
 
@@ -162,7 +177,7 @@ static NSInteger operationCount = 0;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
     [super connection:connection didFailWithError:connectionError];
-
+    
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
 
@@ -210,7 +225,7 @@ static NSInteger operationCount = 0;
     
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = [NSNumber numberWithFloat:1.0f];
-
+    
     [super connectionDidFinishLoading:connection];
 }
 
@@ -220,7 +235,7 @@ static NSInteger operationCount = 0;
     
     if (self.isCancelled)
         return;
-
+    
     long long bytesExpected = [self.requestBody httpContentLength];
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
         self.uploadProgress = [NSNumber numberWithFloat:(self.bytesSent / (float)bytesExpected)];
@@ -236,7 +251,7 @@ static NSInteger operationCount = 0;
     }
     
     [self performDelegateMethod:@selector(httpOperationWillNeedNewBodyStream:)];
-
+    
     return [self.requestBody httpInputStream];
 }
 
