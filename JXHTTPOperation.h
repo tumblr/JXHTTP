@@ -7,6 +7,7 @@
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
+@property (assign) BOOL updatesNetworkActivityIndicator;
 @property (copy) NSString *responseDataFilePath;
 @property (retain) id userObject;
 

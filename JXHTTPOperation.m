@@ -8,8 +8,8 @@ static NSInteger operationCount = 0;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueIDString;
-@property (assign) BOOL incremented;
-@property (assign) BOOL decremented;
+@property (assign) BOOL didIncrementOperationCount;
+@property (assign) BOOL didDecrementOperationCount;
 - (void)incrementOperationCount;
 - (void)decrementOperationCount;
 @end
@@ -17,7 +17,7 @@ static NSInteger operationCount = 0;
 @implementation JXHTTPOperation
 
 @synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath,
-uniqueIDString, userObject, incremented, decremented;
+uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCount, updatesNetworkActivityIndicator;
 
 #pragma mark -
 #pragma mark Initialization
@@ -25,6 +25,8 @@ uniqueIDString, userObject, incremented, decremented;
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
+    
+    [self decrementOperationCount];
     
     [requestBody release];
     [downloadProgress release];
@@ -44,8 +46,9 @@ uniqueIDString, userObject, incremented, decremented;
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.responseDataFilePath = nil;
         self.userObject = nil;
-        self.incremented = NO;
-        self.decremented = NO;
+        self.didIncrementOperationCount = NO;
+        self.didDecrementOperationCount = NO;
+        self.updatesNetworkActivityIndicator = YES;
         
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
     }
@@ -88,22 +91,32 @@ uniqueIDString, userObject, incremented, decremented;
 
 - (void)incrementOperationCount
 {
-    if (self.incremented)
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:YES];
+        return;
+    }
+    
+    if (self.didIncrementOperationCount || !self.updatesNetworkActivityIndicator)
         return;
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(++operationCount > 0)];
     
-    self.incremented = YES;
+    self.didIncrementOperationCount = YES;
 }
 
 - (void)decrementOperationCount
 {
-    if (self.decremented)
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:YES];
+        return;
+    }
+    
+    if (self.didDecrementOperationCount || !self.updatesNetworkActivityIndicator || !self.didIncrementOperationCount)
         return;
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(--operationCount > 0)];
     
-    self.decremented = YES;
+    self.didDecrementOperationCount = YES;
 }
 
 #pragma mark -
@@ -137,7 +150,7 @@ uniqueIDString, userObject, incremented, decremented;
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
     
-    [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
+    [self incrementOperationCount];
     
     if (self.requestBody && !self.isCancelled) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
@@ -166,7 +179,7 @@ uniqueIDString, userObject, incremented, decremented;
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
     
-    [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:NO];
+    [self decrementOperationCount];
     
     [super finish];
 }
