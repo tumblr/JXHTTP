@@ -9,9 +9,10 @@
 {
     if (![string length])
         return nil;
-
-    static CFStringRef const charsToEscape = CFSTR("!$&'()*+,/:;=?@-._~");
-    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, charsToEscape, kCFStringEncodingUTF8);
+    
+    static CFStringRef const charsToEscape = CFSTR("!$&'()*+,/:;=?@");
+    static CFStringRef const charsToLeave = CFSTR("-._~");
+    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)self, charsToLeave, charsToEscape, kCFStringEncodingUTF8);
     NSString *resultString = [NSString stringWithString:(NSString *)escapedString];
     CFRelease(escapedString);
     return resultString;
@@ -29,9 +30,9 @@
 {
     if (![dictionary count])
         return nil;
-
+    
     NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:[dictionary count]];
-
+    
     NSArray *sortedKeys = [[dictionary allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     for (NSString *key in sortedKeys) {
         [self encodeObject:[dictionary objectForKey:key] withKey:key andSubKey:nil intoArray:arguments];
