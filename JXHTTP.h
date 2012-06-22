@@ -36,5 +36,6 @@ SOFTWARE.
 #import "JXHTTPOperationQueueDelegate.h"
 #import "JXHTTPRequestBody.h"
 #import "JXOperation.h"
+#import "JXOperationQueue.h"
 #import "JXURLConnectionOperation.h"
 #import "JXURLEncoding.h"
