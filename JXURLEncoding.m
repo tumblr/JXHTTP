@@ -10,9 +10,9 @@
     if (![string length])
         return nil;
     
-    static CFStringRef const charsToEscape = CFSTR("!$&'()*+,/:;=?@");
-    static CFStringRef const charsToLeave = CFSTR("-._~");
-    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)self, charsToLeave, charsToEscape, kCFStringEncodingUTF8);
+    static CFStringRef const charsToEscape = CFSTR(":/?#[]@!$&'()*+,;="); // RFC 3986 reserved
+    static CFStringRef const charsToLeave = CFSTR("-._~"); // RFC 3986 unreserved
+    CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, charsToLeave, charsToEscape, kCFStringEncodingUTF8);
     NSString *resultString = [NSString stringWithString:(NSString *)escapedString];
     CFRelease(escapedString);
     return resultString;
