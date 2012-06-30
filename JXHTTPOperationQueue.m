@@ -103,8 +103,7 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
     }
     
     if (object == self && [keyPath isEqualToString:@"operations"]) {
-        NSNumber *changeKind = [change objectForKey:NSKeyValueChangeKindKey];
-        if ([changeKind unsignedIntegerValue] == NSKeyValueChangeSetting) {
+        if ([[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue] == NSKeyValueChangeSetting) {
             NSArray *insertedArray = [change objectForKey:NSKeyValueChangeNewKey];
             NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
             
