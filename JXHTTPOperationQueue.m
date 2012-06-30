@@ -45,6 +45,18 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
     return self;
 }
 
++ (id)sharedQueue
+{
+    static id sharedQueue;
+    static dispatch_once_t predicate;
+    
+    dispatch_once(&predicate, ^{
+        sharedQueue = [[self alloc] init];
+    });
+    
+    return sharedQueue;
+}
+
 #pragma mark -
 #pragma mark Private Methods
 
