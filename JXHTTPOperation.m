@@ -208,6 +208,7 @@ static NSInteger operationCount = 0;
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     self.authenticationChallenge = challenge;
+
     SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
     BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
     
