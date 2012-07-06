@@ -5,6 +5,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
+@property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueIDString;
@@ -16,8 +17,8 @@ static NSInteger operationCount = 0;
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath,
-uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCount, updatesNetworkActivityIndicator;
+@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, credential, useCredentialStorage,
+            authenticationChallenge, uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCount, updatesNetworkActivityIndicator;
 
 #pragma mark -
 #pragma mark Initialization
@@ -28,12 +29,14 @@ uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCou
     
     [self decrementOperationCount];
     
+    [authenticationChallenge release];
     [requestBody release];
     [downloadProgress release];
     [uploadProgress release];
     [responseDataFilePath release];
     [uniqueIDString release];
     [userObject release];
+    [credential release];
     
     [super dealloc];
 }
@@ -44,8 +47,11 @@ uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCou
         self.downloadProgress = [NSNumber numberWithFloat:0.0f];
         self.uploadProgress = [NSNumber numberWithFloat:0.0f];
         self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
+        self.authenticationChallenge = nil;
         self.responseDataFilePath = nil;
+        self.credential = nil;
         self.userObject = nil;
+        self.useCredentialStorage = YES;
         self.didIncrementOperationCount = NO;
         self.didDecrementOperationCount = NO;
         self.updatesNetworkActivityIndicator = YES;
@@ -71,7 +77,7 @@ uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCou
 
 - (void)performDelegateMethod:(SEL)selector
 {
-    if (self.isCancelled)
+    if (self.isCancelled || !self.delegate)
         return;
     
     if (self.performsDelegateMethodsOnMainThread) {
@@ -194,10 +200,28 @@ uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCou
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
 
-/*
- - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection;
- - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
- */
+- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
+{
+    return self.useCredentialStorage;
+}
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    self.authenticationChallenge = challenge;
+    SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
+    BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
+    
+    if (self.isCancelled || (!delegateRespondsToMethod && !self.credential)) {
+        [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
+        return;
+    }
+    
+    if (delegateRespondsToMethod) {
+        [self performDelegateMethod:delegateMethodSelector];
+    } else {
+        [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
+    }
+}
 
 #pragma mark -
 #pragma mark <NSURLConnectionDataDelegate>

@@ -9,8 +9,11 @@
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (assign) BOOL updatesNetworkActivityIndicator;
 @property (copy) NSString *responseDataFilePath;
+@property (retain) NSURLCredential *credential;
+@property (assign) BOOL useCredentialStorage;
 @property (retain) id userObject;
 
+@property (retain, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain, readonly) NSString *uniqueIDString;
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;

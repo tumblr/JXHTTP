@@ -4,6 +4,7 @@
 @optional
 - (void)httpOperationWillStart:(JXHTTPOperation *)operation;
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation;
+- (void)httpOperationWillSendRequestForAuthenticationChallenge:(JXHTTPOperation *)operation;
 - (void)httpOperationDidReceiveResponse:(JXHTTPOperation *)operation;
 - (void)httpOperationDidReceiveData:(JXHTTPOperation *)operation;
 - (void)httpOperationDidSendData:(JXHTTPOperation *)operation;
