@@ -2,6 +2,22 @@
 #import "JXHTTPOperationDelegate.h"
 #import "JXHTTPRequestBody.h"
 
+/**
+################################################################################
+ Builds on the barebones `JXURLConnectionOperation` by adding the following:
+ 
+ - Delegate methods via the <JXHTTPOperationDelegate> protocol.
+ 
+ - A system for allowing any object to provide request body data via the
+   <JXHTTPRequestBody> protocol and `NSInputStream`.
+ 
+ - Network activity indicator management (status bar spinner).
+ 
+ - Easy authorization with an `NSURLCredential` object.
+ 
+ - Upload and download progress tracking with KVO notifications.
+ */
+
 @interface JXHTTPOperation : JXURLConnectionOperation
 
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;

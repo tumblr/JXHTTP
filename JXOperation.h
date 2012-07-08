@@ -53,8 +53,7 @@
  Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to cause the
  operation to continue running when the application enters the background. The 
  operation will relinquish the task identifier when it has finished or been
- cancelled. Setting this property to `NO` while the operation is running in the
- background may cause it to end prematurely and without warning.
+ cancelled and allow the application to terminate.
  */
 @property (assign) BOOL continuesInAppBackground;
 
@@ -69,14 +68,14 @@
 /// @name Starting and Finishing
 
 /**
- Starts the operation and blocks the current thread until it has finished. Not
- guaranteed to run on the same thread.
+ Starts the operation and blocks the calling thread until it has finished. The
+ operation is not guaranteed to run on the same thread as the caller.
  */
 - (void)startAndWaitUntilFinished;
 
 /**
  Ends the operation. Subclasses must eventually call this method to cause the
- operation to finish.
+ operation to finish (typically at the end of their main method).
  */
 - (void)finish;
 
