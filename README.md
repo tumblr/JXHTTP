@@ -2,7 +2,7 @@
 
 ## Examples ##
 
-`#import "JXHTTP.h"` before you do anything.
+`#import "JXHTTP.h"` before you do anything else.
 
 ### Asynchronous ###
 
@@ -24,12 +24,11 @@ JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.
 NSLog(@"%@", op.responseString);
 ```
 
-## Docs ##
+## Documentation ##
 
-To generate the HTML docs using [appledoc](http://gentlebytes.com/appledoc/):
+Generate HTML docs with [appledoc](http://gentlebytes.com/appledoc/) from the project root:
 
 ```sh
-cd jxhttp
 appledoc \
 	--project-name JXHTTP \
 	--project-company "Justin Ouellette" \
@@ -39,7 +38,7 @@ appledoc \
 	--clean-output \
 	--explicit-crossref \
 	--no-repeat-first-par \
-	--output ~/Desktop/jxhttp_docs \
+	--output "~/Desktop/JXHTTP docs" \
 	.
 ```
 
