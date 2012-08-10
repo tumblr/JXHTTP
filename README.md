@@ -1,13 +1,27 @@
-# Instructions #
+# JXHTTP #
+
+## Example ##
 
 ```objective-c
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "JXHTTP.h"
-```
-# Docs #	
 
-To generate the HTML docs using [appledoc](https://github.com/tomaz/appledoc):
+int main(int argc, char *argv[]) {
+	__block JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+    op.completionBlock = ^{
+        NSLog(@"%@", op.responseString);
+    };
+    
+    [[JXHTTPOperationQueue sharedQueue] addOperation:op];
+}
+```
+## Docs ##
+
+To generate the HTML docs using [appledoc](http://gentlebytes.com/appledoc/):
 
 ```sh
+cd jxhttp
 appledoc \
 	--project-name JXHTTP \
 	--project-company "Justin Ouellette" \
@@ -21,6 +35,6 @@ appledoc \
 	.
 ```
 
-# License #
+## License ##
 
 MIT License, see [JXHTTP.h](https://github.com/jstn/JXHTTP/blob/master/JXHTTP.h)
