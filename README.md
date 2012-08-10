@@ -1,8 +1,12 @@
 # JXHTTP #
 
+## iOS networking framework ##
+
+See [jxhttp.justinouellette.com](http://jxhttp.justinouellette.com) for more details.
+
 ## Examples ##
 
-`#import "JXHTTP.h"` before you do anything else.
+`#import "JXHTTP.h"` or you're gonna have a bad time.
 
 ### Asynchronous ###
 
