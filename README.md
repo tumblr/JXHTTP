@@ -1,21 +1,29 @@
 # JXHTTP #
 
-## Example ##
+## Examples ##
+
+`#import "JXHTTP.h"` before you do anything.
+
+### Asynchronous ###
 
 ```objective-c
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "JXHTTP.h"
+__block JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+op.completionBlock = ^{
+    NSLog(@"%@", op.responseString);
+};
 
-int main(int argc, char *argv[]) {
-	__block JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
-    op.completionBlock = ^{
-        NSLog(@"%@", op.responseString);
-    };
-    
-    [[JXHTTPOperationQueue sharedQueue] addOperation:op];
-}
+[[JXHTTPOperationQueue sharedQueue] addOperation:op];
 ```
+
+### Synchronous ###
+
+```objective-c
+JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+[op startAndWaitUntilFinished];
+
+NSLog(@"%@", op.responseString);
+```
+
 ## Docs ##
 
 To generate the HTML docs using [appledoc](http://gentlebytes.com/appledoc/):
