@@ -143,7 +143,7 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
     
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
         JXHTTPOperation *operation = object;
-        long long length = [operation responseExpectedContentLength];
+        long long length = [operation.response responseExpectedContentLength];
         
         @synchronized (self) {
             if (length && length != NSURLResponseUnknownLength) {
