@@ -1,5 +1,6 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
+#import <UIKit/UIKit.h>
 
 static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 static NSInteger operationCount = 0;
