@@ -17,12 +17,6 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 
 @implementation JXOperation
 
-@synthesize isExecuting, isFinished, startsOnMainThread, didStart;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-@synthesize continuesInAppBackground, backgroundTaskID;
-#endif
-
 #pragma mark -
 #pragma mark Initialization
 

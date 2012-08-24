@@ -13,8 +13,6 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
 
 @implementation JXURLConnectionOperation
 
-@synthesize connection, request, response, error, bytesReceived, bytesSent, outputStream;
-
 #pragma mark -
 #pragma mark Initialization
 
@@ -22,11 +20,11 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
 {
     [self removeObserver:self forKeyPath:@"isCancelled" context:JXURLConnectionKVOContext];
     
-    [connection release];
-    [request release];
-    [response release];
-    [error release];
-    [outputStream release];
+    [_connection release];
+    [_request release];
+    [_response release];
+    [_error release];
+    [_outputStream release];
 
     [super dealloc];
 }

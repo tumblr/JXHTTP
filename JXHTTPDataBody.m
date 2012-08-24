@@ -2,14 +2,12 @@
 
 @implementation JXHTTPDataBody
 
-@synthesize data, httpContentType;
-
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    [data release];
+    [_data release];
 
     [super dealloc];
 }

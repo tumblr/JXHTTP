@@ -3,20 +3,16 @@
 
 @interface JXHTTPFormEncodedBody ()
 @property (nonatomic, retain) NSMutableDictionary *dictionary;
-- (id)initWithDictionary:(NSDictionary *)dict;
-- (NSData *)requestData;
 @end
 
 @implementation JXHTTPFormEncodedBody
-
-@synthesize dictionary;
 
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    [dictionary release];
+    [_dictionary release];
     
     [super dealloc];
 }

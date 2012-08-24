@@ -16,19 +16,10 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL didIncrementOperationCount;
 @property (assign) BOOL didDecrementOperationCount;
-- (void)incrementOperationCount;
-- (void)decrementOperationCount;
 #endif
 @end
 
 @implementation JXHTTPOperation
-
-@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, credential,
-            useCredentialStorage, authenticationChallenge, uniqueIDString, userObject;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-@synthesize updatesNetworkActivityIndicator, didIncrementOperationCount, didDecrementOperationCount;
-#endif
 
 #pragma mark -
 #pragma mark Initialization
@@ -41,14 +32,14 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [self decrementOperationCount];
     #endif
     
-    [authenticationChallenge release];
-    [requestBody release];
-    [downloadProgress release];
-    [uploadProgress release];
-    [responseDataFilePath release];
-    [uniqueIDString release];
-    [userObject release];
-    [credential release];
+    [_authenticationChallenge release];
+    [_requestBody release];
+    [_downloadProgress release];
+    [_uploadProgress release];
+    [_responseDataFilePath release];
+    [_uniqueIDString release];
+    [_userObject release];
+    [_credential release];
     
     [super dealloc];
 }

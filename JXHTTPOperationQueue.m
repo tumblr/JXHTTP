@@ -15,9 +15,6 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
 
 @implementation JXHTTPOperationQueue
 
-@synthesize downloadProgress, uploadProgress, delegate, bytesReceivedPerOperation, bytesSentPerOperation,
-            performsDelegateMethodsOnMainThread, expectedDownloadBytesPerOperation, expectedUploadBytesPerOperation;
-
 #pragma mark -
 #pragma mark Initialization
 
@@ -28,10 +25,10 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
     
     self.delegate = nil;
     
-    [downloadProgress release];
-    [uploadProgress release];
-    [bytesReceivedPerOperation release];
-    [bytesSentPerOperation release];
+    [_downloadProgress release];
+    [_uploadProgress release];
+    [_bytesReceivedPerOperation release];
+    [_bytesSentPerOperation release];
     
     [super dealloc];
 }

@@ -2,14 +2,12 @@
 
 @implementation JXHTTPFileBody
 
-@synthesize filePath, httpContentType;
-
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    [filePath release];
+    [_filePath release];
     
     [super dealloc];
 }

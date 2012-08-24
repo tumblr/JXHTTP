@@ -6,14 +6,12 @@
 
 @implementation JXHTTPJSONBody
 
-@synthesize requestData;
-
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    [requestData release];
+    [_requestData release];
     
     [super dealloc];
 }

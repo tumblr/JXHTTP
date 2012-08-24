@@ -15,14 +15,12 @@ typedef enum {
 
 @implementation JXHTTPMultipartPart
 
-@synthesize multipartType, key, preData, contentData, postData;
-
 - (void)dealloc
 {
-    [key release];
-    [preData release];
-    [contentData release];
-    [postData release];
+    [_key release];
+    [_preData release];
+    [_contentData release];
+    [_postData release];
     
     [super dealloc];
 }
@@ -158,24 +156,21 @@ typedef enum {
 
 @implementation JXHTTPMultipartBody
 
-@synthesize partsArray, boundaryString, finalBoundaryData, httpContentType, httpInputStream, httpOutputStream,
-            bodyDataBuffer, httpContentLength, bytesWritten, streamBufferLength;
-
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    self.httpOutputStream.delegate = nil;    
+    self.httpOutputStream.delegate = nil;
     [self.httpOutputStream close];
     
-    [partsArray release];    
-    [boundaryString release];
-    [finalBoundaryData release];
-    [httpContentType release];
-    [httpInputStream release];
-    [httpOutputStream release];
-    [bodyDataBuffer release];
+    [_partsArray release];
+    [_boundaryString release];
+    [_finalBoundaryData release];
+    [_httpContentType release];
+    [_httpInputStream release];
+    [_httpOutputStream release];
+    [_bodyDataBuffer release];
     
     [super dealloc];
 }
@@ -220,8 +215,8 @@ typedef enum {
 
 - (long long)httpContentLength
 {
-    if (httpContentLength != NSURLResponseUnknownLength)
-        return httpContentLength;
+    if (_httpContentLength != NSURLResponseUnknownLength)
+        return _httpContentLength;
     
     long long newLength = 0LL;
     
@@ -234,7 +229,7 @@ typedef enum {
     
     self.httpContentLength = newLength;
     
-    return httpContentLength;
+    return _httpContentLength;
 }
 
 #pragma mark -
