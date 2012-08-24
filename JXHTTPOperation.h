@@ -23,11 +23,14 @@
 @property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
-@property (assign) BOOL updatesNetworkActivityIndicator;
 @property (copy) NSString *responseDataFilePath;
 @property (retain) NSURLCredential *credential;
 @property (assign) BOOL useCredentialStorage;
 @property (retain) id userObject;
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+@property (assign) BOOL updatesNetworkActivityIndicator;
+#endif
 
 @property (retain, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain, readonly) NSString *uniqueIDString;

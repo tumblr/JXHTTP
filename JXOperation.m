@@ -1,5 +1,8 @@
 #import "JXOperation.h"
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
+#endif
 
 static void * JXOperationKVOContext = &JXOperationKVOContext;
 
@@ -7,12 +10,18 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
 @property (assign) BOOL didStart;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
+#endif
 @end
 
 @implementation JXOperation
 
-@synthesize isExecuting, isFinished, startsOnMainThread, continuesInAppBackground, backgroundTaskID, didStart;
+@synthesize isExecuting, isFinished, startsOnMainThread, didStart;
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+@synthesize continuesInAppBackground, backgroundTaskID;
+#endif
 
 #pragma mark -
 #pragma mark Initialization
@@ -22,9 +31,11 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
     [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationKVOContext];
     [self removeObserver:self forKeyPath:@"isCancelled" context:JXOperationKVOContext];
     [self removeObserver:self forKeyPath:@"isFinished" context:JXOperationKVOContext];
-    
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+    #endif
     
     [super dealloc];
 }
@@ -36,8 +47,11 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
         self.isFinished = NO;
         self.didStart = NO;
         self.startsOnMainThread = NO;
+
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
         self.continuesInAppBackground = NO;
         self.backgroundTaskID = UIBackgroundTaskInvalid;
+        #endif
         
         [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationKVOContext];
         [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXOperationKVOContext];
@@ -114,6 +128,8 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 {
     if (context != JXOperationKVOContext)
         return;
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     
     if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
         if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid && !self.isCancelled) {
@@ -138,6 +154,8 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
         
         return;
     }
+
+    #endif
 }
 
 @end

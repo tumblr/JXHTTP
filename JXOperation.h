@@ -53,9 +53,11 @@
  Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to cause the
  operation to continue running when the application enters the background. The 
  operation will relinquish the task identifier when it has finished or been
- cancelled and allow the application to terminate.
+ cancelled and allow the application to terminate.  Only available on iOS.
  */
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) BOOL continuesInAppBackground;
+#endif
 
 /// @name Initialization
 

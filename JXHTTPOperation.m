@@ -1,25 +1,34 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
+static NSInteger operationCount = 0;
+#endif
 
 static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
-static NSInteger operationCount = 0;
 
 @interface JXHTTPOperation ()
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueIDString;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL didIncrementOperationCount;
 @property (assign) BOOL didDecrementOperationCount;
 - (void)incrementOperationCount;
 - (void)decrementOperationCount;
+#endif
 @end
 
 @implementation JXHTTPOperation
 
-@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, credential, useCredentialStorage,
-            authenticationChallenge, uniqueIDString, userObject, didIncrementOperationCount, didDecrementOperationCount, updatesNetworkActivityIndicator;
+@synthesize delegate, performsDelegateMethodsOnMainThread, requestBody, downloadProgress, uploadProgress, responseDataFilePath, credential,
+            useCredentialStorage, authenticationChallenge, uniqueIDString, userObject;
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+@synthesize updatesNetworkActivityIndicator, didIncrementOperationCount, didDecrementOperationCount;
+#endif
 
 #pragma mark -
 #pragma mark Initialization
@@ -27,8 +36,10 @@ static NSInteger operationCount = 0;
 - (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
-    
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self decrementOperationCount];
+    #endif
     
     [authenticationChallenge release];
     [requestBody release];
@@ -53,9 +64,12 @@ static NSInteger operationCount = 0;
         self.credential = nil;
         self.userObject = nil;
         self.useCredentialStorage = YES;
+
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
         self.didIncrementOperationCount = NO;
         self.didDecrementOperationCount = NO;
         self.updatesNetworkActivityIndicator = YES;
+        #endif
         
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
     }
@@ -96,6 +110,7 @@ static NSInteger operationCount = 0;
     }
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 - (void)incrementOperationCount
 {
     if (![NSThread isMainThread]) {
@@ -105,9 +120,10 @@ static NSInteger operationCount = 0;
     
     if (self.didIncrementOperationCount || !self.updatesNetworkActivityIndicator)
         return;
+
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(++operationCount > 0)];
-    
+
     self.didIncrementOperationCount = YES;
 }
 
@@ -120,11 +136,13 @@ static NSInteger operationCount = 0;
     
     if (self.didDecrementOperationCount || !self.updatesNetworkActivityIndicator || !self.didIncrementOperationCount)
         return;
+
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(--operationCount > 0)];
     
     self.didDecrementOperationCount = YES;
 }
+#endif
 
 #pragma mark -
 #pragma mark <NSKeyValueObserving>
@@ -156,8 +174,10 @@ static NSInteger operationCount = 0;
 - (void)main
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
-    
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self incrementOperationCount];
+    #endif
     
     if (self.requestBody && !self.isCancelled) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
@@ -185,8 +205,10 @@ static NSInteger operationCount = 0;
 - (void)finish
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
-    
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self decrementOperationCount];
+    #endif
     
     [super finish];
 }
