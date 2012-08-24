@@ -1,4 +1,5 @@
 #import "JXOperation.h"
+#import <UIKit/UIKit.h>
 
 static void * JXOperationKVOContext = &JXOperationKVOContext;
 
