@@ -105,7 +105,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)incrementOperationCount
 {
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
         return;
     }
     
@@ -121,7 +121,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)decrementOperationCount
 {
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:NO];
         return;
     }
     
