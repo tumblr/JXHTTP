@@ -75,11 +75,10 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
 {
     NSString *string = urlString;
-    
-    if (parameters) {
+
+    if (parameters)
         string = [string stringByAppendingFormat:@"?%@", [JXURLEncoding encodedDictionary:parameters]];
-    }
-    
+
     return [self withURLString:string];
 }
 
