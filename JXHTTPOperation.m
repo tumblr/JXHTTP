@@ -104,34 +104,36 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 - (void)incrementOperationCount
 {
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(incrementOperationCount) withObject:nil waitUntilDone:NO];
-        return;
+    @synchronized(self) {
+        if (self.didIncrementOperationCount || !self.updatesNetworkActivityIndicator)
+            return;
+
+        [[self class] toggleNetworkActivityVisible:[NSNumber numberWithBool:(++operationCount > 0)]];
+
+        self.didIncrementOperationCount = YES;
     }
-    
-    if (self.didIncrementOperationCount || !self.updatesNetworkActivityIndicator)
-        return;
-
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(++operationCount > 0)];
-
-    self.didIncrementOperationCount = YES;
 }
 
 - (void)decrementOperationCount
 {
+    @synchronized(self) {
+        if (self.didDecrementOperationCount || !self.updatesNetworkActivityIndicator || !self.didIncrementOperationCount)
+            return;
+
+        [[self class] toggleNetworkActivityVisible:[NSNumber numberWithBool:(--operationCount > 0)]];
+        
+        self.didDecrementOperationCount = YES;
+    }
+}
+
++ (void)toggleNetworkActivityVisible:(NSNumber *)visibility
+{
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(decrementOperationCount) withObject:nil waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(toggleNetworkActivityVisible:) withObject:visibility waitUntilDone:NO];
         return;
     }
-    
-    if (self.didDecrementOperationCount || !self.updatesNetworkActivityIndicator || !self.didIncrementOperationCount)
-        return;
 
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(--operationCount > 0)];
-    
-    self.didDecrementOperationCount = YES;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[visibility boolValue]];
 }
 #endif
 
