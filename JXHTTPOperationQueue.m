@@ -100,49 +100,47 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
     }
     
     if (object == self && [keyPath isEqualToString:@"operations"]) {
-        if ([[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue] == NSKeyValueChangeSetting) {
-            NSArray *insertedArray = [change objectForKey:NSKeyValueChangeNewKey];
-            NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
-            
-            for (JXHTTPOperation *operation in insertedArray) {
-                if (![operation isKindOfClass:[JXHTTPOperation class]])
-                    continue;
+        @synchronized(self) {
+            if ([[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue] == NSKeyValueChangeSetting) {
+                NSArray *insertedArray = [change objectForKey:NSKeyValueChangeNewKey];
+                NSArray *removedArray = [change objectForKey:NSKeyValueChangeOldKey];
                 
-                [operation addObserver:self forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
-                [operation addObserver:self forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
-                [operation addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:JXHTTPOperationQueueKVOContext];
-                
-                @synchronized (self) {
+                for (JXHTTPOperation *operation in insertedArray) {
+                    if (![operation isKindOfClass:[JXHTTPOperation class]])
+                        continue;
+                    
+                    [operation addObserver:self forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
+                    [operation addObserver:self forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
+                    [operation addObserver:self forKeyPath:@"response.expectedContentLength" options:0 context:JXHTTPOperationQueueKVOContext];
+
                     NSNumber *expectedUp = [NSNumber numberWithLongLong:operation.requestBody.httpContentLength];
                     [self.expectedUploadBytesPerOperation setObject:expectedUp forKey:operation.uniqueIDString];
                 }
-            }
-            
-            for (JXHTTPOperation *operation in removedArray) {
-                if (![operation isKindOfClass:[JXHTTPOperation class]])
-                    continue;
                 
-                [operation removeObserver:self forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
-                [operation removeObserver:self forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
-                [operation removeObserver:self forKeyPath:@"response.expectedContentLength" context:JXHTTPOperationQueueKVOContext];
-                
-                if (operation.isCancelled) {
-                    @synchronized (self) {
+                for (JXHTTPOperation *operation in removedArray) {
+                    if (![operation isKindOfClass:[JXHTTPOperation class]])
+                        continue;
+
+                    [operation removeObserver:self forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
+                    [operation removeObserver:self forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
+                    [operation removeObserver:self forKeyPath:@"response.expectedContentLength" context:JXHTTPOperationQueueKVOContext];
+                    
+                    if (operation.isCancelled) {
                         [self.bytesReceivedPerOperation removeObjectForKey:operation.uniqueIDString];
                         [self.bytesSentPerOperation removeObjectForKey:operation.uniqueIDString];
                     }
                 }
             }
         }
-        
+
         return;
     }
     
     if ([keyPath isEqualToString:@"response.expectedContentLength"]) {
-        JXHTTPOperation *operation = object;
-        long long length = [operation.response expectedContentLength];
-        
         @synchronized (self) {
+            JXHTTPOperation *operation = object;
+            long long length = [operation.response expectedContentLength];
+            
             if (length && length != NSURLResponseUnknownLength) {
                 NSNumber *expectedDown = [NSNumber numberWithLongLong:length];
                 [self.expectedDownloadBytesPerOperation setObject:expectedDown forKey:operation.uniqueIDString];
