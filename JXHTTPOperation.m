@@ -232,7 +232,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
     BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
     
-    if (self.isCancelled || (!delegateRespondsToMethod && !self.credential)) {
+    if (self.isCancelled) {
         [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
         return;
     }
