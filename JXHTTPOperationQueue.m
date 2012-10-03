@@ -48,7 +48,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if ((self = [super init])) {
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
 
-        self.progressMathQueue = dispatch_queue_create("com.justinouellette.JXHTTPOperationQueue.progressMath", DISPATCH_QUEUE_CONCURRENT);
+        self.progressMathQueue = dispatch_queue_create("JXHTTP.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
 
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
     }
