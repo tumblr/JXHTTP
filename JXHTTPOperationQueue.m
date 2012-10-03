@@ -103,8 +103,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         NSArray *newOperationsArray = [change objectForKey:NSKeyValueChangeNewKey];
         NSArray *oldOperationsArray = [change objectForKey:NSKeyValueChangeOldKey];
 
-        NSMutableArray *insertedArray = [[NSMutableArray alloc] initWithArray:newOperationsArray];
+        NSMutableArray *insertedArray = [NSMutableArray arrayWithArray:newOperationsArray];
         [insertedArray removeObjectsInArray:oldOperationsArray];
+        
+        NSMutableArray *removedArray = [NSMutableArray arrayWithArray:oldOperationsArray];
+        [removedArray removeObjectsInArray:newOperationsArray];
         
         for (JXHTTPOperation *operation in insertedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
@@ -121,11 +124,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             [operation addObserver:blockSelf forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
             [operation addObserver:blockSelf forKeyPath:@"response" options:0 context:JXHTTPOperationQueueKVOContext];
         }
-        
-        [insertedArray release];
-        
-        NSMutableArray *removedArray = [[NSMutableArray alloc] initWithArray:oldOperationsArray];
-        [removedArray removeObjectsInArray:newOperationsArray];
 
         for (JXHTTPOperation *operation in removedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
@@ -144,8 +142,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 });
             }
         }
-        
-        [removedArray release];
         
         NSUInteger newCount = [newOperationsArray count];
         NSUInteger oldCount = [oldOperationsArray count];
@@ -184,11 +180,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         dispatch_barrier_async(self.progressMathQueue, ^{
             [blockSelf.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:bytesReceived] forKey:uniqueIDString];
         });
-        
-        __block long long bytesDownloaded = 0LL;
-        __block long long expectedDownloadBytes = 0LL;
 
         dispatch_sync(self.progressMathQueue, ^{
+            long long bytesDownloaded = 0LL;
+            long long expectedDownloadBytes = 0LL;
+            
             for (NSString *opID in [blockSelf.bytesReceivedPerOperation allKeys]) {
                 bytesDownloaded += [[blockSelf.bytesReceivedPerOperation objectForKey:opID] longLongValue];
             }
@@ -196,11 +192,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             for (NSString *opID in [blockSelf.expectedDownloadBytesPerOperation allKeys]) {
                 expectedDownloadBytes += [[blockSelf.expectedDownloadBytesPerOperation objectForKey:opID] longLongValue];
             }
-        });
-
-        dispatch_barrier_async(self.progressMathQueue, ^{
-            blockSelf.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0f];
-            [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+            
+            dispatch_barrier_async(self.progressMathQueue, ^{
+                blockSelf.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0f];
+                [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+            });
         });
         
         return;
@@ -215,11 +211,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         dispatch_barrier_async(self.progressMathQueue, ^{
             [blockSelf.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:bytesSent] forKey:uniqueIDString];
         });
-        
-        __block long long bytesUploaded = 0LL;
-        __block long long expectedUploadBytes = 0LL;
 
         dispatch_sync(self.progressMathQueue, ^{
+            long long bytesUploaded = 0LL;
+            long long expectedUploadBytes = 0LL;
+
             for (NSString *opID in [blockSelf.bytesSentPerOperation allKeys]) {
                 bytesUploaded += [[blockSelf.bytesSentPerOperation objectForKey:opID] longLongValue];
             }
@@ -227,11 +223,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             for (NSString *opID in [blockSelf.expectedUploadBytesPerOperation allKeys]) {
                 expectedUploadBytes += [[blockSelf.expectedUploadBytesPerOperation objectForKey:opID] longLongValue];
             }
-        });
-
-        dispatch_barrier_async(self.progressMathQueue, ^{
-            blockSelf.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0f];
-            [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+            
+            dispatch_barrier_async(self.progressMathQueue, ^{
+                blockSelf.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0f];
+                [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
+            });
         });
         
         return;
