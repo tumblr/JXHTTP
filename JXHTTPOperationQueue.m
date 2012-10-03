@@ -11,6 +11,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (nonatomic, retain) NSMutableDictionary *expectedUploadBytesPerOperation;
 @property (nonatomic, retain) NSNumber *downloadProgress;
 @property (nonatomic, retain) NSNumber *uploadProgress;
+@property (nonatomic, retain) NSNumber *bytesDownloaded;
+@property (nonatomic, retain) NSNumber *bytesUploaded;
+@property (nonatomic, retain) NSNumber *expectedUploadBytes;
+@property (nonatomic, retain) NSNumber *expectedDownloadBytes;
 @property (nonatomic, assign) dispatch_queue_t progressMathQueue;
 @end
 
@@ -21,14 +25,18 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)dealloc
 {
-    self.delegate = nil;
-
     [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueKVOContext];
+
+    self.delegate = nil;
 
     [_downloadProgress release];
     [_uploadProgress release];
     [_bytesReceivedPerOperation release];
     [_bytesSentPerOperation release];
+    [_bytesDownloaded release];
+    [_bytesUploaded release];
+    [_expectedDownloadBytes release];
+    [_expectedUploadBytes release];
 
     dispatch_release(_progressMathQueue);
     
@@ -38,6 +46,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 - (id)init
 {
     if ((self = [super init])) {
+        self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
+
         self.progressMathQueue = dispatch_queue_create("com.justinouellette.JXHTTPOperationQueue.progressMath", DISPATCH_QUEUE_CONCURRENT);
 
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
@@ -52,7 +62,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     
     dispatch_once(&predicate, ^{
         sharedQueue = [[self alloc] init];
-        [sharedQueue setMaxConcurrentOperationCount:JXHTTPOperationQueueDefaultMaxOps];
     });
     
     return sharedQueue;
@@ -83,6 +92,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         blockSelf.expectedUploadBytesPerOperation = [NSMutableDictionary dictionary];
         blockSelf.downloadProgress = [NSNumber numberWithFloat:0.0f];
         blockSelf.uploadProgress = [NSNumber numberWithFloat:0.0f];
+        blockSelf.bytesDownloaded = [NSNumber numberWithLongLong:0LL];
+        blockSelf.bytesUploaded = [NSNumber numberWithLongLong:0LL];
+        blockSelf.expectedDownloadBytes = [NSNumber numberWithLongLong:0LL];
+        blockSelf.expectedUploadBytes = [NSNumber numberWithLongLong:0LL];
     });
 }
 
@@ -194,6 +207,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             }
             
             dispatch_barrier_async(blockSelf.progressMathQueue, ^{
+                blockSelf.bytesDownloaded = [NSNumber numberWithLongLong:bytesDownloaded];
+                blockSelf.expectedDownloadBytes = [NSNumber numberWithLongLong:expectedDownloadBytes];
                 blockSelf.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0f];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
@@ -225,6 +240,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             }
             
             dispatch_barrier_async(blockSelf.progressMathQueue, ^{
+                blockSelf.bytesUploaded = [NSNumber numberWithLongLong:bytesUploaded];
+                blockSelf.expectedUploadBytes = [NSNumber numberWithLongLong:expectedUploadBytes];
                 blockSelf.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0f];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
