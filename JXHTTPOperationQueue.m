@@ -53,7 +53,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
         self.observationQueue = dispatch_queue_create("JXHTTPOperationQueue.observationQueue", DISPATCH_QUEUE_CONCURRENT);
 
-        //self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
+        self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
         self.observedOperationIDs = [NSMutableSet set];
         [self resetProgress];
 
