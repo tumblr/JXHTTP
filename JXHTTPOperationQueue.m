@@ -9,6 +9,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (nonatomic, retain) NSMutableDictionary *bytesSentPerOperation;
 @property (nonatomic, retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
 @property (nonatomic, retain) NSMutableDictionary *expectedUploadBytesPerOperation;
+@property (nonatomic, retain) NSMutableSet *observedOperationIDs;
 @property (nonatomic, retain) NSNumber *downloadProgress;
 @property (nonatomic, retain) NSNumber *uploadProgress;
 @property (nonatomic, retain) NSNumber *bytesDownloaded;
@@ -16,6 +17,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (nonatomic, retain) NSNumber *expectedUploadBytes;
 @property (nonatomic, retain) NSNumber *expectedDownloadBytes;
 @property (nonatomic, assign) dispatch_queue_t progressMathQueue;
+@property (nonatomic, assign) dispatch_queue_t observationQueue;
 @end
 
 @implementation JXHTTPOperationQueue
@@ -37,8 +39,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     [_bytesUploaded release];
     [_expectedDownloadBytes release];
     [_expectedUploadBytes release];
+    [_observedOperationIDs release];
 
     dispatch_release(_progressMathQueue);
+    dispatch_release(_observationQueue);
     
     [super dealloc];
 }
@@ -46,9 +50,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 - (id)init
 {
     if ((self = [super init])) {
-        self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
+        self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
+        self.observationQueue = dispatch_queue_create("JXHTTPOperationQueue.observationQueue", DISPATCH_QUEUE_CONCURRENT);
 
-        self.progressMathQueue = dispatch_queue_create("JXHTTP.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
+        self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
+        self.observedOperationIDs = [NSMutableSet set];
+        [self resetProgress];
 
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
     }
@@ -104,8 +111,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != JXHTTPOperationQueueKVOContext)
+    if (context != JXHTTPOperationQueueKVOContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
+    }
 
     __block JXHTTPOperationQueue *blockSelf = self;
     
@@ -117,9 +126,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         NSArray *oldOperationsArray = [change objectForKey:NSKeyValueChangeOldKey];
 
         NSMutableArray *insertedArray = [NSMutableArray arrayWithArray:newOperationsArray];
-        [insertedArray removeObjectsInArray:oldOperationsArray];
-        
         NSMutableArray *removedArray = [NSMutableArray arrayWithArray:oldOperationsArray];
+        
+        [insertedArray removeObjectsInArray:oldOperationsArray];
         [removedArray removeObjectsInArray:newOperationsArray];
         
         for (JXHTTPOperation *operation in insertedArray) {
@@ -133,22 +142,56 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 [blockSelf.expectedUploadBytesPerOperation setObject:expectedUp forKey:uniqueIDString];
             });
 
-            [operation addObserver:blockSelf forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
-            [operation addObserver:blockSelf forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
-            [operation addObserver:blockSelf forKeyPath:@"response" options:0 context:JXHTTPOperationQueueKVOContext];
+            dispatch_sync(self.observationQueue, ^{
+                NSString *observedIDString = nil;
+
+                for (NSString *uniqueID in blockSelf.observedOperationIDs) {
+                    if ([uniqueID isEqualToString:uniqueIDString]) {
+                        observedIDString = uniqueID;
+                        break;
+                    }
+                }
+
+                if (!observedIDString) {
+                    dispatch_barrier_async(blockSelf.observationQueue, ^{
+                        [operation addObserver:blockSelf forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
+                        [operation addObserver:blockSelf forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
+                        [operation addObserver:blockSelf forKeyPath:@"response" options:0 context:JXHTTPOperationQueueKVOContext];
+
+                        [blockSelf.observedOperationIDs addObject:uniqueIDString];
+                    });
+                }
+            });
         }
 
         for (JXHTTPOperation *operation in removedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
                 continue;
 
-            [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
-            [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
-            [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
+            NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+
+            dispatch_sync(self.observationQueue, ^{
+                NSString *observedIDString = nil;
+
+                for (NSString *uniqueID in blockSelf.observedOperationIDs) {
+                    if ([uniqueID isEqualToString:uniqueIDString]) {
+                        observedIDString = uniqueID;
+                        break;
+                    }
+                }
+
+                if (observedIDString) {
+                    dispatch_barrier_async(blockSelf.observationQueue, ^{
+                        [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
+                        [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
+                        [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
+
+                        [blockSelf.observedOperationIDs removeObject:observedIDString];
+                    });
+                }
+            });
 
             if (operation.isCancelled) {
-                NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
-
                 dispatch_barrier_async(self.progressMathQueue, ^{
                     [blockSelf.bytesReceivedPerOperation removeObjectForKey:uniqueIDString];
                     [blockSelf.bytesSentPerOperation removeObjectForKey:uniqueIDString];
@@ -249,6 +292,81 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         
         return;
     }
+}
+
+#pragma mark -
+#pragma mark Accesssors
+
+- (NSNumber *)downloadProgress
+{
+    __block NSNumber *downloadProgress = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_downloadProgress)
+            downloadProgress = [_downloadProgress retain];
+    });
+
+    return [downloadProgress autorelease];
+}
+
+- (NSNumber *)uploadProgress
+{
+    __block NSNumber *uploadProgress = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_uploadProgress)
+            uploadProgress = [_uploadProgress retain];
+    });
+
+    return [uploadProgress autorelease];
+}
+
+- (NSNumber *)bytesDownloaded
+{
+    __block NSNumber *bytesDownloaded = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_bytesDownloaded)
+            bytesDownloaded = [_bytesDownloaded retain];
+    });
+
+    return [bytesDownloaded autorelease];
+}
+
+- (NSNumber *)bytesUploaded
+{
+    __block NSNumber *bytesUploaded = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_bytesUploaded)
+            bytesUploaded = [_bytesUploaded retain];
+    });
+
+    return [bytesUploaded autorelease];
+}
+
+- (NSNumber *)expectedDownloadBytes
+{
+    __block NSNumber *expectedDownloadBytes = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_expectedDownloadBytes)
+            expectedDownloadBytes = [_expectedDownloadBytes retain];
+    });
+
+    return [expectedDownloadBytes autorelease];
+}
+
+- (NSNumber *)expectedUploadBytes
+{
+    __block NSNumber *expectedUploadBytes = nil;
+
+    dispatch_sync(self.progressMathQueue, ^{
+        if (_expectedUploadBytes)
+            expectedUploadBytes = [_expectedUploadBytes retain];
+    });
+
+    return [expectedUploadBytes autorelease];
 }
 
 @end
