@@ -193,7 +193,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 expectedDownloadBytes += [[blockSelf.expectedDownloadBytesPerOperation objectForKey:opID] longLongValue];
             }
             
-            dispatch_barrier_async(self.progressMathQueue, ^{
+            dispatch_barrier_async(blockSelf.progressMathQueue, ^{
                 blockSelf.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0f];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
@@ -224,7 +224,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 expectedUploadBytes += [[blockSelf.expectedUploadBytesPerOperation objectForKey:opID] longLongValue];
             }
             
-            dispatch_barrier_async(self.progressMathQueue, ^{
+            dispatch_barrier_async(blockSelf.progressMathQueue, ^{
                 blockSelf.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0f];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
