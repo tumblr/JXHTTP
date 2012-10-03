@@ -53,7 +53,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
         self.observationQueue = dispatch_queue_create("JXHTTPOperationQueue.observationQueue", DISPATCH_QUEUE_CONCURRENT);
 
-        self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
+        //self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
         self.observedOperationIDs = [NSMutableSet set];
         [self resetProgress];
 
@@ -182,9 +182,13 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
                 if (observedIDString) {
                     dispatch_barrier_async(blockSelf.observationQueue, ^{
-                        [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
-                        [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
-                        [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
+                        @try {
+                            [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
+                            [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
+                            [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
+                        } @catch (NSException *exception) {
+                            NSLog(@"WHAT THE FUCK. // failed trying to remove observers from %@ // uniqueID: %@ // Exception: %@", operation, uniqueIDString, exception);
+                        }
 
                         [blockSelf.observedOperationIDs removeObject:observedIDString];
                     });
