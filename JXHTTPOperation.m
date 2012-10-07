@@ -40,6 +40,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [_uniqueIDString release];
     [_userObject release];
     [_credential release];
+    [_trustedHosts release];
     
     [super dealloc];
 }
@@ -55,6 +56,8 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         self.credential = nil;
         self.userObject = nil;
         self.useCredentialStorage = YES;
+        self.trustedHosts = nil;
+        self.trustAllHosts = NO;
 
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
         self.didIncrementOperationCount = NO;
@@ -239,9 +242,33 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     
     if (delegateRespondsToMethod) {
         [self performDelegateMethod:delegateMethodSelector];
-    } else {
-        [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
+        return;
     }
+    
+    if (!self.credential && self.authenticationChallenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+        BOOL trusted = NO;
+        
+        if (self.trustAllHosts) {
+            trusted = YES;
+        } else if (self.trustedHosts) {
+            for (NSString *host in self.trustedHosts) {
+                if ([host isEqualToString:self.authenticationChallenge.protectionSpace.host]) {
+                    trusted = YES;
+                    break;
+                }
+            }
+        }
+
+        if (trusted)
+            self.credential = [NSURLCredential credentialForTrust:self.authenticationChallenge.protectionSpace.serverTrust];
+    }
+    
+    if (self.credential) {
+        [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
+        return;
+    }
+    
+    [[self.authenticationChallenge sender] continueWithoutCredentialForAuthenticationChallenge:self.authenticationChallenge];
 }
 
 #pragma mark -

@@ -26,6 +26,8 @@
 @property (copy) NSString *responseDataFilePath;
 @property (retain) NSURLCredential *credential;
 @property (assign) BOOL useCredentialStorage;
+@property (copy) NSArray *trustedHosts;
+@property (assign) BOOL trustAllHosts;
 @property (retain) id userObject;
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
