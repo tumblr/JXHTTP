@@ -41,6 +41,8 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [_userObject release];
     [_credential release];
     [_trustedHosts release];
+    [_username release];
+    [_password release];
     
     [super dealloc];
 }
@@ -58,6 +60,8 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         self.useCredentialStorage = YES;
         self.trustedHosts = nil;
         self.trustAllHosts = NO;
+        self.username = nil;
+        self.password = nil;
 
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
         self.didIncrementOperationCount = NO;
@@ -231,19 +235,17 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     self.authenticationChallenge = challenge;
-
-    SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
-    BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
     
     if (self.isCancelled) {
         [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
         return;
     }
+
+    SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
+    BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
     
-    if (delegateRespondsToMethod) {
+    if (delegateRespondsToMethod)
         [self performDelegateMethod:delegateMethodSelector];
-        return;
-    }
     
     if (!self.credential && self.authenticationChallenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
         BOOL trusted = NO;
@@ -259,10 +261,19 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
             }
         }
 
+        if (!trusted) { // try the keychain
+            SecTrustResultType result;
+            SecTrustEvaluate(self.authenticationChallenge.protectionSpace.serverTrust, &result);
+            trusted = result == kSecTrustResultProceed || result == kSecTrustResultConfirm ||  result == kSecTrustResultUnspecified;
+        }
+        
         if (trusted)
             self.credential = [NSURLCredential credentialForTrust:self.authenticationChallenge.protectionSpace.serverTrust];
     }
     
+    if (!self.credential && self.username && self.password)
+        self.credential = [NSURLCredential credentialWithUser:self.username password:self.password persistence:NSURLCredentialPersistenceForSession];
+
     if (self.credential) {
         [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
         return;
