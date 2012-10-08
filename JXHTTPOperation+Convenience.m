@@ -129,7 +129,7 @@
         return nil;
 
     NSError *error = nil;
-    id json = [NSJSONSerialization JSONObjectWithData:[self responseData] options:0 error:&error];
+    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     if (error)
         NSLog(@"%@", error);
     
