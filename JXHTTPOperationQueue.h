@@ -3,16 +3,16 @@
 
 @interface JXHTTPOperationQueue : JXOperationQueue
 
-@property (nonatomic, assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
-@property (nonatomic, assign) BOOL performsDelegateMethodsOnMainThread;
+@property (assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
+@property (assign) BOOL performsDelegateMethodsOnMainThread;
 
-@property (nonatomic, retain, readonly) NSNumber *downloadProgress;
-@property (nonatomic, retain, readonly) NSNumber *uploadProgress;
+@property (retain, readonly) NSNumber *downloadProgress;
+@property (retain, readonly) NSNumber *uploadProgress;
 
-@property (nonatomic, retain, readonly) NSNumber *bytesDownloaded;
-@property (nonatomic, retain, readonly) NSNumber *bytesUploaded;
+@property (retain, readonly) NSNumber *bytesDownloaded;
+@property (retain, readonly) NSNumber *bytesUploaded;
 
-@property (nonatomic, retain, readonly) NSNumber *expectedDownloadBytes;
-@property (nonatomic, retain, readonly) NSNumber *expectedUploadBytes;
+@property (retain, readonly) NSNumber *expectedDownloadBytes;
+@property (retain, readonly) NSNumber *expectedUploadBytes;
 
 @end

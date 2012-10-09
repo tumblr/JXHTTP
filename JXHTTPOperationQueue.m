@@ -5,17 +5,17 @@ static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
 static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 @interface JXHTTPOperationQueue ()
-@property (nonatomic, retain) NSMutableDictionary *bytesReceivedPerOperation;
-@property (nonatomic, retain) NSMutableDictionary *bytesSentPerOperation;
-@property (nonatomic, retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
-@property (nonatomic, retain) NSMutableDictionary *expectedUploadBytesPerOperation;
-@property (nonatomic, retain) NSNumber *downloadProgress;
-@property (nonatomic, retain) NSNumber *uploadProgress;
-@property (nonatomic, retain) NSNumber *bytesDownloaded;
-@property (nonatomic, retain) NSNumber *bytesUploaded;
-@property (nonatomic, retain) NSNumber *expectedUploadBytes;
-@property (nonatomic, retain) NSNumber *expectedDownloadBytes;
-@property (nonatomic, assign) dispatch_queue_t progressMathQueue;
+@property (retain) NSMutableDictionary *bytesReceivedPerOperation;
+@property (retain) NSMutableDictionary *bytesSentPerOperation;
+@property (retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
+@property (retain) NSMutableDictionary *expectedUploadBytesPerOperation;
+@property (retain) NSNumber *downloadProgress;
+@property (retain) NSNumber *uploadProgress;
+@property (retain) NSNumber *bytesDownloaded;
+@property (retain) NSNumber *bytesUploaded;
+@property (retain) NSNumber *expectedUploadBytes;
+@property (retain) NSNumber *expectedDownloadBytes;
+@property (assign) dispatch_queue_t progressMathQueue;
 @end
 
 @implementation JXHTTPOperationQueue
@@ -257,81 +257,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         return;
     }
-}
-
-#pragma mark -
-#pragma mark Accesssors
-
-- (NSNumber *)downloadProgress
-{
-    __block NSNumber *downloadProgress = nil;
-
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_downloadProgress)
-            downloadProgress = [_downloadProgress retain];
-    });
-
-    return [downloadProgress autorelease];
-}
-
-- (NSNumber *)uploadProgress
-{
-    __block NSNumber *uploadProgress = nil;
-
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_uploadProgress)
-            uploadProgress = [_uploadProgress retain];
-    });
-
-    return [uploadProgress autorelease];
-}
-
-- (NSNumber *)bytesDownloaded
-{
-    __block NSNumber *bytesDownloaded = nil;
-
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_bytesDownloaded)
-            bytesDownloaded = [_bytesDownloaded retain];
-    });
-
-    return [bytesDownloaded autorelease];
-}
-
-- (NSNumber *)bytesUploaded
-{
-    __block NSNumber *bytesUploaded = nil;
-
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_bytesUploaded)
-            bytesUploaded = [_bytesUploaded retain];
-    });
-
-    return [bytesUploaded autorelease];
-}
-
-- (NSNumber *)expectedDownloadBytes
-{
-    __block NSNumber *expectedDownloadBytes = nil;
-
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_expectedDownloadBytes)
-            expectedDownloadBytes = [_expectedDownloadBytes retain];
-    });
-    
-    return [expectedDownloadBytes autorelease];
-}
-
-- (NSNumber *)expectedUploadBytes
-{
-    __block NSNumber *expectedUploadBytes = nil;
-    
-    dispatch_sync(self.progressMathQueue, ^{
-        if (_expectedUploadBytes)
-            expectedUploadBytes = [_expectedUploadBytes retain];
-    });
-    
-    return [expectedUploadBytes autorelease];
 }
 
 @end
