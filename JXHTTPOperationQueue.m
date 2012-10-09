@@ -54,8 +54,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
 
-        [self resetProgress];
-
         [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
     }
     return self;
