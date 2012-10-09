@@ -42,6 +42,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     [_uploadProgress release];
     [_uniqueString release];
 
+    [_willStartBlock release];
+    [_didUploadBlock release];
+    [_didDownloadBlock release];
+    [_didMakeProgressBlock release];
+    [_didFinishBlock release];
+
     dispatch_release(_progressMathQueue);
 
     [super dealloc];
@@ -71,11 +77,29 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     return sharedQueue;
 }
 
++ (NSOperationQueue *)sharedBlockQueue
+{
+    static NSOperationQueue *sharedBlockQueue;
+    static dispatch_once_t predicate;
+
+    dispatch_once(&predicate, ^{
+        sharedBlockQueue = [[NSOperationQueue alloc] init];
+        sharedBlockQueue.maxConcurrentOperationCount = 1;
+    });
+
+    return sharedBlockQueue;
+}
+
 #pragma mark -
 #pragma mark Private Methods
 
 - (void)performDelegateMethod:(SEL)selector
 {
+    __block JXHTTPQueueBlock block = [self blockForSelector:selector];
+
+    if (!self.delegate && !block)
+        return;
+    
     if (self.performsDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
@@ -83,6 +107,33 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
     }
+
+    if (!block)
+        return;
+
+    NSOperationQueue *queue = [[self class] sharedBlockQueue];
+
+    if (self.performsBlocksOnMainThread)
+        queue = [NSOperationQueue mainQueue];
+
+    [queue addOperationWithBlock:^{
+        block(self);
+    }];
+}
+
+- (JXHTTPQueueBlock)blockForSelector:(SEL)selector
+{
+    if (selector == @selector(httpOperationQueueWillStart:))
+        return self.willStartBlock;
+    if (selector == @selector(httpOperationQueueDidUpload:))
+        return self.didUploadBlock;
+    if (selector == @selector(httpOperationQueueDidDownload:))
+        return self.didDownloadBlock;
+    if (selector == @selector(httpOperationQueueDidMakeProgress:))
+        return self.didMakeProgressBlock;
+    if (selector == @selector(httpOperationQueueDidFinish:))
+        return self.didFinishBlock;
+    return nil;
 }
 
 - (void)resetProgress
@@ -129,8 +180,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         [insertedArray removeObjectsInArray:oldOperationsArray];
         [removedArray removeObjectsInArray:newOperationsArray];
 
-        if (oldCount < 1 && newCount > 0)
+        if (oldCount < 1 && newCount > 0) {
             [self resetProgress];
+            [self performDelegateMethod:@selector(httpOperationQueueWillStart:)];
+        }
 
         for (JXHTTPOperation *operation in insertedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
@@ -214,6 +267,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 blockSelf.bytesDownloaded = [NSNumber numberWithLongLong:bytesDownloaded];
                 blockSelf.expectedDownloadBytes = [NSNumber numberWithLongLong:expectedDownloadBytes];
                 blockSelf.downloadProgress = [NSNumber numberWithFloat:expectedDownloadBytes ? (bytesDownloaded / (float)expectedDownloadBytes) : 0.0f];
+                [blockSelf performDelegateMethod:@selector(httpOperationQueueDidUpload:)];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
         });
@@ -247,6 +301,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 blockSelf.bytesUploaded = [NSNumber numberWithLongLong:bytesUploaded];
                 blockSelf.expectedUploadBytes = [NSNumber numberWithLongLong:expectedUploadBytes];
                 blockSelf.uploadProgress = [NSNumber numberWithFloat:expectedUploadBytes ? (bytesUploaded / (float)expectedUploadBytes) : 0.0f];
+                [blockSelf performDelegateMethod:@selector(httpOperationQueueDidDownload:)];
                 [blockSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
             });
         });
