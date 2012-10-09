@@ -131,10 +131,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 continue;
 
             NSNumber *expectedUp = [NSNumber numberWithLongLong:operation.requestBody.httpContentLength];
-            NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+            NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
 
             dispatch_barrier_async(self.progressMathQueue, ^{
-                [blockSelf.expectedUploadBytesPerOperation setObject:expectedUp forKey:uniqueIDString];
+                [blockSelf.expectedUploadBytesPerOperation setObject:expectedUp forKey:uniqueString];
             });
 
             [operation addObserver:blockSelf forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
@@ -151,15 +151,15 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
                 [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
             } @catch (NSException *exception) {
-                NSLog(@"JXHTTP: failed trying to remove observers from %@ // uniqueID: %@ // exception: %@", operation, operation.uniqueIDString, exception);
+                NSLog(@"JXHTTP: failed trying to remove observers from %@ // uniqueID: %@ // exception: %@", operation, operation.uniqueString, exception);
             }
 
             if (operation.isCancelled) {
-                NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+                NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
 
                 dispatch_barrier_async(self.progressMathQueue, ^{
-                    [blockSelf.bytesReceivedPerOperation removeObjectForKey:uniqueIDString];
-                    [blockSelf.bytesSentPerOperation removeObjectForKey:uniqueIDString];
+                    [blockSelf.bytesReceivedPerOperation removeObjectForKey:uniqueString];
+                    [blockSelf.bytesSentPerOperation removeObjectForKey:uniqueString];
                 });
             }
         }
@@ -182,10 +182,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         if (length && length != NSURLResponseUnknownLength) {
             NSNumber *expectedDown = [NSNumber numberWithLongLong:length];
-            NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+            NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
 
             dispatch_barrier_async(self.progressMathQueue, ^{
-                [blockSelf.expectedDownloadBytesPerOperation setObject:expectedDown forKey:uniqueIDString];
+                [blockSelf.expectedDownloadBytesPerOperation setObject:expectedDown forKey:uniqueString];
             });
         }
 
@@ -196,10 +196,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         JXHTTPOperation *operation = (JXHTTPOperation *)object;
 
         long long bytesReceived = operation.bytesReceived;
-        NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+        NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
 
         dispatch_barrier_async(self.progressMathQueue, ^{
-            [blockSelf.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:bytesReceived] forKey:uniqueIDString];
+            [blockSelf.bytesReceivedPerOperation setObject:[NSNumber numberWithLongLong:bytesReceived] forKey:uniqueString];
         });
 
         dispatch_sync(self.progressMathQueue, ^{
@@ -229,10 +229,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         JXHTTPOperation *operation = (JXHTTPOperation *)object;
 
         long long bytesSent = operation.bytesSent;
-        NSString *uniqueIDString = [NSString stringWithString:operation.uniqueIDString];
+        NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
 
         dispatch_barrier_async(self.progressMathQueue, ^{
-            [blockSelf.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:bytesSent] forKey:uniqueIDString];
+            [blockSelf.bytesSentPerOperation setObject:[NSNumber numberWithLongLong:bytesSent] forKey:uniqueString];
         });
 
         dispatch_sync(self.progressMathQueue, ^{

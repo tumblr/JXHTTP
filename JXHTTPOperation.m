@@ -13,7 +13,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
-@property (retain) NSString *uniqueIDString;
+@property (retain) NSString *uniqueString;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL didIncrementOperationCount;
 @property (assign) BOOL didDecrementOperationCount;
@@ -38,7 +38,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [_downloadProgress release];
     [_uploadProgress release];
     [_responseDataFilePath release];
-    [_uniqueIDString release];
+    [_uniqueString release];
     [_userObject release];
     [_credential release];
     [_trustedHosts release];
@@ -62,7 +62,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     if ((self = [super init])) {
         self.downloadProgress = [NSNumber numberWithFloat:0.0f];
         self.uploadProgress = [NSNumber numberWithFloat:0.0f];
-        self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
+        self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         
         self.performsDelegateMethodsOnMainThread = NO;
         self.authenticationChallenge = nil;
