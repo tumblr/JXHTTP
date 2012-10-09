@@ -9,6 +9,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (retain) NSMutableDictionary *bytesSentPerOperation;
 @property (retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
 @property (retain) NSMutableDictionary *expectedUploadBytesPerOperation;
+@property (retain) NSString *uniqueString;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSNumber *bytesDownloaded;
@@ -29,14 +30,17 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
     self.delegate = nil;
 
-    [_downloadProgress release];
-    [_uploadProgress release];
     [_bytesReceivedPerOperation release];
     [_bytesSentPerOperation release];
-    [_bytesDownloaded release];
-    [_bytesUploaded release];
+    [_expectedUploadBytesPerOperation release];
+    [_expectedDownloadBytesPerOperation release];
     [_expectedDownloadBytes release];
     [_expectedUploadBytes release];
+    [_bytesDownloaded release];
+    [_bytesUploaded release];
+    [_downloadProgress release];
+    [_uploadProgress release];
+    [_uniqueString release];
 
     dispatch_release(_progressMathQueue);
 
@@ -47,7 +51,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 {
     if ((self = [super init])) {
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
-
+        self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
 
         [self resetProgress];
@@ -119,12 +123,16 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         NSArray *newOperationsArray = [change objectForKey:NSKeyValueChangeNewKey];
         NSArray *oldOperationsArray = [change objectForKey:NSKeyValueChangeOldKey];
+        NSUInteger newCount = [newOperationsArray count];
+        NSUInteger oldCount = [oldOperationsArray count];
 
         NSMutableArray *insertedArray = [NSMutableArray arrayWithArray:newOperationsArray];
         NSMutableArray *removedArray = [NSMutableArray arrayWithArray:oldOperationsArray];
-
         [insertedArray removeObjectsInArray:oldOperationsArray];
         [removedArray removeObjectsInArray:newOperationsArray];
+
+        if (oldCount < 1 && newCount > 0)
+            [self resetProgress];
 
         for (JXHTTPOperation *operation in insertedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
@@ -146,13 +154,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             if (![operation isKindOfClass:[JXHTTPOperation class]])
                 continue;
 
-            @try {
-                [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
-                [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
-                [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
-            } @catch (NSException *exception) {
-                NSLog(@"JXHTTP: failed trying to remove observers from %@ // uniqueID: %@ // exception: %@", operation, operation.uniqueString, exception);
-            }
+            [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
+            [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
+            [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
 
             if (operation.isCancelled) {
                 NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
@@ -164,14 +168,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             }
         }
 
-        NSUInteger newCount = [newOperationsArray count];
-        NSUInteger oldCount = [oldOperationsArray count];
-
-        if (oldCount < 1 && newCount >= 1) {
-            [self resetProgress];
-        } else if (oldCount >= 1 && newCount < 1) {
+        if (oldCount > 0 && newCount < 1)
             [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
-        }
 
         return;
     }

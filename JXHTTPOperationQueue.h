@@ -5,6 +5,7 @@
 
 @property (assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
+@property (retain, readonly) NSString *uniqueString;
 
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
