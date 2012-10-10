@@ -64,6 +64,13 @@
         for (NSString *insideKey in sortedKeys) {
             [self encodeObject:[object objectForKey:insideKey] withKey:objectKey andSubKey:insideKey intoArray:array];
         }
+    } else if ([object isKindOfClass:[NSArray class]]) {
+        for (NSString *arrayObject in (NSArray *)object) {
+            NSString *arrayKey = [NSString stringWithFormat:@"%@[]", objectKey];
+            [self encodeObject:arrayObject withKey:arrayKey andSubKey:nil intoArray:array];
+        }
+    } else if ([object isKindOfClass:[NSNumber class]]) {
+        [array addObject:[NSString stringWithFormat:@"%@=%@", objectKey, [object stringValue]]];
     } else {
         NSString *encodedString = [self encodedString:object];
         [array addObject:[NSString stringWithFormat:@"%@=%@", objectKey, encodedString]];
