@@ -73,7 +73,7 @@ static NSUInteger JXHTTPOperationCount = 0;
         self.username = nil;
         self.password = nil;
 
-        self.performsBlocksOnMainThread = YES;
+        self.performsBlocksOnMainThread = NO;
         self.willStartBlock = nil;
         self.willNeedNewBodyStreamBlock = nil;
         self.willSendRequestForAuthenticationChallengeBlock = nil;
