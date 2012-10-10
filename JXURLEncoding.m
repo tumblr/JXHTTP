@@ -59,7 +59,7 @@
         objectKey = [self encodedString:key];
     }
     
-    if ([object respondsToSelector:@selector(objectForKey:)]) {
+    if ([object isKindOfClass:[NSDictionary class]]) {
         NSArray *sortedKeys = [[object allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         for (NSString *insideKey in sortedKeys) {
             [self encodeObject:[object objectForKey:insideKey] withKey:objectKey andSubKey:insideKey intoArray:array];
