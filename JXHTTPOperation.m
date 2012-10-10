@@ -47,7 +47,7 @@ static NSUInteger JXHTTPOperationCount = 0;
     [_didReceiveResponseBlock release];
     [_didReceiveDataBlock release];
     [_didSendDataBlock release];
-    [_didFinishBlock release];
+    [_didFinishLoadingBlock release];
     [_didFailBlock release];
 
     [super dealloc];
@@ -80,7 +80,7 @@ static NSUInteger JXHTTPOperationCount = 0;
         self.didReceiveResponseBlock = nil;
         self.didReceiveDataBlock = nil;
         self.didSendDataBlock = nil;
-        self.didFinishBlock = nil;
+        self.didFinishLoadingBlock = nil;
         self.didFailBlock = nil;
 
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
@@ -168,7 +168,7 @@ static NSUInteger JXHTTPOperationCount = 0;
     if (selector == @selector(httpOperationDidSendData:))
         return self.didSendDataBlock;
     if (selector == @selector(httpOperationDidFinishLoading:))
-        return self.didFinishBlock;
+        return self.didFinishLoadingBlock;
     if (selector == @selector(httpOperationDidFail:))
         return self.didFailBlock;
     return nil;

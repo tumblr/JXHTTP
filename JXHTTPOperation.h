@@ -40,7 +40,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didReceiveResponseBlock;
 @property (copy) JXHTTPBlock didReceiveDataBlock;
 @property (copy) JXHTTPBlock didSendDataBlock;
-@property (copy) JXHTTPBlock didFinishBlock;
+@property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
 
 /// @name Initialization
