@@ -167,7 +167,7 @@ static NSUInteger JXHTTPOperationCount = 0;
         return self.didReceiveDataBlock;
     if (selector == @selector(httpOperationDidSendData:))
         return self.didSendDataBlock;
-    if (selector == @selector(httpOperationDidFinish:))
+    if (selector == @selector(httpOperationDidFinishLoading:))
         return self.didFinishBlock;
     if (selector == @selector(httpOperationDidFail:))
         return self.didFailBlock;
@@ -285,21 +285,14 @@ static NSUInteger JXHTTPOperationCount = 0;
     [super main];
 }
 
-- (void)finish
-{
-    [self performDelegateMethod:@selector(httpOperationDidFinish:)];
-
-    [self decrementOperationCount];
-
-    [super finish];
-}
-
 #pragma mark -
 #pragma mark <NSURLConnectionDelegate>
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
     [super connection:connection didFailWithError:connectionError];
+
+    [self decrementOperationCount];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
@@ -388,6 +381,10 @@ static NSUInteger JXHTTPOperationCount = 0;
 
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = [NSNumber numberWithFloat:1.0f];
+
+    [self decrementOperationCount];
+
+    [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
 
     [super connectionDidFinishLoading:connection];
 }
