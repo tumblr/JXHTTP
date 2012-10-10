@@ -1,23 +1,21 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
-#import "JXOperationQueue.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 #import <UIKit/UIKit.h>
-static NSInteger operationCount = 0;
 #endif
 
 static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
+static NSUInteger JXHTTPOperationCount = 0;
 
 @interface JXHTTPOperation ()
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueString;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-@property (assign) BOOL didIncrementOperationCount;
-@property (assign) BOOL didDecrementOperationCount;
-#endif
+@property (assign) dispatch_once_t incrementCountPredicate;
+@property (assign) dispatch_once_t decrementCountPredicate;
+@property (assign) BOOL didIncrementCount;
 @end
 
 @implementation JXHTTPOperation
@@ -26,13 +24,11 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 #pragma mark Initialization
 
 - (void)dealloc
-{    
+{
     [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
 
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self decrementOperationCount];
-    #endif
-    
+
     [_authenticationChallenge release];
     [_requestBody release];
     [_downloadProgress release];
@@ -53,7 +49,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [_didSendDataBlock release];
     [_didFinishBlock release];
     [_didFailBlock release];
-    
+
     [super dealloc];
 }
 
@@ -63,12 +59,14 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         self.downloadProgress = [NSNumber numberWithFloat:0.0f];
         self.uploadProgress = [NSNumber numberWithFloat:0.0f];
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
-        
+
         self.performsDelegateMethodsOnMainThread = NO;
+        self.updatesNetworkActivityIndicator = YES;
         self.authenticationChallenge = nil;
         self.responseDataFilePath = nil;
         self.credential = nil;
         self.userObject = nil;
+        self.didIncrementCount = NO;
         self.useCredentialStorage = YES;
         self.trustedHosts = nil;
         self.trustAllHosts = NO;
@@ -85,12 +83,6 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         self.didFinishBlock = nil;
         self.didFailBlock = nil;
 
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-        self.didIncrementOperationCount = NO;
-        self.didDecrementOperationCount = NO;
-        self.updatesNetworkActivityIndicator = YES;
-        #endif
-        
         [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
     }
     return self;
@@ -115,12 +107,12 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 {
     static NSOperationQueue *sharedBlockQueue;
     static dispatch_once_t predicate;
-    
+
     dispatch_once(&predicate, ^{
         sharedBlockQueue = [[NSOperationQueue alloc] init];
         sharedBlockQueue.maxConcurrentOperationCount = 1;
     });
-    
+
     return sharedBlockQueue;
 }
 
@@ -133,26 +125,26 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 
     if (self.isCancelled || !(self.delegate || block))
         return;
-    
+
     if (self.performsDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
-        
+
         if ([self.requestBody respondsToSelector:selector])
             [self.requestBody performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
     } else {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
-        
+
         if ([self.requestBody respondsToSelector:selector])
             [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
     }
-    
+
     if (!block)
         return;
-    
+
     NSOperationQueue *queue = [[self class] sharedBlockQueue];
-    
+
     if (self.performsBlocksOnMainThread)
         queue = [NSOperationQueue mainQueue];
 
@@ -182,41 +174,60 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     return nil;
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
+#pragma mark -
+#pragma mark Operation Count
+
++ (dispatch_queue_t)operationCountQueue
+{
+    static dispatch_queue_t operationCountQueue;
+    static dispatch_once_t predicate;
+
+    dispatch_once(&predicate, ^{
+        operationCountQueue = dispatch_queue_create("JXHTTPOperation.operationCountQueue", DISPATCH_QUEUE_SERIAL);
+    });
+
+    return operationCountQueue;
+}
+
 - (void)incrementOperationCount
 {
-    @synchronized(self) {
-        if (self.didIncrementOperationCount || !self.updatesNetworkActivityIndicator)
-            return;
+    dispatch_once(&_incrementCountPredicate, ^{
+        dispatch_async([JXHTTPOperation operationCountQueue], ^{
+            if (++JXHTTPOperationCount > 0)
+                [JXHTTPOperation toggleNetworkActivityVisible:@YES];
+        });
 
-        [[self class] toggleNetworkActivityVisible:[NSNumber numberWithBool:(++operationCount > 0)]];
-
-        self.didIncrementOperationCount = YES;
-    }
+        self.didIncrementCount = YES;
+    });
 }
 
 - (void)decrementOperationCount
 {
-    @synchronized(self) {
-        if (self.didDecrementOperationCount || !self.updatesNetworkActivityIndicator || !self.didIncrementOperationCount)
-            return;
+    if (!self.didIncrementCount)
+        return;
 
-        [[self class] toggleNetworkActivityVisible:[NSNumber numberWithBool:(--operationCount > 0)]];
-        
-        self.didDecrementOperationCount = YES;
-    }
+    dispatch_once(&_decrementCountPredicate, ^{
+        dispatch_async([JXHTTPOperation operationCountQueue], ^{
+            if (--JXHTTPOperationCount < 1)
+                [JXHTTPOperation toggleNetworkActivityVisible:@NO];
+        });
+    });
 }
 
 + (void)toggleNetworkActivityVisible:(NSNumber *)visibility
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
     if (![NSThread isMainThread]) {
         [self performSelectorOnMainThread:@selector(toggleNetworkActivityVisible:) withObject:visibility waitUntilDone:NO];
         return;
     }
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[visibility boolValue]];
+
+    #endif
 }
-#endif
 
 #pragma mark -
 #pragma mark <NSKeyValueObserving>
@@ -227,17 +238,17 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-    
+
     if (object == self && [keyPath isEqualToString:@"responseDataFilePath"]) {
         if (self.isCancelled || self.isExecuting || self.isFinished)
             return;
-        
+
         if ([self.responseDataFilePath length]) {
             self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:NO];
         } else {
             self.outputStream = [NSOutputStream outputStreamToMemory];
         }
-        
+
         return;
     }
 }
@@ -249,30 +260,28 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 {
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self incrementOperationCount];
-    #endif
-    
+
     if (self.requestBody && !self.isCancelled) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
         if (inputStream)
             self.request.HTTPBodyStream = inputStream;
-        
+
         if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
-            [self.request setHTTPMethod:@"POST"];        
-        
+            [self.request setHTTPMethod:@"POST"];
+
         NSString *contentType = [self.requestBody httpContentType];
         if (![contentType length])
             contentType = @"application/octet-stream";
-        
+
         if (![self.request valueForHTTPHeaderField:@"Content-Type"])
             [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
-        
+
         long long expectedLength = [self.requestBody httpContentLength];
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
-    
+
     [super main];
 }
 
@@ -280,10 +289,8 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 {
     [self performDelegateMethod:@selector(httpOperationDidFinish:)];
 
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
     [self decrementOperationCount];
-    #endif
-    
+
     [super finish];
 }
 
@@ -293,7 +300,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
     [super connection:connection didFailWithError:connectionError];
-    
+
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
 
@@ -305,17 +312,17 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     self.authenticationChallenge = challenge;
-    
+
     if (self.isCancelled) {
         [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
         return;
     }
 
     [self performDelegateMethod:@selector(httpOperationWillSendRequestForAuthenticationChallenge:)];
-    
+
     if (!self.credential && self.authenticationChallenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
         BOOL trusted = NO;
-        
+
         if (self.trustAllHosts) {
             trusted = YES;
         } else if (self.trustedHosts) {
@@ -326,11 +333,11 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
                 }
             }
         }
-        
+
         if (trusted)
             self.credential = [NSURLCredential credentialForTrust:self.authenticationChallenge.protectionSpace.serverTrust];
     }
-    
+
     if (!self.credential && self.username && self.password)
         self.credential = [NSURLCredential credentialWithUser:self.username password:self.password persistence:NSURLCredentialPersistenceForSession];
 
@@ -338,7 +345,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
         return;
     }
-    
+
     [[self.authenticationChallenge sender] continueWithoutCredentialForAuthenticationChallenge:self.authenticationChallenge];
 }
 
@@ -348,24 +355,24 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {
     [super connection:connection didReceiveResponse:urlResponse];
-    
+
     if (self.isCancelled)
         return;
-    
+
     [self performDelegateMethod:@selector(httpOperationDidReceiveResponse:)];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [super connection:connection didReceiveData:data];
-    
+
     if (self.isCancelled)
         return;
-    
+
     long long bytesExpected = [self.response expectedContentLength];
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
         self.downloadProgress = [NSNumber numberWithFloat:(self.bytesReceived / (float)bytesExpected)];
-    
+
     [self performDelegateMethod:@selector(httpOperationDidReceiveData:)];
 }
 
@@ -375,27 +382,27 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         [self finish];
         return;
     }
-    
+
     if ([self.downloadProgress floatValue] != 1.0f)
         self.downloadProgress = [NSNumber numberWithFloat:1.0f];
-    
+
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = [NSNumber numberWithFloat:1.0f];
-    
+
     [super connectionDidFinishLoading:connection];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
-{    
+{
     [super connection:connection didSendBodyData:bytes totalBytesWritten:total totalBytesExpectedToWrite:expected];
-    
+
     if (self.isCancelled)
         return;
-    
+
     long long bytesExpected = [self.requestBody httpContentLength];
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
         self.uploadProgress = [NSNumber numberWithFloat:(self.bytesSent / (float)bytesExpected)];
-    
+
     [self performDelegateMethod:@selector(httpOperationDidSendData:)];
 }
 
@@ -405,15 +412,15 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         [self finish];
         return nil;
     }
-    
+
     [self performDelegateMethod:@selector(httpOperationWillNeedNewBodyStream:)];
-    
+
     return [self.requestBody httpInputStream];
 }
 
 /*
  - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
- - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse; 
+ - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
  */
 
 @end

@@ -29,10 +29,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL updatesNetworkActivityIndicator;
-#endif
 
 /// @name Blocks
 
