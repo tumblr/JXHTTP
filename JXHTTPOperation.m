@@ -396,9 +396,8 @@ static NSUInteger JXHTTPOperationCount = 0;
     if (self.isCancelled)
         return;
 
-    long long bytesExpected = [self.requestBody httpContentLength];
-    if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
-        self.uploadProgress = [NSNumber numberWithFloat:(self.bytesSent / (float)bytesExpected)];
+    if (expected > 0LL && expected != NSURLResponseUnknownLength)
+        self.uploadProgress = @(total / expected);
 
     [self performDelegateMethod:@selector(httpOperationDidSendData:)];
 }
