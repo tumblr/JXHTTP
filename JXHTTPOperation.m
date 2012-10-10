@@ -1,5 +1,6 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
+#import "JXOperationQueue.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
@@ -12,7 +13,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
-@property (retain) NSString *uniqueIDString;
+@property (retain) NSString *uniqueString;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL didIncrementOperationCount;
 @property (assign) BOOL didDecrementOperationCount;
@@ -25,7 +26,7 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 #pragma mark Initialization
 
 - (void)dealloc
-{
+{    
     [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
 
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
@@ -37,9 +38,21 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     [_downloadProgress release];
     [_uploadProgress release];
     [_responseDataFilePath release];
-    [_uniqueIDString release];
+    [_uniqueString release];
     [_userObject release];
     [_credential release];
+    [_trustedHosts release];
+    [_username release];
+    [_password release];
+
+    [_willStartBlock release];
+    [_willNeedNewBodyStreamBlock release];
+    [_willSendRequestForAuthenticationChallengeBlock release];
+    [_didReceiveResponseBlock release];
+    [_didReceiveDataBlock release];
+    [_didSendDataBlock release];
+    [_didFinishBlock release];
+    [_didFailBlock release];
     
     [super dealloc];
 }
@@ -49,12 +62,28 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     if ((self = [super init])) {
         self.downloadProgress = [NSNumber numberWithFloat:0.0f];
         self.uploadProgress = [NSNumber numberWithFloat:0.0f];
-        self.uniqueIDString = [[NSProcessInfo processInfo] globallyUniqueString];
+        self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+        
+        self.performsDelegateMethodsOnMainThread = NO;
         self.authenticationChallenge = nil;
         self.responseDataFilePath = nil;
         self.credential = nil;
         self.userObject = nil;
         self.useCredentialStorage = YES;
+        self.trustedHosts = nil;
+        self.trustAllHosts = NO;
+        self.username = nil;
+        self.password = nil;
+
+        self.performsBlocksOnMainThread = YES;
+        self.willStartBlock = nil;
+        self.willNeedNewBodyStreamBlock = nil;
+        self.willSendRequestForAuthenticationChallengeBlock = nil;
+        self.didReceiveResponseBlock = nil;
+        self.didReceiveDataBlock = nil;
+        self.didSendDataBlock = nil;
+        self.didFinishBlock = nil;
+        self.didFailBlock = nil;
 
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
         self.didIncrementOperationCount = NO;
@@ -82,12 +111,27 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
     return [self withURLString:string];
 }
 
++ (NSOperationQueue *)sharedBlockQueue
+{
+    static NSOperationQueue *sharedBlockQueue;
+    static dispatch_once_t predicate;
+    
+    dispatch_once(&predicate, ^{
+        sharedBlockQueue = [[NSOperationQueue alloc] init];
+        sharedBlockQueue.maxConcurrentOperationCount = 1;
+    });
+    
+    return sharedBlockQueue;
+}
+
 #pragma mark -
 #pragma mark Private Methods
 
 - (void)performDelegateMethod:(SEL)selector
 {
-    if (self.isCancelled || !self.delegate)
+    __block JXHTTPBlock block = [self blockForSelector:selector];
+
+    if (self.isCancelled || !(self.delegate || block))
         return;
     
     if (self.performsDelegateMethodsOnMainThread) {
@@ -103,6 +147,39 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
         if ([self.requestBody respondsToSelector:selector])
             [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
     }
+    
+    if (!block)
+        return;
+    
+    NSOperationQueue *queue = [[self class] sharedBlockQueue];
+    
+    if (self.performsBlocksOnMainThread)
+        queue = [NSOperationQueue mainQueue];
+
+    [queue addOperationWithBlock:^{
+        block(self);
+    }];
+}
+
+- (JXHTTPBlock)blockForSelector:(SEL)selector
+{
+    if (selector == @selector(httpOperationWillStart:))
+        return self.willStartBlock;
+    if (selector == @selector(httpOperationWillNeedNewBodyStream:))
+        return self.willNeedNewBodyStreamBlock;
+    if (selector == @selector(httpOperationWillSendRequestForAuthenticationChallenge:))
+        return self.willSendRequestForAuthenticationChallengeBlock;
+    if (selector == @selector(httpOperationDidReceiveResponse:))
+        return self.didReceiveResponseBlock;
+    if (selector == @selector(httpOperationDidReceiveData:))
+        return self.didReceiveDataBlock;
+    if (selector == @selector(httpOperationDidSendData:))
+        return self.didSendDataBlock;
+    if (selector == @selector(httpOperationDidFinish:))
+        return self.didFinishBlock;
+    if (selector == @selector(httpOperationDidFail:))
+        return self.didFailBlock;
+    return nil;
 }
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
@@ -228,20 +305,41 @@ static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     self.authenticationChallenge = challenge;
-
-    SEL delegateMethodSelector = @selector(httpOperationWillSendRequestForAuthenticationChallenge:);
-    BOOL delegateRespondsToMethod = self.delegate && [self.delegate respondsToSelector:delegateMethodSelector];
     
     if (self.isCancelled) {
         [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
         return;
     }
+
+    [self performDelegateMethod:@selector(httpOperationWillSendRequestForAuthenticationChallenge:)];
     
-    if (delegateRespondsToMethod) {
-        [self performDelegateMethod:delegateMethodSelector];
-    } else {
-        [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
+    if (!self.credential && self.authenticationChallenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+        BOOL trusted = NO;
+        
+        if (self.trustAllHosts) {
+            trusted = YES;
+        } else if (self.trustedHosts) {
+            for (NSString *host in self.trustedHosts) {
+                if ([host isEqualToString:self.authenticationChallenge.protectionSpace.host]) {
+                    trusted = YES;
+                    break;
+                }
+            }
+        }
+        
+        if (trusted)
+            self.credential = [NSURLCredential credentialForTrust:self.authenticationChallenge.protectionSpace.serverTrust];
     }
+    
+    if (!self.credential && self.username && self.password)
+        self.credential = [NSURLCredential credentialWithUser:self.username password:self.password persistence:NSURLCredentialPersistenceForSession];
+
+    if (self.credential) {
+        [[self.authenticationChallenge sender] useCredential:self.credential forAuthenticationChallenge:self.authenticationChallenge];
+        return;
+    }
+    
+    [[self.authenticationChallenge sender] continueWithoutCredentialForAuthenticationChallenge:self.authenticationChallenge];
 }
 
 #pragma mark -
