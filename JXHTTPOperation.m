@@ -56,8 +56,8 @@ static NSUInteger JXHTTPOperationCount = 0;
 - (id)init
 {
     if ((self = [super init])) {
-        self.downloadProgress = [NSNumber numberWithFloat:0.0f];
-        self.uploadProgress = [NSNumber numberWithFloat:0.0f];
+        self.downloadProgress = @0.0f;
+        self.uploadProgress = @0.0f;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
 
         self.performsDelegateMethodsOnMainThread = NO;
@@ -364,7 +364,7 @@ static NSUInteger JXHTTPOperationCount = 0;
 
     long long bytesExpected = [self.response expectedContentLength];
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
-        self.downloadProgress = [NSNumber numberWithFloat:(self.bytesReceived / (float)bytesExpected)];
+        self.downloadProgress = @(self.bytesReceived / (float)bytesExpected);
 
     [self performDelegateMethod:@selector(httpOperationDidReceiveData:)];
 }
@@ -377,10 +377,10 @@ static NSUInteger JXHTTPOperationCount = 0;
     }
 
     if ([self.downloadProgress floatValue] != 1.0f)
-        self.downloadProgress = [NSNumber numberWithFloat:1.0f];
+        self.downloadProgress = @1.0f;
 
     if ([self.uploadProgress floatValue] != 1.0f)
-        self.uploadProgress = [NSNumber numberWithFloat:1.0f];
+        self.uploadProgress = @1.0f;
 
     [self decrementOperationCount];
 
