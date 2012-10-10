@@ -59,7 +59,7 @@
 #pragma mark -
 #pragma mark <JXHTTPOperationDelegate>
 
-- (void)httpOperationDidFinish:(JXHTTPOperation *)operation
+- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation
 {
     self.requestData = nil;
 }

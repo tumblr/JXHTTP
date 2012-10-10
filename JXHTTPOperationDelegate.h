@@ -8,6 +8,6 @@
 - (void)httpOperationDidReceiveResponse:(JXHTTPOperation *)operation;
 - (void)httpOperationDidReceiveData:(JXHTTPOperation *)operation;
 - (void)httpOperationDidSendData:(JXHTTPOperation *)operation;
-- (void)httpOperationDidFinish:(JXHTTPOperation *)operation;
+- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation;
 - (void)httpOperationDidFail:(JXHTTPOperation *)operation;
 @end
