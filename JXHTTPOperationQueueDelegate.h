@@ -1,6 +1,6 @@
 @class JXHTTPOperationQueue;
 
-@protocol JXHTTPOperationQueueDelegate
+@protocol JXHTTPOperationQueueDelegate <NSObject>
 @optional
 - (void)httpOperationQueueWillStart:(JXHTTPOperationQueue *)queue;
 - (void)httpOperationQueueDidUpload:(JXHTTPOperationQueue *)queue;

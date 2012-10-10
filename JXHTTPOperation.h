@@ -29,10 +29,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 @property (assign) BOOL updatesNetworkActivityIndicator;
-#endif
 
 /// @name Blocks
 
@@ -43,7 +40,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didReceiveResponseBlock;
 @property (copy) JXHTTPBlock didReceiveDataBlock;
 @property (copy) JXHTTPBlock didSendDataBlock;
-@property (copy) JXHTTPBlock didFinishBlock;
+@property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
 
 /// @name Initialization
