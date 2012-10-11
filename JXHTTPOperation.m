@@ -7,6 +7,8 @@
 
 static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
 static NSUInteger JXHTTPOperationCount = 0;
+static NSTimer * JXHTTPActivityTimer = nil;
+static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 @interface JXHTTPOperation ()
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
@@ -193,8 +195,9 @@ static NSUInteger JXHTTPOperationCount = 0;
 {
     dispatch_once(&_incrementCountPredicate, ^{
         dispatch_async([JXHTTPOperation operationCountQueue], ^{
-            if (++JXHTTPOperationCount > 0)
-                [JXHTTPOperation toggleNetworkActivityVisible:@YES];
+            ++JXHTTPOperationCount;
+            [JXHTTPActivityTimer invalidate];
+            [JXHTTPOperation toggleNetworkActivityVisible:@YES];
         });
 
         self.didIncrementCount = YES;
@@ -209,9 +212,33 @@ static NSUInteger JXHTTPOperationCount = 0;
     dispatch_once(&_decrementCountPredicate, ^{
         dispatch_async([JXHTTPOperation operationCountQueue], ^{
             if (--JXHTTPOperationCount < 1)
-                [JXHTTPOperation toggleNetworkActivityVisible:@NO];
+                [JXHTTPOperation restartActivityTimer];
         });
     });
+}
+
++ (void)restartActivityTimer
+{
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
+    [JXHTTPActivityTimer release];
+
+    JXHTTPActivityTimer = [NSTimer timerWithTimeInterval:JXHTTPActivityTimerInterval
+                                                  target:self
+                                                selector:@selector(networkActivityTimerDidFire:)
+                                                userInfo:nil
+                                                 repeats:NO];
+    
+    [[NSRunLoop mainRunLoop] addTimer:JXHTTPActivityTimer forMode:NSRunLoopCommonModes];
+    
+    [JXHTTPActivityTimer retain];
+
+    #endif
+}
+
++ (void)networkActivityTimerDidFire:(NSTimer *)timer
+{
+    [JXHTTPOperation toggleNetworkActivityVisible:@NO];
 }
 
 + (void)toggleNetworkActivityVisible:(NSNumber *)visibility
