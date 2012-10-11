@@ -111,12 +111,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if (!block)
         return;
 
-    NSOperationQueue *queue = [[self class] sharedBlockQueue];
-
-    if (self.performsBlocksOnMainThread)
-        queue = [NSOperationQueue mainQueue];
-
-    [queue addOperationWithBlock:^{
+    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] sharedBlockQueue]) addOperationWithBlock:^{
         block(self);
     }];
 }
