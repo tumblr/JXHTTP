@@ -174,7 +174,6 @@ static NSUInteger JXHTTPOperationCount = 0;
     return nil;
 }
 
-
 #pragma mark -
 #pragma mark Operation Count
 
