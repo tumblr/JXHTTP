@@ -389,15 +389,15 @@ static NSUInteger JXHTTPOperationCount = 0;
     [super connectionDidFinishLoading:connection];
 }
 
-- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)total totalBytesExpectedToWrite:(NSInteger)expected
+- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)bytesSent totalBytesExpectedToWrite:(NSInteger)bytesExpected
 {
-    [super connection:connection didSendBodyData:bytes totalBytesWritten:total totalBytesExpectedToWrite:expected];
+    [super connection:connection didSendBodyData:bytes totalBytesWritten:bytesSent totalBytesExpectedToWrite:bytesExpected];
 
     if (self.isCancelled)
         return;
 
-    if (expected > 0LL && expected != NSURLResponseUnknownLength)
-        self.uploadProgress = @(total / expected);
+    if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
+        self.uploadProgress = @(bytesSent / (float)bytesExpected);
 
     [self performDelegateMethod:@selector(httpOperationDidSendData:)];
 }
