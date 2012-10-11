@@ -43,11 +43,11 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
 
++ (NSOperationQueue *)sharedBlockQueue;
+
 /// @name Initialization
 
 + (id)withURLString:(NSString *)urlString;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
-
-+ (NSOperationQueue *)sharedBlockQueue;
 
 @end
