@@ -193,6 +193,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)incrementOperationCount
 {
+    if (!self.updatesNetworkActivityIndicator)
+        return;
+
     dispatch_once(&_incrementCountPredicate, ^{
         dispatch_async([JXHTTPOperation operationCountQueue], ^{
             ++JXHTTPOperationCount;
@@ -206,7 +209,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)decrementOperationCount
 {
-    if (!self.didIncrementCount)
+    if (!self.didIncrementCount || !self.updatesNetworkActivityIndicator)
         return;
 
     dispatch_once(&_decrementCountPredicate, ^{
