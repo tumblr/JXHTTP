@@ -4,7 +4,7 @@
 #import <UIKit/UIKit.h>
 #endif
 
-static void * JXOperationKVOContext = &JXOperationKVOContext;
+static void * JXOperationContext = &JXOperationContext;
 
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
@@ -22,9 +22,9 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationKVOContext];
-    [self removeObserver:self forKeyPath:@"isCancelled" context:JXOperationKVOContext];
-    [self removeObserver:self forKeyPath:@"isFinished" context:JXOperationKVOContext];
+    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationContext];
+    [self removeObserver:self forKeyPath:@"isCancelled" context:JXOperationContext];
+    [self removeObserver:self forKeyPath:@"isFinished" context:JXOperationContext];
 
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
@@ -47,9 +47,9 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
         self.backgroundTaskID = UIBackgroundTaskInvalid;
         #endif
         
-        [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationKVOContext];
-        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXOperationKVOContext];
-        [self addObserver:self forKeyPath:@"isFinished" options:0 context:JXOperationKVOContext];
+        [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationContext];
+        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXOperationContext];
+        [self addObserver:self forKeyPath:@"isFinished" options:0 context:JXOperationContext];
     }
     return self;
 }
@@ -120,8 +120,10 @@ static void * JXOperationKVOContext = &JXOperationKVOContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != JXOperationKVOContext)
+    if (context != JXOperationContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
+    }
 
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     
