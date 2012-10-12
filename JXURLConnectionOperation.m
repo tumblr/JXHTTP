@@ -1,6 +1,6 @@
 #import "JXURLConnectionOperation.h"
 
-static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
+static void * JXURLConnectionContext = &JXURLConnectionContext;
 
 @interface JXURLConnectionOperation ()
 @property (retain) NSURLConnection *connection;
@@ -18,7 +18,7 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"isCancelled" context:JXURLConnectionKVOContext];
+    [self removeObserver:self forKeyPath:@"isCancelled" context:JXURLConnectionContext];
     
     [_connection release];
     [_request release];
@@ -35,7 +35,7 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
         self.bytesReceived = 0LL;
         self.bytesSent = 0LL;
         
-        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXURLConnectionKVOContext];
+        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXURLConnectionContext];
     }
     return self;
 }
@@ -86,7 +86,7 @@ static void * JXURLConnectionKVOContext = &JXURLConnectionKVOContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != JXURLConnectionKVOContext) {
+    if (context != JXURLConnectionContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
