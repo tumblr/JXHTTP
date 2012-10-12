@@ -5,7 +5,7 @@
 #import <UIKit/UIKit.h>
 #endif
 
-static void * JXHTTPOperationKVOContext = &JXHTTPOperationKVOContext;
+static void * JXHTTPOperationContext = &JXHTTPOperationContext;
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
@@ -27,7 +27,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationKVOContext];
+    [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationContext];
 
     [self decrementOperationCount];
 
@@ -85,7 +85,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         self.didFinishLoadingBlock = nil;
         self.didFailBlock = nil;
 
-        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationKVOContext];
+        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationContext];
     }
     return self;
 }
@@ -180,7 +180,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     static dispatch_once_t predicate;
 
     dispatch_once(&predicate, ^{
-        operationCountQueue = dispatch_queue_create("JXHTTPOperation.operationCountQueue", DISPATCH_QUEUE_SERIAL);
+        operationCountQueue = dispatch_queue_create("JXHTTPOperation.operationCount", DISPATCH_QUEUE_SERIAL);
     });
 
     return operationCountQueue;
@@ -260,7 +260,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != JXHTTPOperationKVOContext) {
+    if (context != JXHTTPOperationContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
