@@ -1,7 +1,7 @@
 #import "JXHTTPOperationQueue.h"
 #import "JXHTTPOperation.h"
 
-static void * JXHTTPOperationQueueKVOContext = &JXHTTPOperationQueueKVOContext;
+static void * JXHTTPOperationQueueContext = &JXHTTPOperationQueueContext;
 static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 @interface JXHTTPOperationQueue ()
@@ -26,7 +26,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueKVOContext];
+    [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueContext];
 
     self.delegate = nil;
 
@@ -58,9 +58,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if ((self = [super init])) {
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
-        self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMathQueue", DISPATCH_QUEUE_CONCURRENT);
+        self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMath", DISPATCH_QUEUE_CONCURRENT);
 
-        [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueKVOContext];
+        [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueContext];
     }
     return self;
 }
@@ -154,7 +154,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context != JXHTTPOperationQueueKVOContext) {
+    if (context != JXHTTPOperationQueueContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
@@ -191,18 +191,18 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 [blockSelf.expectedUploadBytesPerOperation setObject:expectedUp forKey:uniqueString];
             });
 
-            [operation addObserver:blockSelf forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueKVOContext];
-            [operation addObserver:blockSelf forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueKVOContext];
-            [operation addObserver:blockSelf forKeyPath:@"response" options:0 context:JXHTTPOperationQueueKVOContext];
+            [operation addObserver:blockSelf forKeyPath:@"bytesReceived" options:0 context:JXHTTPOperationQueueContext];
+            [operation addObserver:blockSelf forKeyPath:@"bytesSent" options:0 context:JXHTTPOperationQueueContext];
+            [operation addObserver:blockSelf forKeyPath:@"response" options:0 context:JXHTTPOperationQueueContext];
         }
 
         for (JXHTTPOperation *operation in removedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
                 continue;
 
-            [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueKVOContext];
-            [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueKVOContext];
-            [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueKVOContext];
+            [operation removeObserver:blockSelf forKeyPath:@"bytesReceived" context:JXHTTPOperationQueueContext];
+            [operation removeObserver:blockSelf forKeyPath:@"bytesSent" context:JXHTTPOperationQueueContext];
+            [operation removeObserver:blockSelf forKeyPath:@"response" context:JXHTTPOperationQueueContext];
 
             if (operation.isCancelled) {
                 NSString *uniqueString = [NSString stringWithString:operation.uniqueString];
