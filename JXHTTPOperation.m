@@ -188,14 +188,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)incrementOperationCount
 {
-    BOOL update = self.updatesNetworkActivityIndicator;
-
     dispatch_once(&_incrementCountPredicate, ^{
+        if (!self.updatesNetworkActivityIndicator)
+            return;
+
         dispatch_async([JXHTTPOperation operationCountQueue], ^{
             ++JXHTTPOperationCount;
             [JXHTTPActivityTimer invalidate];
-            if (update)
-                [JXHTTPOperation toggleNetworkActivityVisible:@YES];
+            [JXHTTPOperation toggleNetworkActivityVisible:@YES];
         });
 
         self.didIncrementCount = YES;
@@ -206,12 +206,13 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 {
     if (!self.didIncrementCount)
         return;
-
-    BOOL update = self.updatesNetworkActivityIndicator;
     
     dispatch_once(&_decrementCountPredicate, ^{
+        if (!self.updatesNetworkActivityIndicator)
+            return;
+
         dispatch_async([JXHTTPOperation operationCountQueue], ^{
-            if (--JXHTTPOperationCount < 1 && update)
+            if (--JXHTTPOperationCount < 1)
                 [JXHTTPOperation restartActivityTimer];
         });
     });
