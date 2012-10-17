@@ -17,7 +17,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (retain) NSNumber *expectedUploadBytes;
 @property (retain) NSNumber *expectedDownloadBytes;
 @property (retain) NSMutableSet *observedOperationSet;
-@property (retain) dispatch_queue_t observationQueue;
+@property (assign) dispatch_queue_t observationQueue;
 @property (assign) dispatch_queue_t progressMathQueue;
 @end
 
