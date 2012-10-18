@@ -339,14 +339,12 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    [super connection:connection willSendRequestForAuthenticationChallenge:challenge];
-
-    self.authenticationChallenge = challenge;
-
     if (self.isCancelled) {
-        [[self.authenticationChallenge sender] cancelAuthenticationChallenge:self.authenticationChallenge];
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
         return;
     }
+
+    self.authenticationChallenge = challenge;
 
     [self performDelegateMethod:@selector(httpOperationWillSendRequestForAuthenticationChallenge:)];
 
