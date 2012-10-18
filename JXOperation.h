@@ -35,6 +35,11 @@
 @property (assign, readonly) BOOL isFinished;
 
 /**
+ `YES` if the operation was cancelled.
+ */
+@property (assign, readonly) BOOL isCancelled;
+
+/**
  `YES` once the operation has started.
  */
 @property (assign, readonly) BOOL didStart;

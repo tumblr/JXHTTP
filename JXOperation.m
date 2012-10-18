@@ -9,6 +9,7 @@ static void * JXOperationContext = &JXOperationContext;
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+@property (assign) BOOL isCancelled;
 @property (assign) BOOL didStart;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
@@ -22,11 +23,8 @@ static void * JXOperationContext = &JXOperationContext;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationContext];
-    [self removeObserver:self forKeyPath:@"isCancelled" context:JXOperationContext];
-    [self removeObserver:self forKeyPath:@"isFinished" context:JXOperationContext];
-
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationContext];
     if (self.backgroundTaskID != UIBackgroundTaskInvalid)
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
     #endif
@@ -39,17 +37,15 @@ static void * JXOperationContext = &JXOperationContext;
     if ((self = [super init])) {
         self.isExecuting = NO;
         self.isFinished = NO;
+        self.isCancelled = NO;
         self.didStart = NO;
         self.startsOnMainThread = NO;
 
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
         self.continuesInAppBackground = NO;
         self.backgroundTaskID = UIBackgroundTaskInvalid;
-        #endif
-        
         [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationContext];
-        [self addObserver:self forKeyPath:@"isCancelled" options:0 context:JXOperationContext];
-        [self addObserver:self forKeyPath:@"isFinished" options:0 context:JXOperationContext];
+        #endif
     }
     return self;
 }
@@ -65,9 +61,12 @@ static void * JXOperationContext = &JXOperationContext;
 - (void)start
 {
     if (self.startsOnMainThread && ![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
         return;
     }
+
+    if (self.isCancelled)
+        return;
 
     self.didStart = YES;
 
@@ -75,12 +74,8 @@ static void * JXOperationContext = &JXOperationContext;
     self.isExecuting = YES;
     [self didChangeValueForKey:@"isExecuting"];
     
-    if (self.isCancelled) {
-        [self finish];
-    } else {
-        @autoreleasepool {
-            [self main];
-        }
+    @autoreleasepool {
+        [self main];
     }
 }
 
@@ -92,19 +87,32 @@ static void * JXOperationContext = &JXOperationContext;
 #pragma mark -
 #pragma mark Public Methods
 
+- (void)cancel
+{
+    [super cancel];
+    // this is mysterious
+    self.isFinished = YES;
+    self.isExecuting = NO;
+    self.isCancelled = YES;
+}
+
 - (void)finish
 {
-    if (!self.didStart)
-        return;
-    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
-    
+
     self.isExecuting = NO;
     self.isFinished = YES;
-    
+
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
+
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    if (self.backgroundTaskID != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+        self.backgroundTaskID = UIBackgroundTaskInvalid;
+    }
+    #endif
 }
 
 - (void)startAndWaitUntilFinished
@@ -126,9 +134,8 @@ static void * JXOperationContext = &JXOperationContext;
     }
 
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    
-    if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
-        if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid && !self.isCancelled) {
+    if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"] && !self.isCancelled) {
+        if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid) {
             UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
             taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
                 [[UIApplication sharedApplication] endBackgroundTask:taskID];
@@ -141,16 +148,6 @@ static void * JXOperationContext = &JXOperationContext;
         
         return;
     }
-    
-    if (object == self && ([keyPath isEqualToString:@"isFinished"] || [keyPath isEqualToString:@"isCancelled"])) {
-        if ((self.isFinished || self.isCancelled) && self.backgroundTaskID != UIBackgroundTaskInvalid) {
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-            self.backgroundTaskID = UIBackgroundTaskInvalid;
-        }
-        
-        return;
-    }
-
     #endif
 }
 

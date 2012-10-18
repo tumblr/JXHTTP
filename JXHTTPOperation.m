@@ -285,11 +285,16 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)main
 {
+    if (self.isCancelled) {
+        [super main];
+        return;
+    }
+    
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
     [self incrementOperationCount];
 
-    if (self.requestBody && !self.isCancelled) {
+    if (self.requestBody) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
         if (inputStream)
             self.request.HTTPBodyStream = inputStream;
@@ -319,6 +324,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 {
     [super connection:connection didFailWithError:connectionError];
 
+    if (self.isCancelled)
+        return;
+
     [self decrementOperationCount];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
@@ -331,6 +339,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
+    [super connection:connection willSendRequestForAuthenticationChallenge:challenge];
+
     self.authenticationChallenge = challenge;
 
     if (self.isCancelled) {
@@ -399,7 +409,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     if (self.isCancelled) {
-        [self finish];
+        [super connectionDidFinishLoading:connection];
         return;
     }
 
@@ -431,10 +441,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request
 {
-    if (self.isCancelled) {
-        [self finish];
+    if (self.isCancelled)
         return nil;
-    }
 
     [self performDelegateMethod:@selector(httpOperationWillNeedNewBodyStream:)];
 
