@@ -247,7 +247,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(toggleNetworkActivityVisible:) withObject:visibility waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(toggleNetworkActivityVisible:) withObject:visibility waitUntilDone:YES];
         return;
     }
 
