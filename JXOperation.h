@@ -6,18 +6,18 @@
  `JXOperation` improves upon vanilla `NSOperation` by providing the following:
  
  - Concurrency support to allow the use of asynchronous APIs, as specified in
-   the `NSOperation` "subclassing notes" and following the recommendations of
-   Dave Dribin:
+ the `NSOperation` "subclassing notes" and following the recommendations of
+ Dave Dribin:
  
-   <http://dribin.org/dave/blog/archives/2009/05/05/concurrent_operations>
-
-   <http://dribin.org/dave/blog/archives/2009/09/13/snowy_concurrent_operations>
+ <http://dribin.org/dave/blog/archives/2009/05/05/concurrent_operations>
+ 
+ <http://dribin.org/dave/blog/archives/2009/09/13/snowy_concurrent_operations>
  
  - An option to force the operation to run on the main thread, even when
-   started from a background thread or queue.
-
+ started from a background thread or queue.
+ 
  - An option to continue running the operation when the application enters the
-   background.
+ background.
  */
 
 @interface JXOperation : NSOperation
@@ -34,16 +34,6 @@
  */
 @property (assign, readonly) BOOL isFinished;
 
-/**
- `YES` if the operation was cancelled.
- */
-@property (assign, readonly) BOOL isCancelled;
-
-/**
- `YES` once the operation has started.
- */
-@property (assign, readonly) BOOL didStart;
-
 /// @name Background Options
 
 /**
@@ -56,7 +46,7 @@
 
 /**
  Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to cause the
- operation to continue running when the application enters the background. The 
+ operation to continue running when the application enters the background. The
  operation will relinquish the task identifier when it has finished or been
  cancelled and allow the application to terminate.  Only available on iOS.
  */
