@@ -97,6 +97,17 @@ static void * JXOperationContext = &JXOperationContext;
     if (self.isFinished)
         return;
 
+    /**
+     For reasons unknown, if the `start` method is never called then doing
+     willChange/didChange for `isFinished` results in two unnerving behaviors:
+     
+     1. The log sometimes complains that "[the operation] went isFinished=YES
+        without being started by the queue it is in"
+     
+     2. Especailly with multiple concurrent operations, a crash often occurs
+        with `EXC_BAD_ACCESS` on `____NSOQschedule_block_invoke_0`
+     */
+     
     if (self.isExecuting) {
         [self willChangeValueForKey:@"isExecuting"];
         [self willChangeValueForKey:@"isFinished"];
@@ -108,7 +119,7 @@ static void * JXOperationContext = &JXOperationContext;
         self.isExecuting = NO;
         self.isFinished = YES;
     }
-    
+
     [self endAppBackgroundTask];
 }
 
