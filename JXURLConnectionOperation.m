@@ -5,6 +5,7 @@
 @property (retain) NSMutableURLRequest *request;
 @property (retain) NSURLResponse *response;
 @property (retain) NSError *error;
+@property (retain) NSThread *runLoopThread;
 @property (assign) long long bytesReceived;
 @property (assign) long long bytesSent;
 @end
@@ -16,14 +17,15 @@
 
 - (void)dealloc
 {
-    static int count = 0;
-    NSLog(@"bye #%d // %p", count++, self);
+    //static int count = 0;
+    //NSLog(@"deallocation count %d // %p", count++, self);
     
     [_connection release];
     [_request release];
     [_response release];
     [_error release];
     [_outputStream release];
+    [_runLoopThread release];
 
     [super dealloc];
 }
@@ -35,6 +37,8 @@
         self.request = nil;
         self.response = nil;
         self.error = nil;
+        self.runLoopThread = nil;
+        self.outputStream = nil;
 
         self.bytesReceived = 0LL;
         self.bytesSent = 0LL;
@@ -58,6 +62,8 @@
     if (self.isCancelled)
         return;
     
+    self.runLoopThread = [NSThread currentThread];
+    
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
 
@@ -70,6 +76,10 @@
     if ([NSRunLoop currentRunLoop] == [NSRunLoop mainRunLoop])
         return;
 
+    //
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+    //
+    
     while(!self.isFinished) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
@@ -77,16 +87,24 @@
 
 - (void)finish
 {
-    static int count = 0;
-    NSLog(@"finish #%d // %p // thread %p", count++, self, [NSThread currentThread]);
-    
-    [self.connection cancel];
-    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    self.connection = nil;
-
-    [self.outputStream close];
+    if (self.runLoopThread) {
+        [self performSelector:@selector(closeConnectionAndOutputStream) onThread:self.runLoopThread withObject:nil waitUntilDone:YES];
+        self.runLoopThread = nil;
+    }
     
     [super finish];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+
+- (void)closeConnectionAndOutputStream
+{
+    [self.connection cancel];
+    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
+    [self.outputStream close];
+    [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark -
