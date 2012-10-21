@@ -24,8 +24,7 @@ static void * JXOperationContext = &JXOperationContext;
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationContext];
-    if (self.backgroundTaskID != UIBackgroundTaskInvalid)
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+    [self endAppBackgroundTask];
     #endif
     
     [super dealloc];
@@ -110,12 +109,7 @@ static void * JXOperationContext = &JXOperationContext;
         self.isFinished = YES;
     }
     
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    if (self.backgroundTaskID != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-        self.backgroundTaskID = UIBackgroundTaskInvalid;
-    }
-    #endif
+    [self endAppBackgroundTask];
 }
 
 - (void)startAndWaitUntilFinished
@@ -127,6 +121,40 @@ static void * JXOperationContext = &JXOperationContext;
 }
 
 #pragma mark -
+#pragma mark Private Methods
+
+- (void)startAppBackgroundTask
+{
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    
+    if (self.backgroundTaskID != UIBackgroundTaskInvalid || self.isFinished)
+        return;
+    
+    UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+    taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:taskID];
+    }];
+
+    self.backgroundTaskID = taskID;
+    
+    #endif
+}
+
+- (void)endAppBackgroundTask
+{
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    
+    if (self.backgroundTaskID == UIBackgroundTaskInvalid)
+        return;
+
+    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+
+    self.backgroundTaskID = UIBackgroundTaskInvalid;
+    
+    #endif
+}
+
+#pragma mark -
 #pragma mark <NSKeyValueObserving>
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -135,23 +163,15 @@ static void * JXOperationContext = &JXOperationContext;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-    
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"] && !self.isCancelled) {
-        if (self.continuesInAppBackground && self.backgroundTaskID == UIBackgroundTaskInvalid && !self.isFinished) {
-            UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
-            taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                [[UIApplication sharedApplication] endBackgroundTask:taskID];
-            }];
-            self.backgroundTaskID = taskID;
-        } else if (!self.continuesInAppBackground && self.backgroundTaskID != UIBackgroundTaskInvalid) {
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-            self.backgroundTaskID = UIBackgroundTaskInvalid;
+
+    if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
+        if (self.continuesInAppBackground) {
+            [self startAppBackgroundTask];
+        } else {
+            [self endAppBackgroundTask];
         }
-        
         return;
     }
-    #endif
 }
 
 @end
