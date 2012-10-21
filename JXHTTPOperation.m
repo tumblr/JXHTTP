@@ -281,7 +281,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 }
 
 #pragma mark -
-#pragma mark JXURLConnectionOperation
+#pragma mark JXOperation
 
 - (void)main
 {
@@ -315,6 +315,13 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     }
 
     [super main];
+}
+
+- (void)finish
+{
+    [self decrementOperationCount];
+    
+    [super finish];
 }
 
 #pragma mark -

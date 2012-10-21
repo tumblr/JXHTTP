@@ -15,7 +15,10 @@
 #pragma mark Initialization
 
 - (void)dealloc
-{    
+{
+    static int count = 0;
+    NSLog(@"bye #%d // %p", count++, self);
+    
     [_connection release];
     [_request release];
     [_response release];
@@ -28,6 +31,11 @@
 - (id)init
 {
     if ((self = [super init])) {
+        self.connection = nil;
+        self.request = nil;
+        self.response = nil;
+        self.error = nil;
+
         self.bytesReceived = 0LL;
         self.bytesSent = 0LL;
     }
@@ -46,31 +54,36 @@
 #pragma mark NSOperation
 
 - (void)main
-{
+{    
     if (self.isCancelled)
         return;
-
-    self.connection = [[[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES] autorelease];
-
+    
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
 
     [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 
+    self.connection = [[[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO] autorelease];
+    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [self.connection start];
+
     if ([NSRunLoop currentRunLoop] == [NSRunLoop mainRunLoop])
         return;
 
-    while(!self.isCancelled && !self.isFinished) {
+    while(!self.isFinished) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
 
 - (void)finish
 {
+    static int count = 0;
+    NSLog(@"finish #%d // %p // thread %p", count++, self, [NSThread currentThread]);
+    
     [self.connection cancel];
     [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     self.connection = nil;
-    
+
     [self.outputStream close];
     
     [super finish];
@@ -119,6 +132,9 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    if (self.isCancelled)
+        return;
+
     [self finish];
 }
 
