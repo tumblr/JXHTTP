@@ -5,7 +5,6 @@
 #import <UIKit/UIKit.h>
 #endif
 
-static void * JXHTTPOperationContext = &JXHTTPOperationContext;
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
@@ -27,15 +26,12 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"responseDataFilePath" context:JXHTTPOperationContext];
-
     [self decrementOperationCount];
 
     [_authenticationChallenge release];
     [_requestBody release];
     [_downloadProgress release];
     [_uploadProgress release];
-    [_responseDataFilePath release];
     [_uniqueString release];
     [_userObject release];
     [_credential release];
@@ -65,7 +61,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         self.performsDelegateMethodsOnMainThread = NO;
         self.updatesNetworkActivityIndicator = YES;
         self.authenticationChallenge = nil;
-        self.responseDataFilePath = nil;
         self.credential = nil;
         self.userObject = nil;
         self.didIncrementCount = NO;
@@ -84,8 +79,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         self.didSendDataBlock = nil;
         self.didFinishLoadingBlock = nil;
         self.didFailBlock = nil;
-
-        [self addObserver:self forKeyPath:@"responseDataFilePath" options:0 context:JXHTTPOperationContext];
     }
     return self;
 }
@@ -256,30 +249,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[visibility boolValue]];
 
     #endif
-}
-
-#pragma mark -
-#pragma mark <NSKeyValueObserving>
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != JXHTTPOperationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-
-    if (object == self && [keyPath isEqualToString:@"responseDataFilePath"]) {
-        if (self.isCancelled || self.isExecuting || self.isFinished)
-            return;
-
-        if ([self.responseDataFilePath length]) {
-            self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:NO];
-        } else {
-            self.outputStream = [NSOutputStream outputStreamToMemory];
-        }
-
-        return;
-    }
 }
 
 #pragma mark -
