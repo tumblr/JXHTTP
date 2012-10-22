@@ -5,6 +5,7 @@
 @property (retain) NSMutableURLRequest *request;
 @property (retain) NSURLResponse *response;
 @property (retain) NSError *error;
+@property (retain) NSThread *runLoopThread;
 @property (assign) long long bytesReceived;
 @property (assign) long long bytesSent;
 @end
@@ -21,6 +22,7 @@
     [_response release];
     [_error release];
     [_outputStream release];
+    [_runLoopThread release];
 
     [super dealloc];
 }
@@ -33,6 +35,7 @@
         self.response = nil;
         self.error = nil;
         self.outputStream = nil;
+        self.runLoopThread = nil;
 
         self.bytesReceived = 0LL;
         self.bytesSent = 0LL;
@@ -55,6 +58,8 @@
 {    
     if (self.isCancelled)
         return;
+
+    self.runLoopThread = [NSThread currentThread];
     
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
@@ -85,8 +90,18 @@
 
 - (void)finish
 {
+    if (self.runLoopThread && self.runLoopThread != [NSThread currentThread]) {
+        [self performSelector:@selector(finish) onThread:self.runLoopThread withObject:nil waitUntilDone:YES];
+        return;
+    }
+
+    self.runLoopThread = nil;
+    
     [self.connection cancel];
+    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
     [self.outputStream close];
+    [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
     [super finish];
 }
