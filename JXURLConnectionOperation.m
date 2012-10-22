@@ -91,7 +91,7 @@
 - (void)finish
 {
     if (self.runLoopThread && self.runLoopThread != [NSThread currentThread]) {
-        [self performSelector:@selector(finish) onThread:self.runLoopThread withObject:nil waitUntilDone:YES];
+        [self performSelector:@selector(finish) onThread:self.runLoopThread withObject:nil waitUntilDone:NO];
         return;
     }
 
