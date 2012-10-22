@@ -21,6 +21,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 @implementation JXHTTPOperation
 
+@synthesize responseDataFilePath = _responseDataFilePath;
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -32,6 +34,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [_requestBody release];
     [_downloadProgress release];
     [_uploadProgress release];
+    [_responseDataFilePath release];
     [_uniqueString release];
     [_userObject release];
     [_credential release];
@@ -61,6 +64,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         self.performsDelegateMethodsOnMainThread = NO;
         self.updatesNetworkActivityIndicator = YES;
         self.authenticationChallenge = nil;
+        self.responseDataFilePath = nil;
         self.credential = nil;
         self.userObject = nil;
         self.didIncrementCount = NO;
@@ -249,6 +253,24 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[visibility boolValue]];
 
     #endif
+}
+
+#pragma mark -
+#pragma mark Accessors
+
+- (void)setResponseDataFilePath:(NSString *)filePath
+{
+    if (self.isExecuting || self.isFinished)
+        return;
+
+    [_responseDataFilePath release];
+    _responseDataFilePath = [filePath copy];
+
+    if ([self.responseDataFilePath length]) {
+        self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:NO];
+    } else {
+        self.outputStream = nil;
+    }
 }
 
 #pragma mark -

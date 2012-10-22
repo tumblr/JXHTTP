@@ -42,7 +42,7 @@
  background thread or operation queue. When `NO`, the operation will run on
  whatever thread it was started from (which may still be the main thread).
  This property can be changed up until the operation starts. Defaults to `NO`.
- Cannot be set after the operation has started. Not thread safe!
+ Not thread safe!
  */
 @property (nonatomic, assign) BOOL startsOnMainThread;
 

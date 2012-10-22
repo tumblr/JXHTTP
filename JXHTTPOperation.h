@@ -12,6 +12,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (retain) NSObject <JXHTTPRequestBody> *requestBody;
 @property (retain, readonly) NSString *uniqueString;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
+@property (nonatomic, copy) NSString *responseDataFilePath;
 @property (retain) id userObject;
 
 /// @name Security
