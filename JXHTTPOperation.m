@@ -145,7 +145,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     if (!block)
         return;
 
-    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] serialBlockQueue]) addOperationWithBlock:^{
+    NSOperationQueue *blockQueue = self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] serialBlockQueue];
+
+    [blockQueue addOperationWithBlock:^{
         block(self);
     }];
 }
