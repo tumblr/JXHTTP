@@ -4,8 +4,6 @@
 #import <UIKit/UIKit.h>
 #endif
 
-static void * JXOperationContext = &JXOperationContext;
-
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
@@ -16,15 +14,15 @@ static void * JXOperationContext = &JXOperationContext;
 
 @implementation JXOperation
 
+@synthesize startsOnMainThread = _startsOnMainThread;
+@synthesize continuesInAppBackground = _continuesInAppBackground;
+
 #pragma mark -
 #pragma mark Initialization
 
 - (void)dealloc
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    [self removeObserver:self forKeyPath:@"continuesInAppBackground" context:JXOperationContext];
     [self endAppBackgroundTask];
-    #endif
     
     [super dealloc];
 }
@@ -32,15 +30,14 @@ static void * JXOperationContext = &JXOperationContext;
 - (id)init
 {
     if ((self = [super init])) {
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+        self.backgroundTaskID = UIBackgroundTaskInvalid;
+        #endif
+
         self.isExecuting = NO;
         self.isFinished = NO;
         self.startsOnMainThread = NO;
-
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
         self.continuesInAppBackground = NO;
-        self.backgroundTaskID = UIBackgroundTaskInvalid;
-        [self addObserver:self forKeyPath:@"continuesInAppBackground" options:0 context:JXOperationContext];
-        #endif
     }
     return self;
 }
@@ -105,6 +102,10 @@ static void * JXOperationContext = &JXOperationContext;
      
      2. Especailly with multiple concurrent operations, a crash often occurs
         with `EXC_BAD_ACCESS` on `____NSOQschedule_block_invoke_0`
+     
+     Not setting `isFinished` at all prevents the operation from being removed
+     from the queue and ultimately deallocated, so when an operation is
+     cancelled we always `finish` it at the same time (see `cancel`).
      */
      
     if (self.isExecuting) {
@@ -128,6 +129,28 @@ static void * JXOperationContext = &JXOperationContext;
     [tempQueue addOperation:self];
     [tempQueue waitUntilAllOperationsAreFinished];
     [tempQueue release];
+}
+
+#pragma mark -
+#pragma mark Accessors
+
+- (void)setStartsOnMainThread:(BOOL)shouldStart
+{
+    if (self.isExecuting || self.isFinished)
+        return;
+
+    _startsOnMainThread = shouldStart;
+}
+
+- (void)setContinuesInAppBackground:(BOOL)shouldContinue
+{
+    _continuesInAppBackground = shouldContinue;
+
+    if (self.continuesInAppBackground) {
+        [self startAppBackgroundTask];
+    } else {
+        [self endAppBackgroundTask];
+    }
 }
 
 #pragma mark -
@@ -162,26 +185,6 @@ static void * JXOperationContext = &JXOperationContext;
     self.backgroundTaskID = UIBackgroundTaskInvalid;
     
     #endif
-}
-
-#pragma mark -
-#pragma mark <NSKeyValueObserving>
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != JXOperationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-
-    if (object == self && [keyPath isEqualToString:@"continuesInAppBackground"]) {
-        if (self.continuesInAppBackground) {
-            [self startAppBackgroundTask];
-        } else {
-            [self endAppBackgroundTask];
-        }
-        return;
-    }
 }
 
 @end

@@ -25,12 +25,13 @@
 /// @name Operation State
 
 /**
- `YES` while the operation is executing and NO once it has finished.
+ `YES` while the operation is executing and NO when it has finished.
+ Safe to access from any thread.
  */
 @property (assign, readonly) BOOL isExecuting;
 
 /**
- `YES` once the operation has finished.
+ `YES` when the operation has finished. Safe to access from any thread.
  */
 @property (assign, readonly) BOOL isFinished;
 
@@ -41,18 +42,18 @@
  background thread or operation queue. When `NO`, the operation will run on
  whatever thread it was started from (which may still be the main thread).
  This property can be changed up until the operation starts. Defaults to `NO`.
+ Cannot be set after the operation has started. Not thread safe!
  */
-@property (assign) BOOL startsOnMainThread;
+@property (nonatomic, assign) BOOL startsOnMainThread;
 
 /**
  Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to cause the
  operation to continue running when the application enters the background. The
  operation will relinquish the task identifier when it has finished or been
- cancelled and allow the application to terminate.  Only available on iOS.
+ cancelled and allow the application to terminate. Only available on iOS.
+ Not thread safe!
  */
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-@property (assign) BOOL continuesInAppBackground;
-#endif
+@property (nonatomic, assign) BOOL continuesInAppBackground;
 
 /// @name Initialization
 
