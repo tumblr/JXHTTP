@@ -105,17 +105,17 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     return [self withURLString:string];
 }
 
-+ (NSOperationQueue *)sharedBlockQueue
++ (NSOperationQueue *)serialBlockQueue
 {
-    static NSOperationQueue *sharedBlockQueue;
+    static NSOperationQueue *serialBlockQueue;
     static dispatch_once_t predicate;
 
     dispatch_once(&predicate, ^{
-        sharedBlockQueue = [[NSOperationQueue alloc] init];
-        sharedBlockQueue.maxConcurrentOperationCount = 1;
+        serialBlockQueue = [[NSOperationQueue alloc] init];
+        serialBlockQueue.maxConcurrentOperationCount = 1;
     });
 
-    return sharedBlockQueue;
+    return serialBlockQueue;
 }
 
 #pragma mark -
@@ -145,7 +145,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     if (!block)
         return;
 
-    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] sharedBlockQueue]) addOperationWithBlock:^{
+    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] serialBlockQueue]) addOperationWithBlock:^{
         block(self);
     }];
 }

@@ -43,7 +43,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
 
-+ (NSOperationQueue *)sharedBlockQueue;
++ (NSOperationQueue *)serialBlockQueue;
 
 /// @name Initialization
 

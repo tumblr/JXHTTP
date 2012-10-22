@@ -31,6 +31,6 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 @property (copy) JXHTTPQueueBlock didMakeProgressBlock;
 @property (copy) JXHTTPQueueBlock didFinishBlock;
 
-+ (NSOperationQueue *)sharedBlockQueue;
++ (NSOperationQueue *)serialBlockQueue;
 
 @end
