@@ -5,7 +5,6 @@
 @property (retain) NSMutableURLRequest *request;
 @property (retain) NSURLResponse *response;
 @property (retain) NSError *error;
-@property (retain) NSThread *runLoopThread;
 @property (assign) long long bytesReceived;
 @property (assign) long long bytesSent;
 @end
@@ -17,15 +16,11 @@
 
 - (void)dealloc
 {
-    //static int count = 0;
-    //NSLog(@"deallocation count %d // %p", count++, self);
-    
     [_connection release];
     [_request release];
     [_response release];
     [_error release];
     [_outputStream release];
-    [_runLoopThread release];
 
     [super dealloc];
 }
@@ -37,7 +32,6 @@
         self.request = nil;
         self.response = nil;
         self.error = nil;
-        self.runLoopThread = nil;
         self.outputStream = nil;
 
         self.bytesReceived = 0LL;
@@ -62,8 +56,6 @@
     if (self.isCancelled)
         return;
     
-    self.runLoopThread = [NSThread currentThread];
-    
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
 
@@ -76,10 +68,16 @@
     if ([NSRunLoop currentRunLoop] == [NSRunLoop mainRunLoop])
         return;
 
-    //
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-    //
-    
+    /**
+     Removing this line can cause operations cancelled in-flight to lose the thread
+     they're running on, preventing them from ever deallocating (especially many concurrent
+     operations). The usual "adding an empty port" trick doesn't keep the thread alive.
+     The downside is a small chance that the operation will take up to 5 seconds to
+     dealloc after being cancelled. This should be considered a temporary solution.
+     http://macsamurai.blogspot.com/2008/03/nsoperation-madness.html
+     */
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5]];
+
     while(!self.isFinished) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
@@ -87,24 +85,10 @@
 
 - (void)finish
 {
-    if (self.runLoopThread) {
-        [self performSelector:@selector(closeConnectionAndOutputStream) onThread:self.runLoopThread withObject:nil waitUntilDone:YES];
-        self.runLoopThread = nil;
-    }
+    [self.connection cancel];
+    [self.outputStream close];
     
     [super finish];
-}
-
-#pragma mark -
-#pragma mark Private Methods
-
-- (void)closeConnectionAndOutputStream
-{
-    [self.connection cancel];
-    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    
-    [self.outputStream close];
-    [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark -
@@ -127,7 +111,7 @@
 {
     if (self.isCancelled)
         return;
-
+    
     self.response = urlResponse;
 
     [self.outputStream open];
