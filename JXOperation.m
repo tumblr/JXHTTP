@@ -9,7 +9,6 @@ static void * JXOperationContext = &JXOperationContext;
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
-@property (assign) BOOL didStart;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
