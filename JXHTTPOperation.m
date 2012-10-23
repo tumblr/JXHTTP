@@ -466,9 +466,24 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     return [self.requestBody httpInputStream];
 }
 
-/*
- - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
- - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
- */
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response
+{
+    if (self.isCancelled)
+        return nil;
+    
+    //TK
+    
+    return request;
+}
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
+{
+    if (self.isCancelled)
+        return nil;
+    
+    //TK
+    
+    return cachedResponse;
+}
 
 @end
