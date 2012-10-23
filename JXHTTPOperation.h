@@ -15,6 +15,12 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (nonatomic, copy) NSString *responseDataFilePath;
 @property (retain) id userObject;
 
+/// @name Timing
+
+@property (retain, readonly) NSDate *startDate;
+@property (retain, readonly) NSDate *finishDate;
+@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
+
 /// @name Security
 
 @property (retain, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
@@ -33,6 +39,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 /// @name Blocks
 
+@property (retain, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPBlock willStartBlock;
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
@@ -42,8 +49,6 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didSendDataBlock;
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
-
-+ (NSOperationQueue *)serialBlockQueue;
 
 /// @name Initialization
 

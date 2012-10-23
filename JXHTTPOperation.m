@@ -10,13 +10,16 @@ static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 @interface JXHTTPOperation ()
+@property (assign) BOOL didIncrementCount;
 @property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
 @property (retain) NSString *uniqueString;
+@property (retain) NSDate *startDate;
+@property (retain) NSDate *finishDate;
+@property (retain) NSOperationQueue *blockQueue;
 @property (assign) dispatch_once_t incrementCountPredicate;
 @property (assign) dispatch_once_t decrementCountPredicate;
-@property (assign) BOOL didIncrementCount;
 @end
 
 @implementation JXHTTPOperation
@@ -41,6 +44,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [_trustedHosts release];
     [_username release];
     [_password release];
+    [_startDate release];
+    [_finishDate release];
 
     [_willStartBlock release];
     [_willNeedNewBodyStreamBlock release];
@@ -50,6 +55,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [_didSendDataBlock release];
     [_didFinishLoadingBlock release];
     [_didFailBlock release];
+    [_blockQueue release];
 
     [super dealloc];
 }
@@ -59,7 +65,11 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     if ((self = [super init])) {
         self.downloadProgress = @0.0f;
         self.uploadProgress = @0.0f;
+
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+
+        self.blockQueue = [[[NSOperationQueue alloc] init] autorelease];
+        self.blockQueue.maxConcurrentOperationCount = 1;
 
         self.performsDelegateMethodsOnMainThread = NO;
         self.updatesNetworkActivityIndicator = YES;
@@ -73,6 +83,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         self.trustAllHosts = NO;
         self.username = nil;
         self.password = nil;
+        self.startDate = nil;
+        self.finishDate = nil;
 
         self.performsBlocksOnMainThread = NO;
         self.willStartBlock = nil;
@@ -102,19 +114,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     return [self withURLString:string];
 }
 
-+ (NSOperationQueue *)serialBlockQueue
-{
-    static NSOperationQueue *serialBlockQueue;
-    static dispatch_once_t predicate;
-
-    dispatch_once(&predicate, ^{
-        serialBlockQueue = [[NSOperationQueue alloc] init];
-        serialBlockQueue.maxConcurrentOperationCount = 1;
-    });
-
-    return serialBlockQueue;
-}
-
 #pragma mark -
 #pragma mark Private Methods
 
@@ -142,11 +141,19 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     if (!block)
         return;
 
-    NSOperationQueue *blockQueue = self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] serialBlockQueue];
-
-    [blockQueue addOperationWithBlock:^{
-        block(self);
-    }];
+    if (self.performsBlocksOnMainThread) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!self.isCancelled)
+                block(self);
+        }];
+    } else {
+        __block JXHTTPOperation *blockSelf = [self retain];
+        [self.blockQueue addOperationWithBlock:^{
+            if (!blockSelf.isCancelled)
+                block(blockSelf);
+            [blockSelf release];
+        }];
+    }
 }
 
 - (JXHTTPBlock)blockForSelector:(SEL)selector
@@ -273,6 +280,15 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     }
 }
 
+- (NSTimeInterval)elapsedSeconds
+{
+    if (self.startDate) {
+        NSDate *endDate = self.finishDate ? self.finishDate : [NSDate date];
+        return [endDate timeIntervalSinceDate:self.startDate];
+    }
+    return 0.0;
+}
+
 #pragma mark -
 #pragma mark JXOperation
 
@@ -282,6 +298,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         [super main];
         return;
     }
+
+    self.startDate = [NSDate date];
     
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
@@ -326,6 +344,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
     if (self.isCancelled)
         return;
+
+    self.finishDate = [NSDate date];
 
     [self decrementOperationCount];
 
@@ -410,6 +430,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
         [super connectionDidFinishLoading:connection];
         return;
     }
+
+    self.finishDate = [NSDate date];
 
     if ([self.downloadProgress floatValue] != 1.0f)
         self.downloadProgress = @1.0f;

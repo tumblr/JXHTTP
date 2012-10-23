@@ -9,6 +9,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (retain) NSMutableDictionary *bytesSentPerOperation;
 @property (retain) NSMutableDictionary *expectedDownloadBytesPerOperation;
 @property (retain) NSMutableDictionary *expectedUploadBytesPerOperation;
+@property (retain) NSDate *startDate;
+@property (retain) NSDate *finishDate;
 @property (retain) NSString *uniqueString;
 @property (retain) NSNumber *downloadProgress;
 @property (retain) NSNumber *uploadProgress;
@@ -19,6 +21,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (retain) NSMutableSet *observedOperationSet;
 @property (assign) dispatch_queue_t observationQueue;
 @property (assign) dispatch_queue_t progressMathQueue;
+@property (retain) NSOperationQueue *blockQueue;
 @end
 
 @implementation JXHTTPOperationQueue
@@ -44,12 +47,15 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     [_uploadProgress release];
     [_uniqueString release];
     [_observedOperationSet release];
+    [_startDate release];
+    [_finishDate release];
 
     [_willStartBlock release];
     [_didUploadBlock release];
     [_didDownloadBlock release];
     [_didMakeProgressBlock release];
     [_didFinishBlock release];
+    [_blockQueue release];
 
     dispatch_release(_observationQueue);
     dispatch_release(_progressMathQueue);
@@ -63,6 +69,13 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.observedOperationSet = [NSMutableSet set];
+
+        self.startDate = nil;
+        self.finishDate = nil;
+
+        self.blockQueue = [[[NSOperationQueue alloc] init] autorelease];
+        self.blockQueue.maxConcurrentOperationCount = 1;
+
         self.observationQueue = dispatch_queue_create("JXHTTPOperationQueue.observation", DISPATCH_QUEUE_SERIAL);
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMath", DISPATCH_QUEUE_CONCURRENT);
 
@@ -83,17 +96,16 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     return sharedQueue;
 }
 
-+ (NSOperationQueue *)serialBlockQueue
+#pragma mark -
+#pragma mark Accessors
+
+- (NSTimeInterval)elapsedSeconds
 {
-    static NSOperationQueue *serialBlockQueue;
-    static dispatch_once_t predicate;
-
-    dispatch_once(&predicate, ^{
-        serialBlockQueue = [[NSOperationQueue alloc] init];
-        serialBlockQueue.maxConcurrentOperationCount = 1;
-    });
-
-    return serialBlockQueue;
+    if (self.startDate) {
+        NSDate *endDate = self.finishDate ? self.finishDate : [NSDate date];
+        return [endDate timeIntervalSinceDate:self.startDate];
+    }
+    return 0.0;
 }
 
 #pragma mark -
@@ -117,11 +129,17 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if (!block)
         return;
 
-    NSOperationQueue *blockQueue = self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : [[self class] serialBlockQueue];
-
-    [blockQueue addOperationWithBlock:^{
-        block(self);
-    }];
+    if (self.performsBlocksOnMainThread) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            block(self);
+        }];
+    } else {
+        __block JXHTTPOperationQueue *blockSelf = [self retain];
+        [self.blockQueue addOperationWithBlock:^{
+            block(blockSelf);
+            [blockSelf release];
+        }];
+    }
 }
 
 - (JXHTTPQueueBlock)blockForSelector:(SEL)selector
@@ -175,16 +193,19 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         NSArray *newOperationsArray = [change objectForKey:NSKeyValueChangeNewKey];
         NSArray *oldOperationsArray = [change objectForKey:NSKeyValueChangeOldKey];
-        NSUInteger newCount = [newOperationsArray count];
-        NSUInteger oldCount = [oldOperationsArray count];
-
         NSMutableArray *insertedArray = [NSMutableArray arrayWithArray:newOperationsArray];
         NSMutableArray *removedArray = [NSMutableArray arrayWithArray:oldOperationsArray];
         [insertedArray removeObjectsInArray:oldOperationsArray];
         [removedArray removeObjectsInArray:newOperationsArray];
 
+        NSUInteger newCount = [newOperationsArray count];
+        NSUInteger oldCount = [oldOperationsArray count];
+        NSDate *now = [NSDate date];
+
         if (oldCount < 1 && newCount > 0) {
             [self resetProgress];
+            self.startDate = now;
+            self.finishDate = nil;
             [self performDelegateMethod:@selector(httpOperationQueueWillStart:)];
         }
 
@@ -238,8 +259,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             }
         }
         
-        if (oldCount > 0 && newCount < 1)
+        if (oldCount > 0 && newCount < 1) {
+            self.finishDate = now;
             [self performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
+        }
 
         return;
     }
