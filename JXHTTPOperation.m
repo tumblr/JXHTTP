@@ -426,10 +426,10 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if (self.isCancelled) {
-        [super connectionDidFinishLoading:connection];
+    [super connectionDidFinishLoading:connection];
+    
+    if (self.isCancelled)
         return;
-    }
 
     self.finishDate = [NSDate date];
 
@@ -442,8 +442,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     [self decrementOperationCount];
 
     [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
-
-    [super connectionDidFinishLoading:connection];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytes totalBytesWritten:(NSInteger)bytesSent totalBytesExpectedToWrite:(NSInteger)bytesExpected
