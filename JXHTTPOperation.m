@@ -63,13 +63,13 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 - (id)init
 {
     if ((self = [super init])) {
-        self.downloadProgress = @0.0f;
-        self.uploadProgress = @0.0f;
-
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
 
         self.blockQueue = [[[NSOperationQueue alloc] init] autorelease];
         self.blockQueue.maxConcurrentOperationCount = 1;
+        
+        self.downloadProgress = @0.0f;
+        self.uploadProgress = @0.0f;
 
         self.performsDelegateMethodsOnMainThread = NO;
         self.updatesNetworkActivityIndicator = YES;
@@ -285,8 +285,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     if (self.startDate) {
         NSDate *endDate = self.finishDate ? self.finishDate : [NSDate date];
         return [endDate timeIntervalSinceDate:self.startDate];
+    } else {
+        return 0.0;
     }
-    return 0.0;
 }
 
 #pragma mark -
@@ -342,10 +343,10 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
     if (self.isCancelled)
         return;
+    
+    [self decrementOperationCount];
 
     self.finishDate = [NSDate date];
-
-    [self decrementOperationCount];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
@@ -428,16 +429,16 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
     
     if (self.isCancelled)
         return;
-
-    self.finishDate = [NSDate date];
+    
+    [self decrementOperationCount];
 
     if ([self.downloadProgress floatValue] != 1.0f)
         self.downloadProgress = @1.0f;
 
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = @1.0f;
-
-    [self decrementOperationCount];
+    
+    self.finishDate = [NSDate date];
 
     [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
 }

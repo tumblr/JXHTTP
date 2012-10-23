@@ -15,12 +15,6 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (nonatomic, copy) NSString *responseDataFilePath;
 @property (retain) id userObject;
 
-/// @name Timing
-
-@property (retain, readonly) NSDate *startDate;
-@property (retain, readonly) NSDate *finishDate;
-@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
-
 /// @name Security
 
 @property (retain, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
@@ -36,6 +30,12 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (retain, readonly) NSNumber *downloadProgress;
 @property (retain, readonly) NSNumber *uploadProgress;
 @property (assign) BOOL updatesNetworkActivityIndicator;
+
+/// @name Timing
+
+@property (retain, readonly) NSDate *startDate;
+@property (retain, readonly) NSDate *finishDate;
+@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
 
 /// @name Blocks
 

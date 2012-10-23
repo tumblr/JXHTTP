@@ -104,8 +104,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if (self.startDate) {
         NSDate *endDate = self.finishDate ? self.finishDate : [NSDate date];
         return [endDate timeIntervalSinceDate:self.startDate];
+    } else {
+        return 0.0;
     }
-    return 0.0;
 }
 
 #pragma mark -
@@ -204,8 +205,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         if (oldCount < 1 && newCount > 0) {
             [self resetProgress];
-            self.startDate = now;
             self.finishDate = nil;
+            self.startDate = now;
             [self performDelegateMethod:@selector(httpOperationQueueWillStart:)];
         }
 

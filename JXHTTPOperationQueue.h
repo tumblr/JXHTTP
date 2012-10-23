@@ -11,12 +11,6 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (retain, readonly) NSString *uniqueString;
 
-/// @name Timing
-
-@property (retain, readonly) NSDate *startDate;
-@property (retain, readonly) NSDate *finishDate;
-@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
-
 /// @name Progress
 
 @property (retain, readonly) NSNumber *downloadProgress;
@@ -27,6 +21,12 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 @property (retain, readonly) NSNumber *expectedDownloadBytes;
 @property (retain, readonly) NSNumber *expectedUploadBytes;
+
+/// @name Timing
+
+@property (retain, readonly) NSDate *startDate;
+@property (retain, readonly) NSDate *finishDate;
+@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
 
 /// @name Blocks
 

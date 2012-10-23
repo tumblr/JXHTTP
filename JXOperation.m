@@ -5,11 +5,11 @@
 #endif
 
 @interface JXOperation ()
-@property (assign) BOOL isExecuting;
-@property (assign) BOOL isFinished;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
+@property (assign) BOOL isExecuting;
+@property (assign) BOOL isFinished;
 @end
 
 @implementation JXOperation
