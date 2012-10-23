@@ -294,10 +294,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
 
 - (void)main
 {
-    if (self.isCancelled) {
-        [super main];
+    if (self.isCancelled)
         return;
-    }
 
     self.startDate = [NSDate date];
     
