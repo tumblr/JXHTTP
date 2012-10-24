@@ -7,7 +7,7 @@
 
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
-static NSTimeInterval JXHTTPActivityTimerInterval = 0.618;
+static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 @interface JXHTTPOperation ()
 @property (assign) BOOL didIncrementCount;
