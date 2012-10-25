@@ -418,7 +418,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     long long bytesExpected = [self.response expectedContentLength];
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
-        self.downloadProgress = @(self.bytesReceived / (float)bytesExpected);
+        self.downloadProgress = @(self.bytesDownloaded / (float)bytesExpected);
 
     [self performDelegateMethod:@selector(httpOperationDidReceiveData:)];
 }

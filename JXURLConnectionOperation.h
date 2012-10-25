@@ -36,16 +36,16 @@
 /// @name Tracking Progress
 
 /**
- The number of bytes written to the output stream (not necessarily the number of
- bytes received over the wire, e.g. if the stream runs out of available
+ The number of bytes written to the output stream (not necessarily the number
+ of bytes downloaded over the wire, e.g. if the stream runs out of available
  space before the connection is complete).
  */
-@property (assign, readonly) long long bytesReceived;
+@property (assign, readonly) long long bytesDownloaded;
 
 /**
- The number of bytes sent.
+ The number of bytes uploaded.
  */
-@property (assign, readonly) long long bytesSent;
+@property (assign, readonly) long long bytesUploaded;
 
 /**
  Creates a new `JXURLConnectionOperation` with a specified URL.

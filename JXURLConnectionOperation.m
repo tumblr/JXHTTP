@@ -6,8 +6,8 @@
 @property (retain) NSURLResponse *response;
 @property (retain) NSError *error;
 @property (retain) NSThread *runLoopThread;
-@property (assign) long long bytesReceived;
-@property (assign) long long bytesSent;
+@property (assign) long long bytesDownloaded;
+@property (assign) long long bytesUploaded;
 @end
 
 @implementation JXURLConnectionOperation
@@ -37,8 +37,8 @@
         self.outputStream = nil;
         self.runLoopThread = nil;
 
-        self.bytesReceived = 0LL;
-        self.bytesSent = 0LL;
+        self.bytesDownloaded = 0LL;
+        self.bytesUploaded = 0LL;
     }
     return self;
 }
@@ -141,7 +141,7 @@
         NSInteger bytesWritten = [self.outputStream write:[data bytes] maxLength:[data length]];
 
         if (bytesWritten != -1)
-            self.bytesReceived += bytesWritten;
+            self.bytesDownloaded += bytesWritten;
     } else {
         [self finish];
     }
@@ -160,7 +160,7 @@
     if (self.isCancelled)
         return;
 
-    self.bytesSent += bytes;
+    self.bytesUploaded += bytes;
 }
 
 @end
