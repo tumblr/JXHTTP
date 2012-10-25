@@ -298,12 +298,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             long long bytesDownloaded = 0LL;
             long long expectedDownloadBytes = 0LL;
 
-            for (NSString *opID in [self.bytesDownloadedPerOperation allKeys]) {
-                bytesDownloaded += [[self.bytesDownloadedPerOperation objectForKey:opID] longLongValue];
+            for (NSString *opString in [self.bytesDownloadedPerOperation allKeys]) {
+                bytesDownloaded += [[self.bytesDownloadedPerOperation objectForKey:opString] longLongValue];
             }
 
-            for (NSString *opID in [self.expectedDownloadBytesPerOperation allKeys]) {
-                expectedDownloadBytes += [[self.expectedDownloadBytesPerOperation objectForKey:opID] longLongValue];
+            for (NSString *opString in [self.expectedDownloadBytesPerOperation allKeys]) {
+                expectedDownloadBytes += [[self.expectedDownloadBytesPerOperation objectForKey:opString] longLongValue];
             }
 
             dispatch_barrier_async(self.progressMathQueue, ^{
@@ -332,12 +332,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             long long bytesUploaded = 0LL;
             long long expectedUploadBytes = 0LL;
 
-            for (NSString *opID in [self.bytesUploadedPerOperation allKeys]) {
-                bytesUploaded += [[self.bytesUploadedPerOperation objectForKey:opID] longLongValue];
+            for (NSString *opString in [self.bytesUploadedPerOperation allKeys]) {
+                bytesUploaded += [[self.bytesUploadedPerOperation objectForKey:opString] longLongValue];
             }
 
-            for (NSString *opID in [self.expectedUploadBytesPerOperation allKeys]) {
-                expectedUploadBytes += [[self.expectedUploadBytesPerOperation objectForKey:opID] longLongValue];
+            for (NSString *opString in [self.expectedUploadBytesPerOperation allKeys]) {
+                expectedUploadBytes += [[self.expectedUploadBytesPerOperation objectForKey:opString] longLongValue];
             }
 
             dispatch_barrier_async(self.progressMathQueue, ^{
