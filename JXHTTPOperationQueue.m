@@ -79,7 +79,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.observationQueue = dispatch_queue_create("JXHTTPOperationQueue.observation", DISPATCH_QUEUE_SERIAL);
         self.progressMathQueue = dispatch_queue_create("JXHTTPOperationQueue.progressMath", DISPATCH_QUEUE_CONCURRENT);
 
-        [self addObserver:self forKeyPath:@"operations" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:JXHTTPOperationQueueContext];
+        [self addObserver:self
+               forKeyPath:@"operations"
+                  options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                  context:JXHTTPOperationQueueContext];
     }
     return self;
 }
