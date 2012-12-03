@@ -86,7 +86,7 @@
     if (self.isFinished)
         return;
 
-    /**
+    /*
      For reasons unknown, if the `start` method is never called then doing
      willChange/didChange for `isFinished` results in two unnerving behaviors:
      
