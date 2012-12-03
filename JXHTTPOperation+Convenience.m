@@ -1,9 +1,8 @@
 #import "JXHTTPOperation+Convenience.h"
 
-@implementation JXHTTPOperation (Convenience)
+@implementation JXHTTPOperation (JXHTTPOperationConvenience)
 
-#pragma mark -
-#pragma mark Request
+#pragma mark - Request
 
 - (NSURLCacheStoragePolicy)requestCachePolicy
 {
@@ -105,8 +104,7 @@
     [self.request setValue:valueString forHTTPHeaderField:headerFieldString];
 }
 
-#pragma mark -
-#pragma mark Response
+#pragma mark - Response
 
 - (NSData *)responseData
 {
@@ -119,7 +117,7 @@
 
 - (NSString *)responseString
 {
-    return [[[NSString alloc] initWithData:[self responseData] encoding:NSUTF8StringEncoding] autorelease];
+    return [[NSString alloc] initWithData:[self responseData] encoding:NSUTF8StringEncoding];
 }
 
 - (id)responseJSON

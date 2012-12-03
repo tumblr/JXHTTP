@@ -2,7 +2,7 @@
 
 @interface JXHTTPFormEncodedBody : NSObject <JXHTTPRequestBody>
 
-@property (nonatomic, retain, readonly) NSMutableDictionary *dictionary;
+@property (strong, readonly, nonatomic) NSMutableDictionary *dictionary;
 
 + (id)emptyBody;
 + (id)withDictionary:(NSDictionary *)dictionary;

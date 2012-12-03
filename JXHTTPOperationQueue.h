@@ -5,32 +5,32 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 @interface JXHTTPOperationQueue : JXOperationQueue
 
-/// @name Core
+// Core
 
-@property (assign) NSObject <JXHTTPOperationQueueDelegate> *delegate;
+@property (weak) NSObject <JXHTTPOperationQueueDelegate> *delegate;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
-@property (retain, readonly) NSString *uniqueString;
+@property (strong, readonly) NSString *uniqueString;
 
-/// @name Progress
+// Progress
 
-@property (retain, readonly) NSNumber *downloadProgress;
-@property (retain, readonly) NSNumber *uploadProgress;
+@property (strong, readonly) NSNumber *downloadProgress;
+@property (strong, readonly) NSNumber *uploadProgress;
 
-@property (retain, readonly) NSNumber *bytesDownloaded;
-@property (retain, readonly) NSNumber *bytesUploaded;
+@property (strong, readonly) NSNumber *bytesDownloaded;
+@property (strong, readonly) NSNumber *bytesUploaded;
 
-@property (retain, readonly) NSNumber *expectedDownloadBytes;
-@property (retain, readonly) NSNumber *expectedUploadBytes;
+@property (strong, readonly) NSNumber *expectedDownloadBytes;
+@property (strong, readonly) NSNumber *expectedUploadBytes;
 
-/// @name Timing
+// Timing
 
-@property (retain, readonly) NSDate *startDate;
-@property (retain, readonly) NSDate *finishDate;
-@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
+@property (strong, readonly) NSDate *startDate;
+@property (strong, readonly) NSDate *finishDate;
+@property (readonly, nonatomic) NSTimeInterval elapsedSeconds;
 
-/// @name Blocks
+// Blocks
 
-@property (retain, readonly) NSOperationQueue *blockQueue;
+@property (strong, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPQueueBlock willStartBlock;
 @property (copy) JXHTTPQueueBlock didUploadBlock;

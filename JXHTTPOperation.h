@@ -6,40 +6,40 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 @interface JXHTTPOperation : JXURLConnectionOperation
 
-/// @name Core
+// Core
 
-@property (assign) NSObject <JXHTTPOperationDelegate> *delegate;
-@property (retain) NSObject <JXHTTPRequestBody> *requestBody;
-@property (retain, readonly) NSString *uniqueString;
+@property (weak) NSObject <JXHTTPOperationDelegate> *delegate;
+@property (strong) NSObject <JXHTTPRequestBody> *requestBody;
+@property (strong, readonly) NSString *uniqueString;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;
-@property (nonatomic, copy) NSString *responseDataFilePath;
-@property (retain) id userObject;
+@property (copy, nonatomic) NSString *responseDataFilePath;
+@property (strong) id userObject;
 
-/// @name Security
+// Security
 
-@property (retain, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
-@property (retain) NSURLCredential *credential;
+@property (strong, readonly) NSURLAuthenticationChallenge *authenticationChallenge;
+@property (strong) NSURLCredential *credential;
 @property (assign) BOOL useCredentialStorage;
 @property (assign) BOOL trustAllHosts;
 @property (copy) NSArray *trustedHosts;
 @property (copy) NSString *username;
 @property (copy) NSString *password;
 
-/// @name Progress
+// Progress
 
-@property (retain, readonly) NSNumber *downloadProgress;
-@property (retain, readonly) NSNumber *uploadProgress;
+@property (strong, readonly) NSNumber *downloadProgress;
+@property (strong, readonly) NSNumber *uploadProgress;
 @property (assign) BOOL updatesNetworkActivityIndicator;
 
-/// @name Timing
+// Timing
 
-@property (retain, readonly) NSDate *startDate;
-@property (retain, readonly) NSDate *finishDate;
-@property (nonatomic, readonly) NSTimeInterval elapsedSeconds;
+@property (strong, readonly) NSDate *startDate;
+@property (strong, readonly) NSDate *finishDate;
+@property (readonly, nonatomic) NSTimeInterval elapsedSeconds;
 
-/// @name Blocks
+// Blocks
 
-@property (retain, readonly) NSOperationQueue *blockQueue;
+@property (strong, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPBlock willStartBlock;
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
@@ -50,7 +50,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
 
-/// @name Initialization
+// Initialization
 
 + (id)withURLString:(NSString *)urlString;
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;

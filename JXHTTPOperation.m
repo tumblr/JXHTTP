@@ -11,61 +11,32 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 @interface JXHTTPOperation ()
 @property (assign) BOOL didIncrementCount;
-@property (retain) NSURLAuthenticationChallenge *authenticationChallenge;
-@property (retain) NSNumber *downloadProgress;
-@property (retain) NSNumber *uploadProgress;
-@property (retain) NSString *uniqueString;
-@property (retain) NSDate *startDate;
-@property (retain) NSDate *finishDate;
-@property (retain) NSOperationQueue *blockQueue;
+@property (strong) NSURLAuthenticationChallenge *authenticationChallenge;
+@property (strong) NSNumber *downloadProgress;
+@property (strong) NSNumber *uploadProgress;
+@property (strong) NSString *uniqueString;
+@property (strong) NSDate *startDate;
+@property (strong) NSDate *finishDate;
+@property (strong) NSOperationQueue *blockQueue;
 @property (assign) dispatch_once_t incrementCountPredicate;
 @property (assign) dispatch_once_t decrementCountPredicate;
 @end
 
 @implementation JXHTTPOperation
 
-@synthesize responseDataFilePath = _responseDataFilePath;
-
-#pragma mark -
-#pragma mark Initialization
+#pragma mark - Initialization
 
 - (void)dealloc
 {
     [self decrementOperationCount];
-
-    [_authenticationChallenge release];
-    [_requestBody release];
-    [_downloadProgress release];
-    [_uploadProgress release];
-    [_responseDataFilePath release];
-    [_uniqueString release];
-    [_userObject release];
-    [_credential release];
-    [_trustedHosts release];
-    [_username release];
-    [_password release];
-    [_startDate release];
-    [_finishDate release];
-
-    [_willStartBlock release];
-    [_willNeedNewBodyStreamBlock release];
-    [_willSendRequestForAuthenticationChallengeBlock release];
-    [_didReceiveResponseBlock release];
-    [_didReceiveDataBlock release];
-    [_didSendDataBlock release];
-    [_didFinishLoadingBlock release];
-    [_didFailBlock release];
-    [_blockQueue release];
-
-    [super dealloc];
 }
 
 - (id)init
 {
-    if ((self = [super init])) {
+    if (self = [super init]) {
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
 
-        self.blockQueue = [[[NSOperationQueue alloc] init] autorelease];
+        self.blockQueue = [[NSOperationQueue alloc] init];
         self.blockQueue.maxConcurrentOperationCount = 1;
         
         self.downloadProgress = @0.0f;
@@ -101,7 +72,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 + (id)withURLString:(NSString *)urlString
 {
-    return [[[self alloc] initWithURL:[NSURL URLWithString:urlString]] autorelease];
+    return [[self alloc] initWithURL:[[NSURL alloc] initWithString:urlString]];
 }
 
 + (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
@@ -114,12 +85,11 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     return [self withURLString:string];
 }
 
-#pragma mark -
-#pragma mark Private Methods
+#pragma mark - Private Methods
 
 - (void)performDelegateMethod:(SEL)selector
 {
-    __block JXHTTPBlock block = [self blockForSelector:selector];
+    JXHTTPBlock block = [self blockForSelector:selector];
 
     if (self.isCancelled || !(self.delegate || block))
         return;
@@ -127,33 +97,22 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if (self.performsDelegateMethodsOnMainThread) {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
-
         if ([self.requestBody respondsToSelector:selector])
             [self.requestBody performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
     } else {
         if ([self.delegate respondsToSelector:selector])
             [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
-
         if ([self.requestBody respondsToSelector:selector])
             [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
     }
 
     if (!block)
         return;
-
-    if (self.performsBlocksOnMainThread) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (!self.isCancelled)
-                block(self);
-        }];
-    } else {
-        __block JXHTTPOperation *blockSelf = [self retain];
-        [self.blockQueue addOperationWithBlock:^{
-            if (!blockSelf.isCancelled)
-                block(blockSelf);
-            [blockSelf release];
-        }];
-    }
+    
+    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : self.blockQueue) addOperationWithBlock:^{
+        if (!self.isCancelled)
+            block(self);
+    }];
 }
 
 - (JXHTTPBlock)blockForSelector:(SEL)selector
@@ -177,20 +136,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     return nil;
 }
 
-#pragma mark -
-#pragma mark Operation Count
-
-+ (dispatch_queue_t)operationCountQueue
-{
-    static dispatch_queue_t operationCountQueue;
-    static dispatch_once_t predicate;
-
-    dispatch_once(&predicate, ^{
-        operationCountQueue = dispatch_queue_create("JXHTTPOperation.operationCount", DISPATCH_QUEUE_SERIAL);
-    });
-
-    return operationCountQueue;
-}
+#pragma mark - Operation Count
 
 - (void)incrementOperationCount
 {
@@ -198,7 +144,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         if (!self.updatesNetworkActivityIndicator)
             return;
 
-        dispatch_async([JXHTTPOperation operationCountQueue], ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             ++JXHTTPOperationCount;
             [JXHTTPActivityTimer invalidate];
             [JXHTTPOperation toggleNetworkActivityVisible:@YES];
@@ -217,7 +163,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         if (!self.updatesNetworkActivityIndicator)
             return;
 
-        dispatch_async([JXHTTPOperation operationCountQueue], ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (--JXHTTPOperationCount < 1)
                 [JXHTTPOperation restartActivityTimer];
         });
@@ -227,9 +173,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 + (void)restartActivityTimer
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-
-    [JXHTTPActivityTimer release];
-
+    
     JXHTTPActivityTimer = [NSTimer timerWithTimeInterval:JXHTTPActivityTimerInterval
                                                   target:self
                                                 selector:@selector(networkActivityTimerDidFire:)
@@ -237,15 +181,17 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
                                                  repeats:NO];
     
     [[NSRunLoop mainRunLoop] addTimer:JXHTTPActivityTimer forMode:NSRunLoopCommonModes];
-    
-    [JXHTTPActivityTimer retain];
 
     #endif
 }
 
 + (void)networkActivityTimerDidFire:(NSTimer *)timer
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     [JXHTTPOperation toggleNetworkActivityVisible:@NO];
+    
+    #endif
 }
 
 + (void)toggleNetworkActivityVisible:(NSNumber *)visibility
@@ -262,15 +208,13 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     #endif
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (void)setResponseDataFilePath:(NSString *)filePath
 {
     if (self.isExecuting || self.isFinished)
         return;
 
-    [_responseDataFilePath release];
     _responseDataFilePath = [filePath copy];
 
     if ([self.responseDataFilePath length]) {
@@ -283,22 +227,21 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 - (NSTimeInterval)elapsedSeconds
 {
     if (self.startDate) {
-        NSDate *endDate = self.finishDate ? self.finishDate : [NSDate date];
+        NSDate *endDate = self.finishDate ? self.finishDate : [[NSDate alloc] init];
         return [endDate timeIntervalSinceDate:self.startDate];
     } else {
         return 0.0;
     }
 }
 
-#pragma mark -
-#pragma mark JXOperation
+#pragma mark - JXOperation
 
 - (void)main
 {
     if (self.isCancelled)
         return;
 
-    self.startDate = [NSDate date];
+    self.startDate = [[NSDate alloc] init];
     
     [self performDelegateMethod:@selector(httpOperationWillStart:)];
 
@@ -321,7 +264,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
         long long expectedLength = [self.requestBody httpContentLength];
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
-            [self.request setValue:[NSString stringWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
+            [self.request setValue:[[NSString alloc] initWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
 
     [super main];
@@ -334,8 +277,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     [super finish];
 }
 
-#pragma mark -
-#pragma mark <NSURLConnectionDelegate>
+#pragma mark - <NSURLConnectionDelegate>
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
@@ -346,7 +288,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     
     [self decrementOperationCount];
 
-    self.finishDate = [NSDate date];
+    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
@@ -396,8 +338,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     [[self.authenticationChallenge sender] continueWithoutCredentialForAuthenticationChallenge:self.authenticationChallenge];
 }
 
-#pragma mark -
-#pragma mark <NSURLConnectionDataDelegate>
+#pragma mark - <NSURLConnectionDataDelegate>
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {
@@ -438,7 +379,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = @1.0f;
     
-    self.finishDate = [NSDate date];
+    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
 }

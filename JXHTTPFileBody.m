@@ -2,15 +2,7 @@
 
 @implementation JXHTTPFileBody
 
-#pragma mark -
-#pragma mark Initialization
-
-- (void)dealloc
-{
-    [_filePath release];
-    
-    [super dealloc];
-}
+#pragma mark - Initialization
 
 + (id)emptyBody
 {
@@ -27,15 +19,14 @@
     id body = [[self alloc] init];
     [body setFilePath:filePath];
     [body setHttpContentType:contentType];
-    return [body autorelease];
+    return body;
 }
 
-#pragma mark -
-#pragma mark <JXHTTPRequestBody>
+#pragma mark - <JXHTTPRequestBody>
 
 - (NSInputStream *)httpInputStream
 {
-    return [NSInputStream inputStreamWithFileAtPath:self.filePath];
+    return [[NSInputStream alloc] initWithFileAtPath:self.filePath];
 }
 
 - (long long)httpContentLength

@@ -1,26 +1,18 @@
 #import "JXHTTPJSONBody.h"
 
 @interface JXHTTPJSONBody ()
-@property (nonatomic, retain) NSData *requestData;
+@property (strong, nonatomic) NSData *requestData;
 @end
 
 @implementation JXHTTPJSONBody
 
-#pragma mark -
-#pragma mark Initialization
-
-- (void)dealloc
-{
-    [_requestData release];
-    
-    [super dealloc];
-}
+#pragma mark - Initialization
 
 + (id)withData:(NSData *)data
 {
     id body = [[self alloc] init];
     [body setRequestData:data];
-    return [body autorelease];
+    return body;
 }
 
 + (id)withString:(NSString *)string
@@ -38,12 +30,11 @@
     return [self withData:data];
 }
 
-#pragma mark -
-#pragma mark <JXHTTPRequestBody>
+#pragma mark - <JXHTTPRequestBody>
 
 - (NSInputStream *)httpInputStream
 {
-    return [NSInputStream inputStreamWithData:self.requestData];
+    return [[NSInputStream alloc] initWithData:self.requestData];
 }
 
 - (NSString *)httpContentType
@@ -56,8 +47,7 @@
     return [self.requestData length];
 }
 
-#pragma mark -
-#pragma mark <JXHTTPOperationDelegate>
+#pragma mark - <JXHTTPOperationDelegate>
 
 - (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation
 {

@@ -5,50 +5,43 @@
 #endif
 
 @interface JXOperation ()
+@property (assign) BOOL isExecuting;
+@property (assign) BOOL isFinished;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
-@property (assign) BOOL isExecuting;
-@property (assign) BOOL isFinished;
 @end
 
 @implementation JXOperation
 
-@synthesize startsOnMainThread = _startsOnMainThread;
-@synthesize continuesInAppBackground = _continuesInAppBackground;
-
-#pragma mark -
-#pragma mark Initialization
+#pragma mark - Initialization
 
 - (void)dealloc
 {
     [self endAppBackgroundTask];
-    
-    [super dealloc];
 }
 
 - (id)init
 {
-    if ((self = [super init])) {
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-        self.backgroundTaskID = UIBackgroundTaskInvalid;
-        #endif
-
+    if (self = [super init]) {
         self.isExecuting = NO;
         self.isFinished = NO;
         self.startsOnMainThread = NO;
         self.continuesInAppBackground = NO;
+        
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+        self.backgroundTaskID = UIBackgroundTaskInvalid;
+        #endif
     }
     return self;
 }
 
 + (id)operation
 {
-    return [[[self alloc] init] autorelease];
+    return [[self alloc] init];
 }
 
-#pragma mark -
-#pragma mark NSOperation
+#pragma mark - NSOperation
 
 - (void)start
 {
@@ -74,8 +67,7 @@
     NSAssert(NO, @"subclasses must implement and eventually call finish");
 }
 
-#pragma mark -
-#pragma mark Public Methods
+#pragma mark - Public Methods
 
 - (BOOL)isConcurrent
 {
@@ -85,6 +77,7 @@
 - (void)cancel
 {
     [super cancel];
+
     [self finish];
 }
 
@@ -128,11 +121,9 @@
     NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
     [tempQueue addOperation:self];
     [tempQueue waitUntilAllOperationsAreFinished];
-    [tempQueue release];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (void)setStartsOnMainThread:(BOOL)shouldStart
 {
@@ -153,8 +144,7 @@
     }
 }
 
-#pragma mark -
-#pragma mark Private Methods
+#pragma mark - Private Methods
 
 - (void)startAppBackgroundTask
 {

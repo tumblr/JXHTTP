@@ -1,35 +1,22 @@
 #import "JXURLConnectionOperation.h"
 
 @interface JXURLConnectionOperation ()
-@property (retain) NSURLConnection *connection;
-@property (retain) NSMutableURLRequest *request;
-@property (retain) NSURLResponse *response;
-@property (retain) NSError *error;
-@property (retain) NSThread *runLoopThread;
+@property (strong) NSURLConnection *connection;
+@property (strong) NSMutableURLRequest *request;
+@property (strong) NSURLResponse *response;
+@property (strong) NSError *error;
+@property (strong) NSThread *runLoopThread;
 @property (assign) long long bytesDownloaded;
 @property (assign) long long bytesUploaded;
 @end
 
 @implementation JXURLConnectionOperation
 
-#pragma mark -
-#pragma mark Initialization
-
-- (void)dealloc
-{
-    [_connection release];
-    [_request release];
-    [_response release];
-    [_error release];
-    [_outputStream release];
-    [_runLoopThread release];
-
-    [super dealloc];
-}
+#pragma mark - Initialization
 
 - (id)init
 {
-    if ((self = [super init])) {
+    if (self = [super init]) {
         self.connection = nil;
         self.request = nil;
         self.response = nil;
@@ -45,14 +32,13 @@
 
 - (id)initWithURL:(NSURL *)url
 {
-    if ((self = [self init])) {
+    if (self = [self init]) {
         self.request = [NSMutableURLRequest requestWithURL:url];
     }
     return self;
 }
 
-#pragma mark -
-#pragma mark NSOperation
+#pragma mark - NSOperation
 
 - (void)main
 {    
@@ -66,14 +52,14 @@
 
     [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 
-    self.connection = [[[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO] autorelease];
+    self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
     [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection start];
 
     if ([NSRunLoop currentRunLoop] == [NSRunLoop mainRunLoop])
         return;
 
-    /**
+    /*
      Removing this line can cause operations cancelled in-flight to lose the thread
      they're running on, preventing them from ever deallocating (especially many concurrent
      operations). The usual "adding an empty port" trick doesn't keep the thread alive.
@@ -106,8 +92,7 @@
     [super finish];
 }
 
-#pragma mark -
-#pragma mark <NSURLConnectionDelegate>
+#pragma mark - <NSURLConnectionDelegate>
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
@@ -119,8 +104,7 @@
     [self finish];
 }
 
-#pragma mark -
-#pragma mark <NSURLConnectionDataDelegate>
+#pragma mark - <NSURLConnectionDataDelegate>
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)urlResponse
 {

@@ -2,22 +2,14 @@
 
 @implementation JXHTTPDataBody
 
-#pragma mark -
-#pragma mark Initialization
-
-- (void)dealloc
-{
-    [_data release];
-
-    [super dealloc];
-}
+#pragma mark - Initialization
 
 + (id)withData:(NSData *)data andContentType:(NSString *)contentType
 {
     id body = [[self alloc] init];
     [body setData:data];
     [body setHttpContentType:contentType];
-    return [body autorelease];
+    return body;
 }
 
 + (id)withData:(NSData *)data
@@ -30,12 +22,11 @@
     return [self withData:nil andContentType:nil];
 }
 
-#pragma mark -
-#pragma mark <JXHTTPRequestBody>
+#pragma mark - <JXHTTPRequestBody>
 
 - (NSInputStream *)httpInputStream
 {
-    return [NSInputStream inputStreamWithData:self.data];
+    return [[NSInputStream alloc] initWithData:self.data];
 }
 
 - (long long)httpContentLength

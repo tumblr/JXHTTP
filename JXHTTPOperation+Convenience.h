@@ -1,16 +1,16 @@
 #import "JXHTTPOperation.h"
 
-@interface JXHTTPOperation (Convenience)
+@interface JXHTTPOperation (JXHTTPOperationConvenience)
 
-@property (nonatomic, assign) NSURLCacheStoragePolicy requestCachePolicy;
-@property (nonatomic, assign) BOOL requestShouldUsePipelining;
-@property (nonatomic, retain) NSURL *requestMainDocumentURL;
-@property (nonatomic, assign) NSTimeInterval requestTimeoutInterval;
-@property (nonatomic, assign) NSURLRequestNetworkServiceType requestNetworkServiceType;
-@property (nonatomic, retain) NSURL *requestURL;
-@property (nonatomic, retain) NSDictionary *requestHeaders;
-@property (nonatomic, retain) NSString *requestMethod;
-@property (nonatomic, assign) BOOL requestShouldHandleCookies;
+@property (assign, nonatomic) NSURLCacheStoragePolicy requestCachePolicy;
+@property (assign, nonatomic) BOOL requestShouldUsePipelining;
+@property (strong, nonatomic) NSURL *requestMainDocumentURL;
+@property (assign, nonatomic) NSTimeInterval requestTimeoutInterval;
+@property (assign, nonatomic) NSURLRequestNetworkServiceType requestNetworkServiceType;
+@property (strong, nonatomic) NSURL *requestURL;
+@property (strong, nonatomic) NSDictionary *requestHeaders;
+@property (strong, nonatomic) NSString *requestMethod;
+@property (assign, nonatomic) BOOL requestShouldHandleCookies;
 
 - (void)addValue:(NSString *)valueString forRequestHeader:(NSString *)headerFieldString;
 - (void)setValue:(NSString *)valueString forRequestHeader:(NSString *)headerFieldString;

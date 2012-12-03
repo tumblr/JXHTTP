@@ -2,8 +2,8 @@
 
 @interface JXHTTPDataBody : NSObject <JXHTTPRequestBody>
 
-@property (nonatomic, retain) NSData *data;
-@property (nonatomic, copy) NSString *httpContentType;
+@property (strong, nonatomic) NSData *data;
+@property (copy, nonatomic) NSString *httpContentType;
 
 + (id)emptyBody;
 + (id)withData:(NSData *)data;

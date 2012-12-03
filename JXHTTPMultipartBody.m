@@ -6,24 +6,14 @@ typedef enum {
 } JXHTTPMultipartPartType;
 
 @interface JXHTTPMultipartPart : NSObject
-@property (nonatomic, assign) JXHTTPMultipartPartType multipartType;
-@property (nonatomic, retain) NSString *key;
-@property (nonatomic, retain) NSData *preData;
-@property (nonatomic, retain) NSData *contentData;
-@property (nonatomic, retain) NSData *postData;
+@property (assign, nonatomic) JXHTTPMultipartPartType multipartType;
+@property (strong, nonatomic) NSString *key;
+@property (strong, nonatomic) NSData *preData;
+@property (strong, nonatomic) NSData *contentData;
+@property (strong, nonatomic) NSData *postData;
 @end
 
 @implementation JXHTTPMultipartPart
-
-- (void)dealloc
-{
-    [_key release];
-    [_preData release];
-    [_contentData release];
-    [_postData release];
-    
-    [super dealloc];
-}
 
 + (id)withMultipartType:(JXHTTPMultipartPartType)type
                     key:(NSString *)key
@@ -36,7 +26,7 @@ typedef enum {
     part.multipartType = type;    
     part.key = key;
     
-    NSMutableString *preString = [NSMutableString stringWithFormat:@"%@\r\n", boundaryString];
+    NSMutableString *preString = [[NSMutableString alloc] initWithFormat:@"%@\r\n", boundaryString];
     [preString appendFormat:@"Content-Disposition: form-data; name=\"%@\"", key];
     
     if ([fileNameOrNil length])
@@ -54,13 +44,13 @@ typedef enum {
     part.contentData = data;
     part.postData = [@"\r\n" dataUsingEncoding:NSUTF8StringEncoding];    
     
-    return [part autorelease];
+    return part;
 }
 
 - (NSString *)filePath
 {
     if (self.multipartType == JXHTTPMultipartFile)
-        return [[[NSString alloc] initWithData:self.contentData encoding:NSUTF8StringEncoding] autorelease];
+        return [[NSString alloc] initWithData:self.contentData encoding:NSUTF8StringEncoding];
     
     return nil;
 }
@@ -99,7 +89,7 @@ typedef enum {
     NSUInteger dataOffset = 0;
     NSUInteger bytesAppended = 0;
     
-    for (NSData *data in [NSArray arrayWithObjects:self.preData, self.contentData, self.postData, nil]) {
+    for (NSData *data in @[self.preData, self.contentData, self.postData]) {
         NSUInteger dataLength = data == self.contentData ? [self contentLength] : [data length];
         NSRange dataRange = NSMakeRange(dataOffset, dataLength);
         NSRange intersection = NSIntersectionRange(dataRange, searchRange);
@@ -138,54 +128,42 @@ typedef enum {
 
 @end
 
-#pragma mark -
-#pragma mark JXHTTPMultiPartBody
+#pragma mark - JXHTTPMultiPartBody
 
 @interface JXHTTPMultipartBody ()
-@property (nonatomic, retain) NSMutableArray *partsArray;
-@property (nonatomic, retain) NSString *boundaryString;
-@property (nonatomic, retain) NSData *finalBoundaryData;
-@property (nonatomic, retain) NSString *httpContentType;
-@property (nonatomic, retain) NSInputStream *httpInputStream;
-@property (nonatomic, retain) NSOutputStream *httpOutputStream;
-@property (nonatomic, retain) NSMutableData *bodyDataBuffer;
-@property (nonatomic, assign) NSUInteger streamBufferLength;
-@property (nonatomic, assign) long long httpContentLength;
-@property (nonatomic, assign) long long bytesWritten;
+@property (strong, nonatomic) NSMutableArray *partsArray;
+@property (strong, nonatomic) NSString *boundaryString;
+@property (strong, nonatomic) NSData *finalBoundaryData;
+@property (strong, nonatomic) NSString *httpContentType;
+@property (strong, nonatomic) NSInputStream *httpInputStream;
+@property (strong, nonatomic) NSOutputStream *httpOutputStream;
+@property (strong, nonatomic) NSMutableData *bodyDataBuffer;
+@property (assign, nonatomic) NSUInteger streamBufferLength;
+@property (assign, nonatomic) long long httpContentLength;
+@property (assign, nonatomic) long long bytesWritten;
 @end
 
 @implementation JXHTTPMultipartBody
 
-#pragma mark -
-#pragma mark Initialization
+#pragma mark - Initialization
 
 - (void)dealloc
 {
     self.httpOutputStream.delegate = nil;
     [self.httpOutputStream close];
-    
-    [_partsArray release];
-    [_boundaryString release];
-    [_finalBoundaryData release];
-    [_httpContentType release];
-    [_httpInputStream release];
-    [_httpOutputStream release];
-    [_bodyDataBuffer release];
-    
-    [super dealloc];
 }
 
 - (id)init
 {
-    if ((self = [super init])) {
-        NSString *dateString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
-        NSString *plainBoundaryString = [NSString stringWithFormat:@"JXHTTP-%@-%@", [[NSProcessInfo processInfo] globallyUniqueString], dateString];
+    if (self = [super init]) {
+        NSString *dateString = [[NSString alloc] initWithFormat:@"%.0f", [[[NSDate alloc] init] timeIntervalSince1970]];
+        NSString *plainBoundaryString = [[NSString alloc] initWithFormat:@"JXHTTP-%@-%@", [[NSProcessInfo processInfo] globallyUniqueString], dateString];
 
-        self.boundaryString = [NSString stringWithFormat:@"--%@", plainBoundaryString];
-        self.finalBoundaryData = [[NSString stringWithFormat:@"--%@--\r\n", plainBoundaryString] dataUsingEncoding:NSUTF8StringEncoding];
-        self.httpContentType = [NSString stringWithFormat:@"multipart/form-data; charset=utf-8; boundary=%@", plainBoundaryString];
-        self.partsArray = [NSMutableArray array];
-        self.streamBufferLength = 0x10000; //64K
+        self.boundaryString = [[NSString alloc] initWithFormat:@"--%@", plainBoundaryString];
+        self.finalBoundaryData = [[[NSString alloc] initWithFormat:@"--%@--\r\n", plainBoundaryString] dataUsingEncoding:NSUTF8StringEncoding];
+        self.httpContentType = [[NSString alloc] initWithFormat:@"multipart/form-data; charset=utf-8; boundary=%@", plainBoundaryString];
+        self.partsArray = [[NSMutableArray alloc] init];
+        self.streamBufferLength = 0x10000; // 64K
     }
     return self;
 }
@@ -198,16 +176,15 @@ typedef enum {
         [body addString:[stringParameters objectForKey:key] forKey:key];
     }
     
-    return [body autorelease];
+    return body;
 }
 
 + (id)emptyBody
 {
-    return [[[self alloc] init] autorelease];
+    return [[self alloc] init];
 }
 
-#pragma mark -
-#pragma mark <JXHTTPRequestBody>
+#pragma mark - <JXHTTPRequestBody>
 
 - (long long)httpContentLength
 {
@@ -228,8 +205,7 @@ typedef enum {
     return _httpContentLength;
 }
 
-#pragma mark -
-#pragma mark <JXHTTPOperationDelegate>
+#pragma mark - <JXHTTPOperationDelegate>
 
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation
 {
@@ -241,12 +217,11 @@ typedef enum {
     [self recreateStreams];
 }
 
-#pragma mark -
-#pragma mark Private Methods
+#pragma mark - Private Methods
 
 - (void)recreateStreams
 {
-    self.bodyDataBuffer = [NSMutableData dataWithCapacity:self.streamBufferLength];    
+    self.bodyDataBuffer = [[NSMutableData alloc] initWithCapacity:self.streamBufferLength];
     self.httpContentLength = NSURLResponseUnknownLength;
     self.bytesWritten = 0LL;
     
@@ -258,12 +233,13 @@ typedef enum {
     
     CFReadStreamRef readStream = NULL;
     CFWriteStreamRef writeStream = NULL;
-    
     CFStreamCreateBoundPair(kCFAllocatorDefault, &readStream, &writeStream, (CFIndex)self.streamBufferLength);
     
     if (readStream != NULL && writeStream != NULL) {
-        self.httpInputStream = (NSInputStream *)readStream;
-        self.httpOutputStream = (NSOutputStream *)writeStream;
+        self.httpInputStream = (__bridge_transfer NSInputStream *)readStream;
+        self.httpOutputStream = (__bridge_transfer NSOutputStream *)writeStream;
+        readStream = NULL;
+        writeStream = NULL;
         
         self.httpOutputStream.delegate = self;
         [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
@@ -272,14 +248,13 @@ typedef enum {
     
     if (readStream != NULL)
         CFRelease(readStream);
-    
     if (writeStream != NULL)
         CFRelease(writeStream);
 }
 
 - (void)setPartWithType:(JXHTTPMultipartPartType)type forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil data:(NSData *)data
 {
-    NSMutableArray *removal = [NSMutableArray arrayWithCapacity:[self.partsArray count]];
+    NSMutableArray *removal = [[NSMutableArray alloc] initWithCapacity:[self.partsArray count]];
     for (JXHTTPMultipartPart *part in self.partsArray) {
         if ([part.key isEqualToString:key])
             [removal addObject:part];
@@ -298,8 +273,7 @@ typedef enum {
     self.httpContentLength = NSURLResponseUnknownLength;
 }
 
-#pragma mark -
-#pragma mark <NSStreamDelegate>
+#pragma mark - <NSStreamDelegate>
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
 {
@@ -367,8 +341,7 @@ typedef enum {
     return bytesLoaded;
 }
 
-#pragma mark -
-#pragma mark Public Methods
+#pragma mark - Public Methods
 
 - (void)addString:(NSString *)string forKey:(NSString *)key
 {

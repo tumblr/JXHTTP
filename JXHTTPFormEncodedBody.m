@@ -2,32 +2,24 @@
 #import "JXURLEncoding.h"
 
 @interface JXHTTPFormEncodedBody ()
-@property (nonatomic, retain) NSMutableDictionary *dictionary;
+@property (strong, nonatomic) NSMutableDictionary *dictionary;
 @end
 
 @implementation JXHTTPFormEncodedBody
 
-#pragma mark -
-#pragma mark Initialization
-
-- (void)dealloc
-{
-    [_dictionary release];
-    
-    [super dealloc];
-}
+#pragma mark - Initialization
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
-    if ((self = [self init])) {
-        self.dictionary = dict ? [NSMutableDictionary dictionaryWithDictionary:dict] : [NSMutableDictionary dictionary];
+    if (self = [self init]) {
+        self.dictionary = dict ? [[NSMutableDictionary alloc] initWithDictionary:dict] : [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 + (id)withDictionary:(NSDictionary *)dictionary
 {
-    return [[[self alloc] initWithDictionary:dictionary] autorelease];
+    return [[self alloc] initWithDictionary:dictionary];
 }
 
 + (id)emptyBody
@@ -35,20 +27,18 @@
     return [self withDictionary:nil];
 }
 
-#pragma mark -
-#pragma mark Private Methods
+#pragma mark - Private Methods
 
 - (NSData *)requestData
 {
     return [[JXURLEncoding formEncodedDictionary:self.dictionary] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-#pragma mark -
-#pragma mark <JXHTTPRequestBody>
+#pragma mark - <JXHTTPRequestBody>
 
 - (NSInputStream *)httpInputStream
 {
-    return [NSInputStream inputStreamWithData:[self requestData]];
+    return [[NSInputStream alloc] initWithData:[self requestData]];
 }
 
 - (NSString *)httpContentType
