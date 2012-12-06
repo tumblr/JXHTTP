@@ -5,7 +5,6 @@
 @property (strong) NSMutableURLRequest *request;
 @property (strong) NSURLResponse *response;
 @property (strong) NSError *error;
-@property (strong) NSThread *runLoopThread;
 @property (assign) long long bytesDownloaded;
 @property (assign) long long bytesUploaded;
 @end
@@ -22,7 +21,6 @@
         self.response = nil;
         self.error = nil;
         self.outputStream = nil;
-        self.runLoopThread = nil;
 
         self.bytesDownloaded = 0LL;
         self.bytesUploaded = 0LL;
@@ -33,7 +31,7 @@
 - (id)initWithURL:(NSURL *)url
 {
     if (self = [self init]) {
-        self.request = [NSMutableURLRequest requestWithURL:url];
+        self.request = [[NSMutableURLRequest alloc] initWithURL:url];
     }
     return self;
 }
@@ -44,8 +42,6 @@
 {    
     if (self.isCancelled)
         return;
-
-    self.runLoopThread = [NSThread currentThread];
     
     if (!self.outputStream)
         self.outputStream = [NSOutputStream outputStreamToMemory];
@@ -59,37 +55,19 @@
     if ([NSRunLoop currentRunLoop] == [NSRunLoop mainRunLoop])
         return;
 
-    /*
-     Removing this line can cause operations cancelled in-flight to lose the thread
-     they're running on, preventing them from ever deallocating (especially many concurrent
-     operations). The usual "adding an empty port" trick doesn't keep the thread alive.
-     The downside is a small chance that the operation will take up to 5 seconds to
-     dealloc after being cancelled. This should be considered a temporary solution.
-     http://macsamurai.blogspot.com/2008/03/nsoperation-madness.html
-     */
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5]];
-
     while(!self.isFinished) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        @autoreleasepool {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
     }
-}
-
-- (void)finish
-{
-    if (self.runLoopThread && self.runLoopThread != [NSThread currentThread]) {
-        [self performSelector:@selector(finish) onThread:self.runLoopThread withObject:nil waitUntilDone:NO];
-        return;
-    }
-
-    self.runLoopThread = nil;
     
     [self.connection cancel];
-    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    
     [self.outputStream close];
+    
+    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
-    [super finish];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 }
 
 #pragma mark - <NSURLConnectionDelegate>
