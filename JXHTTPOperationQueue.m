@@ -20,8 +20,13 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (strong) NSNumber *expectedUploadBytes;
 @property (strong) NSMutableSet *observedOperationSet;
 @property (strong) NSOperationQueue *blockQueue;
+#if OS_OBJECT_USE_OBJC
 @property (strong) dispatch_queue_t observationQueue;
 @property (strong) dispatch_queue_t progressMathQueue;
+#else
+@property (assign) dispatch_queue_t observationQueue;
+@property (assign) dispatch_queue_t progressMathQueue;
+#endif
 @end
 
 @implementation JXHTTPOperationQueue
@@ -32,7 +37,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 {
     [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueContext];
 
-    self.delegate = nil;
+    _delegate = nil;
+
+    #if !OS_OBJECT_USE_OBJC
+    dispatch_release(_observationQueue);
+    dispatch_release(_progressMathQueue);
+    #endif
 }
 
 - (id)init
