@@ -1,18 +1,18 @@
 # JXHTTP #
 
-## Cocoa networking framework ##
+## You Know, For Networking ##
 
-See [jxhttp.justinouellette.com](http://jxhttp.justinouellette.com) for more details.
+JXHTTP uses ARC and GCD, and thus requires iOS 5.0 or OS X 10.7 (or newer). Better docs coming soon.
 
 ## Examples ##
 
-`#import "JXHTTP.h"` or you're gonna have a bad time. We assume you've already imported `Foundation.h` somewhere.
+`#import "JXHTTP.h"` somewhere convenient. We assume you've already imported `Foundation.h` somewhere.
 
 ### Asynchronous ###
 
 ```objective-c
-__block JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
-op.completionBlock = ^{
+JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
     NSLog(@"%@", op.responseString);
 };
 
@@ -26,24 +26,6 @@ JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.
 [op startAndWaitUntilFinished];
 
 NSLog(@"%@", op.responseString);
-```
-
-## Documentation ##
-
-Generate HTML docs with [appledoc](http://gentlebytes.com/appledoc/) from the project root:
-
-```sh
-appledoc \
-	--project-name JXHTTP \
-	--project-company "Justin Ouellette" \
-	--company-id com.justinouellette \
-	--no-create-docset \
-	--create-html \
-	--clean-output \
-	--explicit-crossref \
-	--no-repeat-first-par \
-	--output "~/Desktop/JXHTTP docs" \
-	.
 ```
 
 ## License ##
