@@ -135,7 +135,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)resetProgress
 {
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
 
     dispatch_barrier_async(self.progressMathQueue, ^{
         weakSelf.bytesDownloadedPerOperation = [[NSMutableDictionary alloc] init];
@@ -160,7 +160,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         return;
     }
 
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
 
     if (object == self && [keyPath isEqualToString:@"operations"]) {
         if (![[change objectForKey:NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeSetting)

@@ -295,7 +295,7 @@ typedef enum {
     }
     
     NSUInteger bytesRemaining = self.httpContentLength - self.bytesWritten;
-    NSUInteger length = MIN(bytesRemaining, self.streamBufferLength);
+    NSUInteger length = bytesRemaining < self.streamBufferLength ? bytesRemaining : self.streamBufferLength;
     
     NSUInteger bytesLoaded = [self loadMutableData:self.bodyDataBuffer withRange:NSMakeRange(self.bytesWritten, length)];
     NSInteger bytesOutput = bytesLoaded ? [self.httpOutputStream write:[self.bodyDataBuffer bytes] maxLength:bytesLoaded] : 0;

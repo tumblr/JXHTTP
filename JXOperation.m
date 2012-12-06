@@ -1,9 +1,5 @@
 #import "JXOperation.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
-#import <UIKit/UIKit.h>
-#endif
-
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
@@ -64,7 +60,7 @@
 
 - (void)main
 {
-    NSAssert(NO, @"subclasses must implement and eventually call finish");
+    NSAssert(NO, @"subclasses must implement and eventually call finish", nil);
 }
 
 #pragma mark - Public Methods

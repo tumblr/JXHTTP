@@ -264,7 +264,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
         long long expectedLength = [self.requestBody httpContentLength];
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
-            [self.request setValue:[[NSString alloc] initWithFormat:@"%qi", expectedLength] forHTTPHeaderField:@"Content-Length"];
+            [self.request setValue:[[NSString alloc] initWithFormat:@"%lld", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
 
     [super main];
