@@ -86,20 +86,9 @@
     if (self.isFinished)
         return;
 
-    /*
-     For reasons unknown, if the `start` method is never called then doing
-     willChange/didChange for `isFinished` results in two unnerving behaviors:
-     
-     1. The log sometimes complains that "[the operation] went isFinished=YES
-        without being started by the queue it is in"
-     
-     2. Especailly with multiple concurrent operations, a crash often occurs
-        with `EXC_BAD_ACCESS` on `____NSOQschedule_block_invoke_0`
-     
-     Not setting `isFinished` at all prevents the operation from being removed
-     from the queue and ultimately deallocated, so when an operation is
-     cancelled we always `finish` it at the same time (see `cancel`).
-     */
+    // Only call willChange & didChange if `start` was called,
+    // otherwise we risk crashing with concurrent operations.
+    // Also makes it safe to `finish` on `cancel`.
      
     if (self.isExecuting) {
         [self willChangeValueForKey:@"isExecuting"];
