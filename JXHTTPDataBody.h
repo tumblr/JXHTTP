@@ -5,8 +5,9 @@
 @property (strong, nonatomic) NSData *data;
 @property (copy, nonatomic) NSString *httpContentType;
 
-+ (id)emptyBody;
 + (id)withData:(NSData *)data;
-+ (id)withData:(NSData *)data andContentType:(NSString *)contentType;
++ (id)withData:(NSData *)data contentType:(NSString *)contentType;
+
+- (id)initWithData:(NSData *)data contentType:(NSString *)contentType;
 
 @end

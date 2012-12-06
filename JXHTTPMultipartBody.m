@@ -168,20 +168,19 @@ typedef enum {
     return self;
 }
 
-+ (id)withDictionary:(NSDictionary *)stringParameters
+- (id)initWithDictionary:(NSDictionary *)stringParameters
 {
-    id body = [[self alloc] init];
-    
-    for (NSString *key in [stringParameters allKeys]) {
-        [body addString:[stringParameters objectForKey:key] forKey:key];
+    if (self = [super init]) {
+        for (NSString *key in [stringParameters allKeys]) {
+            [self addString:[stringParameters objectForKey:key] forKey:key];
+        }
     }
-    
-    return body;
+    return self;
 }
 
-+ (id)emptyBody
++ (id)withDictionary:(NSDictionary *)stringParameters
 {
-    return [[self alloc] init];
+    return [[self alloc] initWithDictionary:stringParameters];
 }
 
 #pragma mark - <JXHTTPRequestBody>

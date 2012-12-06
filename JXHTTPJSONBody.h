@@ -6,4 +6,6 @@
 + (id)withString:(NSString *)string;
 + (id)withJSONObject:(id)dictionaryOrArray;
 
+- (id)initWithData:(NSData *)data;
+
 @end

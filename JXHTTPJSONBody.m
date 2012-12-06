@@ -8,11 +8,17 @@
 
 #pragma mark - Initialization
 
+- (id)initWithData:(NSData *)data
+{
+    if (self = [super init]) {
+        self.requestData = data;
+    }
+    return self;
+}
+
 + (id)withData:(NSData *)data
 {
-    id body = [[self alloc] init];
-    [body setRequestData:data];
-    return body;
+    return [[self alloc] initWithData:data];
 }
 
 + (id)withString:(NSString *)string

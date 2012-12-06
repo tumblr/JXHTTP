@@ -4,22 +4,23 @@
 
 #pragma mark - Initialization
 
-+ (id)emptyBody
+- (id)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType
 {
-    return [self withFilePath:nil andContentType:nil];
+    if (self = [super init]) {
+        self.filePath = filePath;
+        self.httpContentType = contentType;
+    }
+    return self;
+}
+
++ (id)withFilePath:(NSString *)filePath contentType:(NSString *)contentType
+{
+    return [[self alloc] initWithFilePath:filePath contentType:contentType];
 }
 
 + (id)withFilePath:(NSString *)filePath
 {
-    return [self withFilePath:filePath andContentType:nil];
-}
-
-+ (id)withFilePath:(NSString *)filePath andContentType:(NSString *)contentType
-{
-    id body = [[self alloc] init];
-    [body setFilePath:filePath];
-    [body setHttpContentType:contentType];
-    return body;
+    return [self withFilePath:filePath contentType:nil];
 }
 
 #pragma mark - <JXHTTPRequestBody>

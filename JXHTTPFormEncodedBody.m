@@ -9,10 +9,10 @@
 
 #pragma mark - Initialization
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (id)initWithDictionary:(NSDictionary *)dictionary
 {
     if (self = [self init]) {
-        self.dictionary = dict ? [[NSMutableDictionary alloc] initWithDictionary:dict] : [[NSMutableDictionary alloc] init];
+        self.dictionary = dictionary ? [[NSMutableDictionary alloc] initWithDictionary:dictionary] : [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -20,11 +20,6 @@
 + (id)withDictionary:(NSDictionary *)dictionary
 {
     return [[self alloc] initWithDictionary:dictionary];
-}
-
-+ (id)emptyBody
-{
-    return [self withDictionary:nil];
 }
 
 #pragma mark - Private Methods

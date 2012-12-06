@@ -4,22 +4,23 @@
 
 #pragma mark - Initialization
 
-+ (id)withData:(NSData *)data andContentType:(NSString *)contentType
+- (id)initWithData:(NSData *)data contentType:(NSString *)contentType
 {
-    id body = [[self alloc] init];
-    [body setData:data];
-    [body setHttpContentType:contentType];
-    return body;
+    if (self = [super init]) {
+        self.data = data;
+        self.httpContentType = contentType;
+    }
+    return self;
+}
+
++ (id)withData:(NSData *)data contentType:(NSString *)contentType
+{
+    return [[self alloc] initWithData:data contentType:contentType];
 }
 
 + (id)withData:(NSData *)data
 {
-    return [self withData:data andContentType:nil];
-}
-
-+ (id)emptyBody
-{
-    return [self withData:nil andContentType:nil];
+    return [self withData:data contentType:nil];
 }
 
 #pragma mark - <JXHTTPRequestBody>
