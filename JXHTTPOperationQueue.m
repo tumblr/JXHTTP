@@ -37,8 +37,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 {
     [self removeObserver:self forKeyPath:@"operations" context:JXHTTPOperationQueueContext];
 
-    _delegate = nil;
-
     #if !OS_OBJECT_USE_OBJC
     dispatch_release(_observationQueue);
     dispatch_release(_progressMathQueue);
