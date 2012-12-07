@@ -1,10 +1,6 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-#import <UIKit/UIKit.h>
-#endif
-
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
