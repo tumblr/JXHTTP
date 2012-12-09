@@ -3,6 +3,7 @@
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+@property (assign) dispatch_once_t finishOnce;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
@@ -79,24 +80,23 @@
 
 - (void)finish
 {
-    if (self.isFinished)
-        return;
-
     // Only call willChange & didChange if `start` was called,
     // otherwise we risk crashing with concurrent operations.
     // Also makes it safe to `finish` on `cancel`.
-     
-    if (self.isExecuting) {
-        [self willChangeValueForKey:@"isExecuting"];
-        [self willChangeValueForKey:@"isFinished"];
-        self.isExecuting = NO;
-        self.isFinished = YES;
-        [self didChangeValueForKey:@"isExecuting"];
-        [self didChangeValueForKey:@"isFinished"];
-    } else {
-        self.isExecuting = NO;
-        self.isFinished = YES;
-    }
+    
+    dispatch_once(&_finishOnce, ^{
+        if (self.isExecuting) {
+            [self willChangeValueForKey:@"isExecuting"];
+            [self willChangeValueForKey:@"isFinished"];
+            self.isExecuting = NO;
+            self.isFinished = YES;
+            [self didChangeValueForKey:@"isExecuting"];
+            [self didChangeValueForKey:@"isFinished"];
+        } else {
+            self.isExecuting = NO;
+            self.isFinished = YES;
+        }
+    });
 
     [self endAppBackgroundTask];
 }
