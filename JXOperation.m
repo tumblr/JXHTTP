@@ -3,6 +3,7 @@
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+@property (assign) dispatch_once_t startOnce;
 @property (assign) dispatch_once_t finishOnce;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
@@ -50,13 +51,15 @@
     if (!self.isReady || self.isCancelled || self.isExecuting || self.isFinished)
         return;
     
-    [self willChangeValueForKey:@"isExecuting"];
-    self.isExecuting = YES;
-    [self didChangeValueForKey:@"isExecuting"];
-    
-    @autoreleasepool {
-        [self main];
-    }
+    dispatch_once(&_startOnce, ^{
+        [self willChangeValueForKey:@"isExecuting"];
+        self.isExecuting = YES;
+        [self didChangeValueForKey:@"isExecuting"];
+        
+        @autoreleasepool {
+            [self main];
+        }
+    });
 }
 
 - (void)main
