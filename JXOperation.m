@@ -85,8 +85,7 @@
 {
     // Only call willChange & didChange if `start` was called,
     // otherwise we risk crashing with concurrent operations.
-    // Also makes it safe to `finish` on `cancel`.
-    
+
     dispatch_once(&_finishOnce, ^{
         if (self.isExecuting) {
             [self willChangeValueForKey:@"isExecuting"];
@@ -112,14 +111,6 @@
 }
 
 #pragma mark - Accessors
-
-- (void)setStartsOnMainThread:(BOOL)shouldStart
-{
-    if (self.isExecuting || self.isFinished)
-        return;
-
-    _startsOnMainThread = shouldStart;
-}
 
 - (void)setContinuesInAppBackground:(BOOL)shouldContinue
 {
