@@ -69,11 +69,6 @@
 
 #pragma mark - Public Methods
 
-- (BOOL)isConcurrent
-{
-    return YES;
-}
-
 - (void)cancel
 {
     [super cancel];
@@ -111,6 +106,11 @@
 }
 
 #pragma mark - Accessors
+
+- (BOOL)isConcurrent
+{
+    return YES;
+}
 
 - (void)setContinuesInAppBackground:(BOOL)shouldContinue
 {
