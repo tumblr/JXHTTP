@@ -3,6 +3,7 @@
 @interface JXOperation ()
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+@property (strong) dispatch_queue_t stateQueue;
 @property (assign) dispatch_once_t startOnce;
 @property (assign) dispatch_once_t finishOnce;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
@@ -26,6 +27,7 @@
         self.isFinished = NO;
         self.startsOnMainThread = NO;
         self.continuesInAppBackground = NO;
+        self.stateQueue = dispatch_queue_create([NSStringFromClass([self class]) UTF8String], DISPATCH_QUEUE_SERIAL);
         
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
         self.backgroundTaskID = UIBackgroundTaskInvalid;
@@ -48,13 +50,24 @@
         return;
     }
     
-    if (!self.isReady || self.isCancelled || self.isExecuting || self.isFinished)
+    if (!self.isReady || self.isCancelled)
         return;
     
     dispatch_once(&_startOnce, ^{
-        [self willChangeValueForKey:@"isExecuting"];
-        self.isExecuting = YES;
-        [self didChangeValueForKey:@"isExecuting"];
+        __block BOOL finished = NO;
+
+        dispatch_sync(self.stateQueue, ^{
+            if (self.isFinished) {
+                finished = YES;
+            } else {
+                [self willChangeValueForKey:@"isExecuting"];
+                self.isExecuting = YES;
+                [self didChangeValueForKey:@"isExecuting"];
+            }
+        });
+
+        if (finished)
+            return;
         
         @autoreleasepool {
             [self main];
@@ -78,24 +91,24 @@
 
 - (void)finish
 {
-    // Only call willChange & didChange if `start` was called,
-    // otherwise we risk crashing with concurrent operations.
-
     dispatch_once(&_finishOnce, ^{
-        if (self.isExecuting) {
-            [self willChangeValueForKey:@"isExecuting"];
-            [self willChangeValueForKey:@"isFinished"];
-            self.isExecuting = NO;
-            self.isFinished = YES;
-            [self didChangeValueForKey:@"isExecuting"];
-            [self didChangeValueForKey:@"isFinished"];
-        } else {
-            self.isExecuting = NO;
-            self.isFinished = YES;
-        }
-    });
+        dispatch_sync(self.stateQueue, ^{
+            if (self.isExecuting) {
+                // only call willChange & didChange if `start` was called
+                [self willChangeValueForKey:@"isExecuting"];
+                [self willChangeValueForKey:@"isFinished"];
+                self.isExecuting = NO;
+                self.isFinished = YES;
+                [self didChangeValueForKey:@"isExecuting"];
+                [self didChangeValueForKey:@"isFinished"];
+            } else {
+                self.isExecuting = NO;
+                self.isFinished = YES;
+            }
+        });
 
-    [self endAppBackgroundTask];
+        [self endAppBackgroundTask];
+    });
 }
 
 - (void)startAndWaitUntilFinished
