@@ -2,6 +2,8 @@
 
 @interface JXHTTPMultipartBody : NSObject <NSStreamDelegate, JXHTTPRequestBody>
 
+@property (assign, nonatomic) NSUInteger streamBufferLength;
+
 + (instancetype)withDictionary:(NSDictionary *)stringParameters;
 
 - (instancetype)initWithDictionary:(NSDictionary *)stringParameters;

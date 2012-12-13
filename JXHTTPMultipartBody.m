@@ -140,7 +140,6 @@ typedef enum {
 @property (strong, nonatomic) NSInputStream *httpInputStream;
 @property (strong, nonatomic) NSOutputStream *httpOutputStream;
 @property (strong, nonatomic) NSMutableData *bodyDataBuffer;
-@property (assign, nonatomic) NSUInteger streamBufferLength;
 @property (assign, nonatomic) long long httpContentLength;
 @property (assign, nonatomic) long long bytesWritten;
 @end
