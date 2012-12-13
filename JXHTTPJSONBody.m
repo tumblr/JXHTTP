@@ -1,4 +1,5 @@
 #import "JXHTTPJSONBody.h"
+#import "JXHTTP.h"
 
 @interface JXHTTPJSONBody ()
 @property (strong, nonatomic) NSData *requestData;
@@ -8,7 +9,7 @@
 
 #pragma mark - Initialization
 
-- (id)initWithData:(NSData *)data
+- (instancetype)initWithData:(NSData *)data
 {
     if (self = [super init]) {
         self.requestData = data;
@@ -16,22 +17,22 @@
     return self;
 }
 
-+ (id)withData:(NSData *)data
++ (instancetype)withData:(NSData *)data
 {
     return [[self alloc] initWithData:data];
 }
 
-+ (id)withString:(NSString *)string
++ (instancetype)withString:(NSString *)string
 {
     return [self withData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-+ (id)withJSONObject:(id)dictionaryOrArray
++ (instancetype)withJSONObject:(id)dictionaryOrArray
 {
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionaryOrArray options:0 error:&error];
-    if (error)
-        NSLog(@"%@", error);
+    if (error != nil)
+        JXLogError(error);
         
     return [self withData:data];
 }

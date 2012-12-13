@@ -4,7 +4,7 @@
 
 #pragma mark - Initialization
 
-- (id)initWithData:(NSData *)data contentType:(NSString *)contentType
+- (instancetype)initWithData:(NSData *)data contentType:(NSString *)contentType
 {
     if (self = [super init]) {
         self.data = data;
@@ -13,12 +13,12 @@
     return self;
 }
 
-+ (id)withData:(NSData *)data contentType:(NSString *)contentType
++ (instancetype)withData:(NSData *)data contentType:(NSString *)contentType
 {
     return [[self alloc] initWithData:data contentType:contentType];
 }
 
-+ (id)withData:(NSData *)data
++ (instancetype)withData:(NSData *)data
 {
     return [self withData:data contentType:nil];
 }

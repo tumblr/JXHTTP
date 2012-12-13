@@ -1,10 +1,11 @@
 #import "JXHTTPFileBody.h"
+#import "JXHTTP.h"
 
 @implementation JXHTTPFileBody
 
 #pragma mark - Initialization
 
-- (id)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType
+- (instancetype)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType
 {
     if (self = [super init]) {
         self.filePath = filePath;
@@ -13,12 +14,12 @@
     return self;
 }
 
-+ (id)withFilePath:(NSString *)filePath contentType:(NSString *)contentType
++ (instancetype)withFilePath:(NSString *)filePath contentType:(NSString *)contentType
 {
     return [[self alloc] initWithFilePath:filePath contentType:contentType];
 }
 
-+ (id)withFilePath:(NSString *)filePath
++ (instancetype)withFilePath:(NSString *)filePath
 {
     return [self withFilePath:filePath contentType:nil];
 }
@@ -38,8 +39,8 @@
     NSError *error = nil;
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.filePath error:&error];
     if (error != nil)
-        NSLog(@"%@", error);
-    
+        JXLogError(error);
+
     NSNumber *fileSize = [attributes objectForKey:NSFileSize];
     if (fileSize)
         return [fileSize longLongValue];

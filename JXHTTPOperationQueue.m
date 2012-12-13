@@ -43,7 +43,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     #endif
 }
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
@@ -69,9 +69,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     return self;
 }
 
-+ (id)sharedQueue
++ (instancetype)sharedQueue
 {
-    static id sharedQueue;
+    static id sharedQueue = nil;
     static dispatch_once_t predicate;
 
     dispatch_once(&predicate, ^{
@@ -79,6 +79,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     });
 
     return sharedQueue;
+}
+
++ (instancetype)queue
+{
+    return [[self alloc] init];
 }
 
 #pragma mark - Accessors

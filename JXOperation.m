@@ -1,14 +1,20 @@
 #import "JXOperation.h"
 
 @interface JXOperation ()
+
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
+
+#if OS_OBJECT_USE_OBJC
 @property (strong) dispatch_queue_t stateQueue;
-@property (assign) dispatch_once_t startOnce;
-@property (assign) dispatch_once_t finishOnce;
+#else
+@property (assign) dispatch_queue_t stateQueue;
+#endif
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
+
 @end
 
 @implementation JXOperation
@@ -18,16 +24,20 @@
 - (void)dealloc
 {
     [self endAppBackgroundTask];
+    
+    #if !OS_OBJECT_USE_OBJC
+    dispatch_release(_stateQueue);
+    #endif
 }
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
+        self.stateQueue = dispatch_queue_create("JXOperation", DISPATCH_QUEUE_SERIAL);
         self.isExecuting = NO;
         self.isFinished = NO;
         self.startsOnMainThread = NO;
         self.continuesInAppBackground = NO;
-        self.stateQueue = dispatch_queue_create([NSStringFromClass([self class]) UTF8String], DISPATCH_QUEUE_SERIAL);
         
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
         self.backgroundTaskID = UIBackgroundTaskInvalid;
@@ -36,7 +46,7 @@
     return self;
 }
 
-+ (id)operation
++ (instancetype)operation
 {
     return [[self alloc] init];
 }
@@ -50,29 +60,27 @@
         return;
     }
     
-    if (!self.isReady || self.isCancelled)
+    if (![self isReady] || [self isCancelled])
         return;
     
-    dispatch_once(&_startOnce, ^{
-        __block BOOL finished = NO;
-
-        dispatch_sync(self.stateQueue, ^{
-            if (self.isFinished) {
-                finished = YES;
-            } else {
-                [self willChangeValueForKey:@"isExecuting"];
-                self.isExecuting = YES;
-                [self didChangeValueForKey:@"isExecuting"];
-            }
-        });
-
-        if (finished)
-            return;
-        
-        @autoreleasepool {
-            [self main];
+    __block BOOL shouldStart = YES;
+    
+    dispatch_sync(self.stateQueue, ^{
+        if (self.isExecuting || self.isFinished) {
+            shouldStart = NO;
+        } else {
+            [self willChangeValueForKey:@"isExecuting"];
+            self.isExecuting = YES;
+            [self didChangeValueForKey:@"isExecuting"];
         }
     });
+    
+    if (!shouldStart)
+        return;
+
+    @autoreleasepool {
+        [self main];
+    }
 }
 
 - (void)main
@@ -91,24 +99,21 @@
 
 - (void)finish
 {
-    dispatch_once(&_finishOnce, ^{
-        dispatch_sync(self.stateQueue, ^{
-            if (self.isExecuting) {
-                // only call willChange & didChange if `start` was called
-                [self willChangeValueForKey:@"isExecuting"];
-                [self willChangeValueForKey:@"isFinished"];
-                self.isExecuting = NO;
-                self.isFinished = YES;
-                [self didChangeValueForKey:@"isExecuting"];
-                [self didChangeValueForKey:@"isFinished"];
-            } else {
-                self.isExecuting = NO;
-                self.isFinished = YES;
-            }
-        });
-
-        [self endAppBackgroundTask];
+    dispatch_sync(self.stateQueue, ^{
+        if (self.isExecuting) {
+            [self willChangeValueForKey:@"isExecuting"];
+            [self willChangeValueForKey:@"isFinished"];
+            self.isExecuting = NO;
+            self.isFinished = YES;
+            [self didChangeValueForKey:@"isExecuting"];
+            [self didChangeValueForKey:@"isFinished"];
+        } else {
+            self.isExecuting = NO;
+            self.isFinished = YES;
+        }
     });
+
+    [self endAppBackgroundTask];
 }
 
 - (void)startAndWaitUntilFinished
@@ -141,16 +146,18 @@
 - (void)startAppBackgroundTask
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    
-    if (self.backgroundTaskID != UIBackgroundTaskInvalid || self.isFinished)
-        return;
-    
-    UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
-    taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        [[UIApplication sharedApplication] endBackgroundTask:taskID];
-    }];
 
-    self.backgroundTaskID = taskID;
+    dispatch_sync(self.stateQueue, ^{
+        if (self.backgroundTaskID != UIBackgroundTaskInvalid || self.isFinished || [self isCancelled])
+            return;
+
+        UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+        taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [[UIApplication sharedApplication] endBackgroundTask:taskID];
+        }];
+
+        self.backgroundTaskID = taskID;
+    });
     
     #endif
 }
@@ -158,14 +165,16 @@
 - (void)endAppBackgroundTask
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
-    
-    if (self.backgroundTaskID == UIBackgroundTaskInvalid)
-        return;
 
-    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+    dispatch_sync(self.stateQueue, ^{
+        if (self.backgroundTaskID == UIBackgroundTaskInvalid)
+            return;
 
-    self.backgroundTaskID = UIBackgroundTaskInvalid;
-    
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+
+        self.backgroundTaskID = UIBackgroundTaskInvalid;
+    });
+
     #endif
 }
 

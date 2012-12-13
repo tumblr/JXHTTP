@@ -14,8 +14,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 @property (strong) NSDate *startDate;
 @property (strong) NSDate *finishDate;
 @property (strong) NSOperationQueue *blockQueue;
-@property (assign) dispatch_once_t incrementCountPredicate;
-@property (assign) dispatch_once_t decrementCountPredicate;
+@property (assign) dispatch_once_t incrementCountOnce;
+@property (assign) dispatch_once_t decrementCountOnce;
 @end
 
 @implementation JXHTTPOperation
@@ -27,7 +27,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     [self decrementOperationCount];
 }
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -57,6 +57,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         self.willStartBlock = nil;
         self.willNeedNewBodyStreamBlock = nil;
         self.willSendRequestForAuthenticationChallengeBlock = nil;
+        self.didStartBlock = nil;
         self.didReceiveResponseBlock = nil;
         self.didReceiveDataBlock = nil;
         self.didSendDataBlock = nil;
@@ -66,12 +67,12 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     return self;
 }
 
-+ (id)withURLString:(NSString *)urlString
++ (instancetype)withURLString:(NSString *)urlString
 {
     return [[self alloc] initWithURL:[[NSURL alloc] initWithString:urlString]];
 }
 
-+ (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
++ (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters
 {
     NSString *string = urlString;
 
@@ -87,7 +88,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     JXHTTPBlock block = [self blockForSelector:selector];
 
-    if (self.isCancelled || !(self.delegate || block))
+    if ([self isCancelled] || !(self.delegate || block))
         return;
 
     if (self.performsDelegateMethodsOnMainThread) {
@@ -106,7 +107,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         return;
     
     [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : self.blockQueue) addOperationWithBlock:^{
-        if (!self.isCancelled)
+        if (![self isCancelled])
             block(self);
     }];
 }
@@ -119,6 +120,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         return self.willNeedNewBodyStreamBlock;
     if (selector == @selector(httpOperationWillSendRequestForAuthenticationChallenge:))
         return self.willSendRequestForAuthenticationChallengeBlock;
+    if (selector == @selector(httpOperationDidStart:))
+        return self.didStartBlock;
     if (selector == @selector(httpOperationDidReceiveResponse:))
         return self.didReceiveResponseBlock;
     if (selector == @selector(httpOperationDidReceiveData:))
@@ -136,7 +139,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)incrementOperationCount
 {
-    dispatch_once(&_incrementCountPredicate, ^{
+    dispatch_once(&_incrementCountOnce, ^{
         if (!self.updatesNetworkActivityIndicator)
             return;
 
@@ -155,7 +158,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if (!self.didIncrementCount)
         return;
     
-    dispatch_once(&_decrementCountPredicate, ^{
+    dispatch_once(&_decrementCountOnce, ^{
         if (!self.updatesNetworkActivityIndicator)
             return;
 
@@ -208,7 +211,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)setResponseDataFilePath:(NSString *)filePath
 {
-    if (self.isExecuting || self.isFinished)
+    if ([self isCancelled] || self.isExecuting || self.isFinished)
         return;
 
     _responseDataFilePath = [filePath copy];
@@ -234,14 +237,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)main
 {
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
-
-    self.startDate = [[NSDate alloc] init];
-    
-    [self performDelegateMethod:@selector(httpOperationWillStart:)];
-
-    [self incrementOperationCount];
 
     if (self.requestBody) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
@@ -262,15 +259,26 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[[NSString alloc] initWithFormat:@"%lld", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
+    
+    [self performDelegateMethod:@selector(httpOperationWillStart:)];
+    
+    [self incrementOperationCount];
+    
+    self.startDate = [[NSDate alloc] init];
 
     [super main];
+    
+    [self performDelegateMethod:@selector(httpOperationDidStart:)];
 }
 
 - (void)finish
 {
+    [super finish];
+    
     [self decrementOperationCount];
     
-    [super finish];
+    if (!self.finishDate)
+        self.finishDate = [[NSDate alloc] init];
 }
 
 #pragma mark - <NSURLConnectionDelegate>
@@ -279,12 +287,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     [super connection:connection didFailWithError:connectionError];
 
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
-    
-    [self decrementOperationCount];
-
-    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
@@ -296,7 +300,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    if (self.isCancelled) {
+    if ([self isCancelled]) {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
         return;
     }
@@ -340,7 +344,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     [super connection:connection didReceiveResponse:urlResponse];
 
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
 
     [self performDelegateMethod:@selector(httpOperationDidReceiveResponse:)];
@@ -350,7 +354,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     [super connection:connection didReceiveData:data];
 
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
 
     long long bytesExpected = [self.response expectedContentLength];
@@ -364,18 +368,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     [super connectionDidFinishLoading:connection];
     
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
-    
-    [self decrementOperationCount];
 
     if ([self.downloadProgress floatValue] != 1.0f)
         self.downloadProgress = @1.0f;
 
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = @1.0f;
-    
-    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
 }
@@ -384,7 +384,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     [super connection:connection didSendBodyData:bytes totalBytesWritten:bytesSent totalBytesExpectedToWrite:bytesExpected];
 
-    if (self.isCancelled)
+    if ([self isCancelled])
         return;
 
     if (bytesExpected > 0LL && bytesExpected != NSURLResponseUnknownLength)
@@ -395,7 +395,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request
 {
-    if (self.isCancelled)
+    if ([self isCancelled])
         return nil;
 
     [self performDelegateMethod:@selector(httpOperationWillNeedNewBodyStream:)];
@@ -405,7 +405,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response
 {
-    if (self.isCancelled)
+    if ([self isCancelled])
         return nil;
     
     //TK
@@ -415,7 +415,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
-    if (self.isCancelled)
+    if ([self isCancelled])
         return nil;
     
     //TK

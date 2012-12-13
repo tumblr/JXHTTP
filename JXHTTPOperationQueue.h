@@ -1,9 +1,8 @@
-#import "JXOperationQueue.h"
 #import "JXHTTPOperationQueueDelegate.h"
 
 typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
-@interface JXHTTPOperationQueue : JXOperationQueue
+@interface JXHTTPOperationQueue : NSOperationQueue
 
 // Core
 
@@ -37,5 +36,9 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 @property (copy) JXHTTPQueueBlock didDownloadBlock;
 @property (copy) JXHTTPQueueBlock didMakeProgressBlock;
 @property (copy) JXHTTPQueueBlock didFinishBlock;
+
++ (instancetype)sharedQueue;
+
++ (instancetype)queue;
 
 @end

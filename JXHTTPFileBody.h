@@ -5,9 +5,9 @@
 @property (copy, nonatomic) NSString *filePath;
 @property (copy, nonatomic) NSString *httpContentType;
 
-+ (id)withFilePath:(NSString *)filePath;
-+ (id)withFilePath:(NSString *)filePath contentType:(NSString *)contentType;
++ (instancetype)withFilePath:(NSString *)filePath;
++ (instancetype)withFilePath:(NSString *)filePath contentType:(NSString *)contentType;
 
-- (id)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType;
+- (instancetype)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType;
 
 @end

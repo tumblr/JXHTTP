@@ -1,4 +1,6 @@
 #import "JXHTTPMultipartBody.h"
+#import "JXHTTPOperation.h"
+#import "JXHTTP.h"
 
 typedef enum {
     JXHTTPMultipartData,
@@ -15,7 +17,7 @@ typedef enum {
 
 @implementation JXHTTPMultipartPart
 
-+ (id)withMultipartType:(JXHTTPMultipartPartType)type
++ (instancetype)withMultipartType:(JXHTTPMultipartPartType)type
                     key:(NSString *)key
                    data:(NSData *)data
             contentType:(NSString *)contentTypeOrNil
@@ -74,7 +76,7 @@ typedef enum {
         NSError *error = nil;
         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self filePath] error:&error];
         if (error != nil)
-            NSLog(@"%@", error);
+            JXLogError(error);
         
         NSNumber *fileSize = [attributes objectForKey:NSFileSize];
         if (fileSize)
@@ -84,7 +86,7 @@ typedef enum {
     return length;
 }
 
-- (NSUInteger)loadMutableData:(NSMutableData *)mutableData withRange:(NSRange)searchRange
+- (NSUInteger)loadMutableData:(NSMutableData *)mutableData withDataInRange:(NSRange)searchRange
 {
     NSUInteger dataOffset = 0;
     NSUInteger bytesAppended = 0;
@@ -153,7 +155,7 @@ typedef enum {
     [self.httpOutputStream close];
 }
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
         NSString *dateString = [[NSString alloc] initWithFormat:@"%.0f", [[[NSDate alloc] init] timeIntervalSince1970]];
@@ -168,7 +170,7 @@ typedef enum {
     return self;
 }
 
-- (id)initWithDictionary:(NSDictionary *)stringParameters
+- (instancetype)initWithDictionary:(NSDictionary *)stringParameters
 {
     if (self = [super init]) {
         for (NSString *key in [stringParameters allKeys]) {
@@ -178,7 +180,7 @@ typedef enum {
     return self;
 }
 
-+ (id)withDictionary:(NSDictionary *)stringParameters
++ (instancetype)withDictionary:(NSDictionary *)stringParameters
 {
     return [[self alloc] initWithDictionary:stringParameters];
 }
@@ -216,6 +218,16 @@ typedef enum {
     [self recreateStreams];
 }
 
+- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation
+{
+    [self.httpOutputStream close];
+}
+
+- (void)httpOperationDidFail:(JXHTTPOperation *)operation
+{
+    [self.httpOutputStream close];
+}
+
 #pragma mark - Private Methods
 
 - (void)recreateStreams
@@ -237,18 +249,29 @@ typedef enum {
     if (readStream != NULL && writeStream != NULL) {
         self.httpInputStream = (__bridge_transfer NSInputStream *)readStream;
         self.httpOutputStream = (__bridge_transfer NSOutputStream *)writeStream;
+        
+        [self scheduleOutputStreamOnThread:[JXHTTPOperation sharedThread]];
+
         readStream = NULL;
         writeStream = NULL;
-        
-        self.httpOutputStream.delegate = self;
-        [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-        [self.httpOutputStream open];
     }
     
     if (readStream != NULL)
         CFRelease(readStream);
     if (writeStream != NULL)
         CFRelease(writeStream);
+}
+
+- (void)scheduleOutputStreamOnThread:(NSThread *)thread
+{
+    if (thread && thread != [NSThread currentThread]) {
+        [self performSelector:@selector(scheduleOutputStreamOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+        return;
+    }
+    
+    self.httpOutputStream.delegate = self;
+    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [self.httpOutputStream open];
 }
 
 - (void)setPartWithType:(JXHTTPMultipartPartType)type forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil data:(NSData *)data
@@ -280,7 +303,8 @@ typedef enum {
         return;
     
     if (eventCode == NSStreamEventErrorOccurred) {
-        NSLog(@"%@ %@", stream.streamError, stream.streamError.userInfo);
+        if (stream.streamError)
+            JXLogError(stream.streamError);
         [self.httpOutputStream close];
         return;
     }
@@ -296,7 +320,7 @@ typedef enum {
     NSUInteger bytesRemaining = self.httpContentLength - self.bytesWritten;
     NSUInteger length = bytesRemaining < self.streamBufferLength ? bytesRemaining : self.streamBufferLength;
     
-    NSUInteger bytesLoaded = [self loadMutableData:self.bodyDataBuffer withRange:NSMakeRange(self.bytesWritten, length)];
+    NSUInteger bytesLoaded = [self loadMutableData:self.bodyDataBuffer withDataInRange:NSMakeRange(self.bytesWritten, length)];
     NSInteger bytesOutput = bytesLoaded ? [self.httpOutputStream write:[self.bodyDataBuffer bytes] maxLength:bytesLoaded] : 0;
     
     if (bytesOutput > 0) {
@@ -306,7 +330,7 @@ typedef enum {
     }
 }
 
-- (NSUInteger)loadMutableData:(NSMutableData *)data withRange:(NSRange)searchRange
+- (NSUInteger)loadMutableData:(NSMutableData *)data withDataInRange:(NSRange)searchRange
 {
     [data setLength:0];
     
@@ -320,7 +344,7 @@ typedef enum {
         NSRange intersection = NSIntersectionRange(partRange, searchRange);
         if (intersection.length > 0) {
             NSRange rangeInPart = NSMakeRange(intersection.location - partOffset, intersection.length);
-            bytesLoaded += [part loadMutableData:data withRange:rangeInPart];
+            bytesLoaded += [part loadMutableData:data withDataInRange:rangeInPart];
         }
         
         partOffset += partLength;

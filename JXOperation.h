@@ -6,7 +6,7 @@
 @property (assign, nonatomic) BOOL startsOnMainThread;
 @property (assign, nonatomic) BOOL continuesInAppBackground;
 
-+ (id)operation;
++ (instancetype)operation;
 
 - (void)startAndWaitUntilFinished;
 - (void)finish;

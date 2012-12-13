@@ -2,10 +2,10 @@
 
 @interface JXHTTPJSONBody : NSObject <JXHTTPRequestBody>
 
-+ (id)withData:(NSData *)data;
-+ (id)withString:(NSString *)string;
-+ (id)withJSONObject:(id)dictionaryOrArray;
++ (instancetype)withData:(NSData *)data;
++ (instancetype)withString:(NSString *)string;
++ (instancetype)withJSONObject:(id)dictionaryOrArray;
 
-- (id)initWithData:(NSData *)data;
+- (instancetype)initWithData:(NSData *)data;
 
 @end

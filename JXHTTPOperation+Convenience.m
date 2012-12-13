@@ -1,4 +1,5 @@
 #import "JXHTTPOperation+Convenience.h"
+#import "JXHTTP.h"
 
 @implementation JXHTTPOperation (JXHTTPOperationConvenience)
 
@@ -128,8 +129,8 @@
 
     NSError *error = nil;
     id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    if (error)
-        NSLog(@"%@", error);
+    if (error != nil)
+        JXLogError(error);
     
     return json;
 }

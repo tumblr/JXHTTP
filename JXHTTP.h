@@ -20,18 +20,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+// Core
+#import "JXOperation.h"
+#import "JXURLConnectionOperation.h"
+#import "JXHTTPOperation.h"
+
+// Protocol
+#import "JXHTTPRequestBody.h"
+#import "JXHTTPOperationDelegate.h"
+
+// Queue
+#import "JXHTTPOperationQueue.h"
+#import "JXHTTPOperationQueueDelegate.h"
+
+// Convenience
+#import "JXURLEncoding.h"
+#import "JXHTTPOperation+Convenience.h"
+
+// Request Body
 #import "JXHTTPDataBody.h"
 #import "JXHTTPFileBody.h"
 #import "JXHTTPFormEncodedBody.h"
 #import "JXHTTPJSONBody.h"
 #import "JXHTTPMultipartBody.h"
-#import "JXHTTPOperation+Convenience.h"
-#import "JXHTTPOperation.h"
-#import "JXHTTPOperationDelegate.h"
-#import "JXHTTPOperationQueue.h"
-#import "JXHTTPOperationQueueDelegate.h"
-#import "JXHTTPRequestBody.h"
-#import "JXOperation.h"
-#import "JXOperationQueue.h"
-#import "JXURLConnectionOperation.h"
-#import "JXURLEncoding.h"
+
+// Error Logging
+#define JXLogError(error) NSLog(@"%@ (%d) ERROR: %@", \
+            [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
+            __LINE__, [error localizedDescription]);

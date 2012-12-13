@@ -4,8 +4,8 @@
 
 @property (strong, readonly, nonatomic) NSMutableDictionary *dictionary;
 
-+ (id)withDictionary:(NSDictionary *)dictionary;
++ (instancetype)withDictionary:(NSDictionary *)dictionary;
 
-- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -44,6 +44,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock willStartBlock;
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
 @property (copy) JXHTTPBlock willSendRequestForAuthenticationChallengeBlock;
+@property (copy) JXHTTPBlock didStartBlock;
 @property (copy) JXHTTPBlock didReceiveResponseBlock;
 @property (copy) JXHTTPBlock didReceiveDataBlock;
 @property (copy) JXHTTPBlock didSendDataBlock;
@@ -52,7 +53,7 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 // Initialization
 
-+ (id)withURLString:(NSString *)urlString;
-+ (id)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
++ (instancetype)withURLString:(NSString *)urlString;
++ (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
 @end

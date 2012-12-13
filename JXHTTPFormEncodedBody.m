@@ -9,7 +9,7 @@
 
 #pragma mark - Initialization
 
-- (id)initWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     if (self = [self init]) {
         self.dictionary = dictionary ? [[NSMutableDictionary alloc] initWithDictionary:dictionary] : [[NSMutableDictionary alloc] init];
@@ -17,7 +17,7 @@
     return self;
 }
 
-+ (id)withDictionary:(NSDictionary *)dictionary
++ (instancetype)withDictionary:(NSDictionary *)dictionary
 {
     return [[self alloc] initWithDictionary:dictionary];
 }
