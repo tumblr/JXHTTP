@@ -9,10 +9,18 @@
 
 #pragma mark - Initialization
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.dictionary = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     if (self = [self init]) {
-        self.dictionary = dictionary ? [[NSMutableDictionary alloc] initWithDictionary:dictionary] : [[NSMutableDictionary alloc] init];
+        self.dictionary = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     }
     return self;
 }
