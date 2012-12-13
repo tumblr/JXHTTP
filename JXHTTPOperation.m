@@ -240,6 +240,10 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return;
 
+    [self performDelegateMethod:@selector(httpOperationWillStart:)];
+
+    [self incrementOperationCount];
+
     if (self.requestBody) {
         NSInputStream *inputStream = [self.requestBody httpInputStream];
         if (inputStream)
@@ -255,15 +259,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         if (![self.request valueForHTTPHeaderField:@"Content-Type"])
             [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
 
+        if (![self.request valueForHTTPHeaderField:@"User-Agent"])
+            [self.request setValue:@"JXHTTP" forHTTPHeaderField:@"User-Agent"];
+
         long long expectedLength = [self.requestBody httpContentLength];
         if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
             [self.request setValue:[[NSString alloc] initWithFormat:@"%lld", expectedLength] forHTTPHeaderField:@"Content-Length"];
     }
-    
-    [self performDelegateMethod:@selector(httpOperationWillStart:)];
-    
-    [self incrementOperationCount];
-    
+
     self.startDate = [[NSDate alloc] init];
 
     [super main];
@@ -274,11 +277,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 - (void)finish
 {
     [super finish];
-    
+
     [self decrementOperationCount];
-    
-    if (!self.finishDate)
-        self.finishDate = [[NSDate alloc] init];
 }
 
 #pragma mark - <NSURLConnectionDelegate>
@@ -289,6 +289,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     if ([self isCancelled])
         return;
+
+    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFail:)];
 }
@@ -376,6 +378,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     if ([self.uploadProgress floatValue] != 1.0f)
         self.uploadProgress = @1.0f;
+
+    self.finishDate = [[NSDate alloc] init];
 
     [self performDelegateMethod:@selector(httpOperationDidFinishLoading:)];
 }
