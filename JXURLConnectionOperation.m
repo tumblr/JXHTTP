@@ -106,8 +106,8 @@
 
 + (void)runLoop
 {
-    [[NSThread currentThread] setName:NSStringFromClass([self class])];
-    
+    [[NSThread currentThread] setName:@"JXHTTP"];
+
     while ([[NSThread currentThread] isExecuting]) {
         @autoreleasepool {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
