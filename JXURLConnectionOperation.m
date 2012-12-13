@@ -98,6 +98,7 @@
     
     dispatch_once(&predicate, ^{
         thread = [[NSThread alloc] initWithTarget:self selector:@selector(runLoop) object:nil];
+        thread.name = NSStringFromClass([self class]);
         [thread start];
     });
     
