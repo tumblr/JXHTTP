@@ -98,7 +98,6 @@
     
     dispatch_once(&predicate, ^{
         thread = [[NSThread alloc] initWithTarget:self selector:@selector(runLoop) object:nil];
-        thread.name = NSStringFromClass([self class]);
         [thread start];
     });
     
@@ -107,6 +106,8 @@
 
 + (void)runLoop
 {
+    [[NSThread currentThread] setName:NSStringFromClass([self class])];
+    
     while ([[NSThread currentThread] isExecuting]) {
         @autoreleasepool {
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
