@@ -21,6 +21,9 @@
 
 + (NSString *)formEncodedString:(NSString *)string
 {
+    if (![string length])
+        return nil;
+
     return [[self encodedString:string] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
 }
 
@@ -43,6 +46,9 @@
 
 + (NSString *)formEncodedDictionary:(NSDictionary *)dictionary
 {
+    if (![dictionary count])
+        return nil;
+    
     return [[self encodedDictionary:dictionary] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
 }
 
@@ -50,6 +56,9 @@
 
 + (void)encodeObject:(id)object withKey:(NSString *)key andSubKey:(NSString *)subKey intoArray:(NSMutableArray *)array
 {
+    if (!object || ![key length])
+        return;
+
     NSString *objectKey = nil;
     
     if (subKey) {
