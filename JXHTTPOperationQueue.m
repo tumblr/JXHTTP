@@ -225,7 +225,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 }
             });
 
-            if (operation.isCancelled) {
+            if ([operation isCancelled]) {
                 NSString *uniqueString = [operation.uniqueString copy];
 
                 dispatch_barrier_async(self.progressMathQueue, ^{
