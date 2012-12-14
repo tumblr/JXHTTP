@@ -33,7 +33,9 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.stateQueue = dispatch_queue_create("JXOperation", DISPATCH_QUEUE_SERIAL);
+        NSString *queueName = [[NSString alloc] initWithFormat:@"%@.%p", NSStringFromClass([self class]), self];
+        self.stateQueue = dispatch_queue_create([queueName UTF8String], DISPATCH_QUEUE_SERIAL);
+
         self.isExecuting = NO;
         self.isFinished = NO;
         self.startsOnMainThread = NO;
