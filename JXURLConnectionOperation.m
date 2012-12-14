@@ -49,26 +49,25 @@
     if ([self isCancelled])
         return;
     
-    [self performSelector:@selector(startStreamAndConnection)
-                 onThread:[[self class] sharedThread]
-               withObject:nil
-            waitUntilDone:YES];
+    [self startConnectionOnThread:[[self class] sharedThread]];
 }
 
 - (void)finish
 {
     [super finish];
     
-    [self performSelector:@selector(stopStreamAndConnection)
-                 onThread:[[self class] sharedThread]
-               withObject:nil
-            waitUntilDone:YES];
+    [self stopConnectionOnThread:[[self class] sharedThread]];
 }
 
 #pragma mark - Siren Song
 
-- (void)startStreamAndConnection
+- (void)startConnectionOnThread:(NSThread *)thread
 {
+    if (thread && thread != [NSThread currentThread]) {
+        [self performSelector:@selector(startConnectionOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+        return;
+    }
+    
     if ([self isCancelled])
         return;
     
@@ -77,13 +76,18 @@
 
     [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 
-    self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
+    self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
     [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection start];
 }
 
-- (void)stopStreamAndConnection
+- (void)stopConnectionOnThread:(NSThread *)thread
 {
+    if (thread && thread != [NSThread currentThread]) {
+        [self performSelector:@selector(stopConnectionOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+        return;
+    }
+
     [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection cancel];
 
@@ -97,14 +101,14 @@
     static dispatch_once_t predicate;
     
     dispatch_once(&predicate, ^{
-        thread = [[NSThread alloc] initWithTarget:self selector:@selector(runLoop) object:nil];
+        thread = [[NSThread alloc] initWithTarget:self selector:@selector(runLoopForever) object:nil];
         [thread start];
     });
     
     return thread;
 }
 
-+ (void)runLoop
++ (void)runLoopForever
 {
     [[NSThread currentThread] setName:@"JXHTTP"];
 
