@@ -3,8 +3,8 @@
 @property (assign, readonly) BOOL isExecuting;
 @property (assign, readonly) BOOL isFinished;
 
-@property (assign, nonatomic) BOOL startsOnMainThread;
-@property (assign, nonatomic) BOOL continuesInAppBackground;
+@property (assign) BOOL startsOnMainThread;
+@property (assign) BOOL continuesInAppBackground;
 
 + (instancetype)operation;
 
