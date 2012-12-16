@@ -170,8 +170,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         if (oldCount < 1 && newCount > 0) {
             dispatch_barrier_async(self.progressQueue, ^{
-                weakSelf.finishDate = nil;
-                weakSelf.startDate = [[NSDate alloc] init];
                 weakSelf.bytesDownloadedPerOperation = [[NSMutableDictionary alloc] init];
                 weakSelf.bytesUploadedPerOperation = [[NSMutableDictionary alloc] init];
                 weakSelf.expectedDownloadBytesPerOperation = [[NSMutableDictionary alloc] init];
@@ -182,6 +180,8 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 weakSelf.bytesUploaded = @0LL;
                 weakSelf.expectedDownloadBytes = @0LL;
                 weakSelf.expectedUploadBytes = @0LL;
+                weakSelf.finishDate = nil;
+                weakSelf.startDate = now;
 
                 [weakSelf performDelegateMethod:@selector(httpOperationQueueWillStart:)];
             });
