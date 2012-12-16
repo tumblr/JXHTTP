@@ -58,9 +58,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.blockQueue = [[NSOperationQueue alloc] init];
         self.blockQueue.maxConcurrentOperationCount = 1;
 
-        NSString * const nameFormat = [[NSString alloc] initWithFormat:@"%@.%%@.%p", NSStringFromClass([self class]), self];
-        self.observationQueue = dispatch_queue_create([[[NSString alloc] initWithFormat:nameFormat, @"observation"] UTF8String], DISPATCH_QUEUE_SERIAL);
-        self.progressQueue = dispatch_queue_create([[[NSString alloc] initWithFormat:nameFormat, @"progress"] UTF8String], DISPATCH_QUEUE_CONCURRENT);
+        NSString *prefix = [[NSString alloc] initWithFormat:@"%@.%p.", NSStringFromClass([self class]), self];
+        self.observationQueue = dispatch_queue_create([[prefix stringByAppendingString:@"observation"] UTF8String], DISPATCH_QUEUE_SERIAL);
+        self.progressQueue = dispatch_queue_create([[prefix stringByAppendingString:@"progress"] UTF8String], DISPATCH_QUEUE_CONCURRENT);
 
         [self addObserver:self
                forKeyPath:@"operations"
