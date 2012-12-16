@@ -15,7 +15,7 @@
 
 - (void)dealloc
 {
-    [self stopConnectionOnThread:[[self class] sharedThread]];
+    [self stopConnection];
 }
 
 - (instancetype)init
@@ -48,22 +48,22 @@
     if ([self isCancelled])
         return;
     
-    [self startConnectionOnThread:[[self class] sharedThread]];
+    [self startConnection];
 }
 
 - (void)finish
 {
     [super finish];
     
-    [self stopConnectionOnThread:[[self class] sharedThread]];
+    [self stopConnection];
 }
 
 #pragma mark - Siren Song
 
-- (void)startConnectionOnThread:(NSThread *)thread
+- (void)startConnection
 {
-    if (thread && thread != [NSThread currentThread]) {
-        [self performSelector:@selector(startConnectionOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+    if ([NSThread currentThread] != [[self class] sharedThread]) {
+        [self performSelector:@selector(startConnection) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:YES];
         return;
     }
     
@@ -80,10 +80,10 @@
     [self.connection start];
 }
 
-- (void)stopConnectionOnThread:(NSThread *)thread
+- (void)stopConnection
 {
-    if (thread && thread != [NSThread currentThread]) {
-        [self performSelector:@selector(stopConnectionOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+    if ([NSThread currentThread] != [[self class] sharedThread]) {
+        [self performSelector:@selector(stopConnection) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:YES];
         return;
     }
 
