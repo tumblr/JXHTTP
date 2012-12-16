@@ -153,17 +153,20 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if (object == self && [keyPath isEqualToString:@"operations"]) {
         if (![[change objectForKey:NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeSetting)
             return;
+        
+        NSDate *now = [[NSDate alloc] init];
 
         NSArray *newOperationsArray = [change objectForKey:NSKeyValueChangeNewKey];
         NSArray *oldOperationsArray = [change objectForKey:NSKeyValueChangeOldKey];
+        
         NSMutableArray *insertedArray = [[NSMutableArray alloc] initWithArray:newOperationsArray];
         NSMutableArray *removedArray = [[NSMutableArray alloc] initWithArray:oldOperationsArray];
+        
         [insertedArray removeObjectsInArray:oldOperationsArray];
         [removedArray removeObjectsInArray:newOperationsArray];
 
         NSUInteger newCount = [newOperationsArray count];
         NSUInteger oldCount = [oldOperationsArray count];
-        NSDate *now = [[NSDate alloc] init];
 
         if (oldCount < 1 && newCount > 0) {
             dispatch_barrier_async(self.progressQueue, ^{
