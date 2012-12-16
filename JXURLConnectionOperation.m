@@ -15,8 +15,7 @@
 
 - (void)dealloc
 {
-    [self.connection cancel];
-    [self.outputStream close];
+    [self stopConnectionOnThread:[[self class] sharedThread]];
 }
 
 - (instancetype)init
