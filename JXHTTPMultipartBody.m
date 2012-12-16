@@ -351,9 +351,11 @@ typedef enum {
     
     NSRange finalRange = NSMakeRange(partOffset, [self.finalBoundaryData length]);
     NSRange intersection = NSIntersectionRange(finalRange, searchRange);
+    
     if (intersection.length > 0) {
         NSRange range = NSMakeRange(intersection.location - partOffset, intersection.length);
         NSData *dataToAppend = [self.finalBoundaryData subdataWithRange:range];
+        
         if (dataToAppend) {
             [data appendData:dataToAppend];
             bytesLoaded += [dataToAppend length];
