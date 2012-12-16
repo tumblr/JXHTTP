@@ -32,6 +32,8 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 @property (strong, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPQueueBlock willStartBlock;
+@property (copy) JXHTTPQueueBlock willFinishBlock;
+@property (copy) JXHTTPQueueBlock didStartBlock;
 @property (copy) JXHTTPQueueBlock didUploadBlock;
 @property (copy) JXHTTPQueueBlock didDownloadBlock;
 @property (copy) JXHTTPQueueBlock didMakeProgressBlock;

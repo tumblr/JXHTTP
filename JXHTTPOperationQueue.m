@@ -55,6 +55,14 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.startDate = nil;
         self.finishDate = nil;
 
+        self.willStartBlock = nil;
+        self.willFinishBlock = nil;
+        self.didStartBlock = nil;
+        self.didUploadBlock = nil;
+        self.didDownloadBlock = nil;
+        self.didMakeProgressBlock = nil;
+        self.didFinishBlock = nil;
+
         self.blockQueue = [[NSOperationQueue alloc] init];
         self.blockQueue.maxConcurrentOperationCount = 1;
 
@@ -128,6 +136,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 {
     if (selector == @selector(httpOperationQueueWillStart:))
         return self.willStartBlock;
+    if (selector == @selector(httpOperationQueueWillFinish:))
+        return self.willFinishBlock;
+    if (selector == @selector(httpOperationQueueDidStart:))
+        return self.didStartBlock;
     if (selector == @selector(httpOperationQueueDidUpload:))
         return self.didUploadBlock;
     if (selector == @selector(httpOperationQueueDidDownload:))
@@ -167,8 +179,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
         NSUInteger newCount = [newOperationsArray count];
         NSUInteger oldCount = [oldOperationsArray count];
+        
+        BOOL starting = oldCount < 1 && newCount > 0;
+        BOOL finishing = oldCount > 0 && newCount < 1;
 
-        if (oldCount < 1 && newCount > 0) {
+        if (starting) {
             dispatch_barrier_async(self.progressQueue, ^{
                 weakSelf.bytesDownloadedPerOperation = [[NSMutableDictionary alloc] init];
                 weakSelf.bytesUploadedPerOperation = [[NSMutableDictionary alloc] init];
@@ -182,8 +197,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 weakSelf.expectedUploadBytes = @0LL;
                 weakSelf.finishDate = nil;
                 weakSelf.startDate = now;
-
                 [weakSelf performDelegateMethod:@selector(httpOperationQueueWillStart:)];
+            });
+        } else if (finishing) {
+            dispatch_barrier_async(self.progressQueue, ^{
+                [weakSelf performDelegateMethod:@selector(httpOperationQueueWillFinish:)];
             });
         }
 
@@ -232,8 +250,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 });
             }
         }
-        
-        if (oldCount > 0 && newCount < 1) {
+
+        if (starting) {
+            dispatch_barrier_async(self.progressQueue, ^{
+                [weakSelf performDelegateMethod:@selector(httpOperationQueueDidStart:)];
+            });
+        } else if (finishing) {
             dispatch_barrier_async(self.progressQueue, ^{
                 weakSelf.finishDate = now;
                 [weakSelf performDelegateMethod:@selector(httpOperationQueueDidFinish:)];
