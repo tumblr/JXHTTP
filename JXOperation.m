@@ -71,12 +71,12 @@
         if (self.isExecuting || self.isFinished) {
             shouldStart = NO;
         } else {
-            if (self.continuesInAppBackground)
-                [self startAppBackgroundTask];
-
             [self willChangeValueForKey:@"isExecuting"];
             self.isExecuting = YES;
             [self didChangeValueForKey:@"isExecuting"];
+            
+            if (self.continuesInAppBackground)
+                [self startAppBackgroundTask];
         }
     });
     
@@ -146,7 +146,8 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         __typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf || strongSelf.isFinished || [strongSelf isCancelled])
+
+        if (!strongSelf || [strongSelf isCancelled] || strongSelf.isFinished)
             return;
 
         UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
@@ -164,10 +165,10 @@
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     
-    if (self.backgroundTaskID == UIBackgroundTaskInvalid)
-        return;
-
     UIBackgroundTaskIdentifier taskID = self.backgroundTaskID;
+    if (taskID == UIBackgroundTaskInvalid)
+        return;
+    
     self.backgroundTaskID = UIBackgroundTaskInvalid;
     
     dispatch_async(dispatch_get_main_queue(), ^{
