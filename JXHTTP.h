@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#pragma HC SVNT DRACONES
+
 // Core
 #import "JXOperation.h"
 #import "JXURLConnectionOperation.h"
