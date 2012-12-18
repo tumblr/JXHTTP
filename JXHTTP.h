@@ -26,13 +26,11 @@ SOFTWARE.
 #import "JXOperation.h"
 #import "JXURLConnectionOperation.h"
 #import "JXHTTPOperation.h"
+#import "JXHTTPOperationQueue.h"
 
 // Protocol
 #import "JXHTTPRequestBody.h"
 #import "JXHTTPOperationDelegate.h"
-
-// Queue
-#import "JXHTTPOperationQueue.h"
 #import "JXHTTPOperationQueueDelegate.h"
 
 // Convenience
