@@ -436,7 +436,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
                     returnNil = YES;
             });
         } else {
-            modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
+            if (![self isCancelled])
+                modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
             if ([self isCancelled] || !modifiedReponse)
                 returnNil = YES;
         }
@@ -477,7 +478,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
                     returnNil = YES;
             });
         } else {
-            modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+            if (![self isCancelled])
+                modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
             if ([self isCancelled] || !modifiedRequest)
                 returnNil = YES;
         }
