@@ -421,39 +421,26 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
-    if (!self.delegate && !self.willCacheResponseBlock)
+    if (!self.willCacheResponseBlock && ![self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)])
         return cachedResponse;
 
     __block NSCachedURLResponse *modifiedReponse = nil;
-    __block BOOL returnNil = NO;
 
-    if ([self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)]) {
+    if (self.delegate) {
         if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if (![self isCancelled])
-                    modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
-                if ([self isCancelled] || !modifiedReponse)
-                    returnNil = YES;
+                modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
             });
         } else {
-            if (![self isCancelled])
-                modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
-            if ([self isCancelled] || !modifiedReponse)
-                returnNil = YES;
+            modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
         }
     } else if (self.willCacheResponseBlock) {
         dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
-            if (![self isCancelled])
-                modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
-            if ([self isCancelled] || !modifiedReponse)
-                returnNil = YES;
+            modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
         });
     }
 
-    if (returnNil)
-        return nil;
-
-    return modifiedReponse ? modifiedReponse : cachedResponse;
+    return [self isCancelled] ? nil : modifiedReponse;
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
@@ -463,42 +450,29 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     self.lastRequest = request;
 
-    if (!self.delegate && !self.willSendRequestRedirectBlock)
+    if (!self.willSendRequestRedirectBlock && ![self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
         return request;
 
     __block NSURLRequest *modifiedRequest = nil;
-    __block BOOL returnNil = NO;
-    
-    if ([self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)]) {
+
+    if (self.delegate) {
         if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if (![self isCancelled])
-                    modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-                if ([self isCancelled] || !modifiedRequest)
-                    returnNil = YES;
+                modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
             });
         } else {
-            if (![self isCancelled])
-                modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-            if ([self isCancelled] || !modifiedRequest)
-                returnNil = YES;
+            modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
         }
     } else if (self.willSendRequestRedirectBlock) {
         dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
-            if (![self isCancelled])
-                modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
-            if ([self isCancelled] || !modifiedRequest)
-                returnNil = YES;
+            modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
         });
     }
 
-    if (returnNil) {
-        if (!redirectResponse)
-            [self cancel];
-        return nil;
-    }
-    
-    return modifiedRequest ? modifiedRequest : request;
+    if (!modifiedRequest && !redirectResponse)
+        [self cancel];
+
+    return [self isCancelled] ? nil : modifiedRequest;
 }
 
 @end
