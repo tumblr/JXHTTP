@@ -4,7 +4,7 @@
 @property (strong) NSURLConnection *connection;
 @property (strong) NSMutableURLRequest *request;
 @property (strong) NSURLResponse *response;
-@property (strong) NSError *connectionError;
+@property (strong) NSError *error;
 @property (assign) long long bytesDownloaded;
 @property (assign) long long bytesUploaded;
 @end
@@ -24,7 +24,7 @@
         self.connection = nil;
         self.request = nil;
         self.response = nil;
-        self.connectionError = nil;
+        self.error = nil;
         self.outputStream = nil;
 
         self.bytesDownloaded = 0LL;
@@ -120,12 +120,12 @@
 
 #pragma mark - <NSURLConnectionDelegate>
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     if ([self isCancelled])
         return;
     
-    self.connectionError = connectionError;
+    self.error = error;
     
     [self finish];
 }

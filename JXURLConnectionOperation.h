@@ -4,7 +4,7 @@
 
 @property (strong, readonly) NSMutableURLRequest *request;
 @property (strong, readonly) NSURLResponse *response;
-@property (strong, readonly) NSError *connectionError;
+@property (strong, readonly) NSError *error;
 
 @property (assign, readonly) long long bytesDownloaded;
 @property (assign, readonly) long long bytesUploaded;
