@@ -421,12 +421,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
-    if (!self.willCacheResponseBlock && ![self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)])
+    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)];
+
+    if (!delegateResponds && !self.willCacheResponseBlock)
         return cachedResponse;
 
     __block NSCachedURLResponse *modifiedReponse = nil;
 
-    if (self.delegate) {
+    if (delegateResponds) {
         if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
@@ -450,12 +452,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     self.lastRequest = request;
 
-    if (!self.willSendRequestRedirectBlock && ![self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
+    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
+
+    if (!delegateResponds && !self.willSendRequestRedirectBlock)
         return request;
 
     __block NSURLRequest *modifiedRequest = nil;
 
-    if (self.delegate) {
+    if (delegateResponds) {
         if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
