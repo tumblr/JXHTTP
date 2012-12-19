@@ -13,9 +13,13 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 @property (strong) NSString *uniqueString;
 @property (strong) NSDate *startDate;
 @property (strong) NSDate *finishDate;
-@property (strong) NSOperationQueue *blockQueue;
 @property (assign) dispatch_once_t incrementCountOnce;
 @property (assign) dispatch_once_t decrementCountOnce;
+#if OS_OBJECT_USE_OBJC
+@property (strong) dispatch_queue_t blockQueue;
+#else
+@property (assign) dispatch_queue_t blockQueue;
+#endif
 @end
 
 @implementation JXHTTPOperation
@@ -25,20 +29,24 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 - (void)dealloc
 {
     [self decrementOperationCount];
+
+    #if !OS_OBJECT_USE_OBJC
+    dispatch_release(_blockQueue);
+    _blockQueue = NULL;
+    #endif
 }
 
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
+        NSString *queueName = [[NSString alloc] initWithFormat:@"%@.%p.blocks", NSStringFromClass([self class]), self];
+        self.blockQueue = dispatch_queue_create([queueName UTF8String], DISPATCH_QUEUE_SERIAL);
 
-        self.blockQueue = [[NSOperationQueue alloc] init];
-        self.blockQueue.maxConcurrentOperationCount = 1;
-        
+        self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.downloadProgress = @0.0f;
         self.uploadProgress = @0.0f;
-
         self.performsDelegateMethodsOnMainThread = NO;
+        self.performsBlocksOnMainThread = NO;
         self.updatesNetworkActivityIndicator = YES;
         self.authenticationChallenge = nil;
         self.responseDataFilePath = nil;
@@ -53,10 +61,11 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         self.startDate = nil;
         self.finishDate = nil;
 
-        self.performsBlocksOnMainThread = NO;
         self.willStartBlock = nil;
         self.willNeedNewBodyStreamBlock = nil;
         self.willSendRequestForAuthenticationChallengeBlock = nil;
+        self.willSendRequestRedirectBlock = nil;
+        self.willCacheResponseBlock = nil;
         self.didStartBlock = nil;
         self.didReceiveResponseBlock = nil;
         self.didReceiveDataBlock = nil;
@@ -88,7 +97,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 {
     JXHTTPBlock block = [self blockForSelector:selector];
 
-    if ([self isCancelled] || !(self.delegate || block))
+    if ([self isCancelled] || (!self.delegate && !block))
         return;
 
     if (self.performsDelegateMethodsOnMainThread) {
@@ -105,11 +114,11 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     if (!block)
         return;
-    
-    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : self.blockQueue) addOperationWithBlock:^{
+
+    dispatch_async(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
         if (![self isCancelled])
             block(self);
-    }];
+    });
 }
 
 - (JXHTTPBlock)blockForSelector:(SEL)selector
@@ -283,9 +292,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 #pragma mark - <NSURLConnectionDelegate>
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [super connection:connection didFailWithError:connectionError];
+    [super connection:connection didFailWithError:error];
 
     if ([self isCancelled])
         return;
@@ -407,24 +416,87 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     return [self.requestBody httpInputStream];
 }
 
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response
-{
-    if ([self isCancelled])
-        return nil;
-    
-    //TK
-    
-    return request;
-}
-
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
     if ([self isCancelled])
         return nil;
+
+    if (!self.delegate && !self.willCacheResponseBlock)
+        return cachedResponse;
+
+    __block NSCachedURLResponse *modifiedReponse = nil;
+    __block BOOL returnNil = NO;
+
+    if ([self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)]) {
+        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (![self isCancelled])
+                    modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
+                if ([self isCancelled] || !modifiedReponse)
+                    returnNil = YES;
+            });
+        } else {
+            modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
+            if ([self isCancelled] || !modifiedReponse)
+                returnNil = YES;
+        }
+    } else if (self.willCacheResponseBlock) {
+        dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+            if (![self isCancelled])
+                modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
+            if ([self isCancelled] || !modifiedReponse)
+                returnNil = YES;
+        });
+    }
+
+    if (returnNil)
+        return nil;
+
+    return modifiedReponse ? modifiedReponse : cachedResponse;
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
+{
+    if ([self isCancelled])
+        return nil;
+
+    self.lastRequest = request;
+
+    if (!self.delegate && !self.willSendRequestRedirectBlock)
+        return request;
+
+    __block NSURLRequest *modifiedRequest = nil;
+    __block BOOL returnNil = NO;
     
-    //TK
+    if ([self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)]) {
+        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (![self isCancelled])
+                    modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+                if ([self isCancelled] || !modifiedRequest)
+                    returnNil = YES;
+            });
+        } else {
+            modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+            if ([self isCancelled] || !modifiedRequest)
+                returnNil = YES;
+        }
+    } else if (self.willSendRequestRedirectBlock) {
+        dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+            if (![self isCancelled])
+                modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
+            if ([self isCancelled] || !modifiedRequest)
+                returnNil = YES;
+        });
+    }
+
+    if (returnNil) {
+        if (!redirectResponse)
+            [self cancel];
+        return nil;
+    }
     
-    return cachedResponse;
+    return modifiedRequest ? modifiedRequest : request;
 }
 
 @end

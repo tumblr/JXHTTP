@@ -11,8 +11,6 @@
 - (void)httpOperationDidSendData:(JXHTTPOperation *)operation;
 - (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation;
 - (void)httpOperationDidFail:(JXHTTPOperation *)operation;
-
-//not yet functional
-- (NSURLRequest *)httpOperation:(JXHTTPOperation *)operation willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
 - (NSCachedURLResponse *)httpOperation:(JXHTTPOperation *)operation willCacheResponse:(NSCachedURLResponse *)cachedResponse;
+- (NSURLRequest *)httpOperation:(JXHTTPOperation *)operation willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse;
 @end

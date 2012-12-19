@@ -3,6 +3,8 @@
 #import "JXHTTPRequestBody.h"
 
 typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
+typedef NSCachedURLResponse * (^JXHTTPCacheBlock)(JXHTTPOperation *operation, NSCachedURLResponse *response);
+typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLRequest *request, NSURLResponse *response);
 
 @interface JXHTTPOperation : JXURLConnectionOperation
 
@@ -10,9 +12,10 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 @property (weak) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (strong) NSObject <JXHTTPRequestBody> *requestBody;
+@property (strong) NSURLRequest *lastRequest;
 @property (strong, readonly) NSString *uniqueString;
-@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (copy, nonatomic) NSString *responseDataFilePath;
+@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (strong) id userObject;
 
 // Security
@@ -35,11 +38,10 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 
 @property (strong, readonly) NSDate *startDate;
 @property (strong, readonly) NSDate *finishDate;
-@property (readonly, nonatomic) NSTimeInterval elapsedSeconds;
+@property (readonly) NSTimeInterval elapsedSeconds;
 
 // Blocks
 
-@property (strong, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPBlock willStartBlock;
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
@@ -50,6 +52,8 @@ typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 @property (copy) JXHTTPBlock didSendDataBlock;
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 @property (copy) JXHTTPBlock didFailBlock;
+@property (copy) JXHTTPCacheBlock willCacheResponseBlock;
+@property (copy) JXHTTPRedirectBlock willSendRequestRedirectBlock;
 
 // Initialization
 
