@@ -20,6 +20,7 @@
 - (id)responseJSON;
 - (NSDictionary *)responseHeaders;
 - (NSInteger)responseStatusCode;
+- (NSString *)responseStatusString;
 - (long long)responseExpectedContentLength;
 - (NSString *)responseExpectedFileName;
 - (NSString *)responseMIMEType;

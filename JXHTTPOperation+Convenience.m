@@ -145,6 +145,11 @@
     return [(NSHTTPURLResponse *)self.response statusCode];
 }
 
+- (NSString *)responseStatusString
+{
+    return [NSHTTPURLResponse localizedStringForStatusCode:[self responseStatusCode]];
+}
+
 - (long long)responseExpectedContentLength
 {
     return self.response.expectedContentLength;
