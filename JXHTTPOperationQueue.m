@@ -19,13 +19,14 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 @property (strong) NSNumber *expectedDownloadBytes;
 @property (strong) NSNumber *expectedUploadBytes;
 @property (strong) NSMutableSet *observedOperationSet;
-@property (strong) NSOperationQueue *blockQueue;
 #if OS_OBJECT_USE_OBJC
 @property (strong) dispatch_queue_t observationQueue;
 @property (strong) dispatch_queue_t progressQueue;
+@property (strong) dispatch_queue_t blockQueue;
 #else
 @property (assign) dispatch_queue_t observationQueue;
 @property (assign) dispatch_queue_t progressQueue;
+@property (assign) dispatch_queue_t blockQueue;
 #endif
 @end
 
@@ -40,6 +41,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     #if !OS_OBJECT_USE_OBJC
     dispatch_release(_observationQueue);
     dispatch_release(_progressQueue);
+    dispatch_release(_blockQueue);
+    _observationQueue = NULL;
+    _progressQueue = NULL;
+    _blockQueue = NULL;
     #endif
 }
 
@@ -63,12 +68,10 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.didMakeProgressBlock = nil;
         self.didFinishBlock = nil;
 
-        self.blockQueue = [[NSOperationQueue alloc] init];
-        self.blockQueue.maxConcurrentOperationCount = 1;
-
         NSString *prefix = [[NSString alloc] initWithFormat:@"%@.%p.", NSStringFromClass([self class]), self];
         self.observationQueue = dispatch_queue_create([[prefix stringByAppendingString:@"observation"] UTF8String], DISPATCH_QUEUE_SERIAL);
         self.progressQueue = dispatch_queue_create([[prefix stringByAppendingString:@"progress"] UTF8String], DISPATCH_QUEUE_CONCURRENT);
+        self.blockQueue = dispatch_queue_create([[prefix stringByAppendingString:@"blocks"] UTF8String], DISPATCH_QUEUE_SERIAL);
 
         [self addObserver:self
                forKeyPath:@"operations"
@@ -127,9 +130,9 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if (!block)
         return;
 
-    [(self.performsBlocksOnMainThread ? [NSOperationQueue mainQueue] : self.blockQueue) addOperationWithBlock:^{
+    dispatch_async(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
         block(self);
-    }];
+    });
 }
 
 - (JXHTTPQueueBlock)blockForSelector:(SEL)selector

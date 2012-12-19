@@ -25,11 +25,10 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 @property (strong, readonly) NSDate *startDate;
 @property (strong, readonly) NSDate *finishDate;
-@property (readonly, nonatomic) NSTimeInterval elapsedSeconds;
+@property (readonly) NSTimeInterval elapsedSeconds;
 
 // Blocks
 
-@property (strong, readonly) NSOperationQueue *blockQueue;
 @property (assign) BOOL performsBlocksOnMainThread;
 @property (copy) JXHTTPQueueBlock willStartBlock;
 @property (copy) JXHTTPQueueBlock willFinishBlock;
