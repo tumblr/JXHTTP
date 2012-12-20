@@ -422,8 +422,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         return nil;
 
     BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)];
+    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willCacheResponse:)];
 
-    if (!delegateResponds && !self.willCacheResponseBlock)
+    if (!delegateResponds && !requestBodyResponds && !self.willCacheResponseBlock)
         return cachedResponse;
 
     __block NSCachedURLResponse *modifiedReponse = nil;
@@ -436,7 +437,19 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         } else {
             modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
         }
-    } else if (self.willCacheResponseBlock) {
+    }
+
+    if (requestBodyResponds) {
+        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
+            });
+        } else {
+            modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
+        }
+    }
+
+    if (self.willCacheResponseBlock) {
         dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
             modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
         });
@@ -453,8 +466,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     self.lastRequest = request;
 
     BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
+    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
 
-    if (!delegateResponds && !self.willSendRequestRedirectBlock)
+    if (!delegateResponds && !requestBodyResponds && !self.willSendRequestRedirectBlock)
         return request;
 
     __block NSURLRequest *modifiedRequest = nil;
@@ -467,7 +481,19 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         } else {
             modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
         }
-    } else if (self.willSendRequestRedirectBlock) {
+    }
+
+    if (requestBodyResponds) {
+        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+            });
+        } else {
+            modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+        }
+    }
+
+    if (self.willSendRequestRedirectBlock) {
         dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
             modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
         });
