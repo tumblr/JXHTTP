@@ -429,32 +429,21 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     __block NSCachedURLResponse *modifiedReponse = nil;
 
-    if (delegateResponds) {
-        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
-            });
-        } else {
+    void (^modifyResponse)() = ^{
+        if (delegateResponds)
             modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
-        }
-    }
-
-    if (requestBodyResponds) {
-        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
-            });
-        } else {
+        if (requestBodyResponds)
             modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
-        }
-    }
-
-    if (self.willCacheResponseBlock) {
-        dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+        if (self.willCacheResponseBlock)
             modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
-        });
-    }
+    };
 
+    if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), modifyResponse);
+    } else {
+        modifyResponse();
+    }
+    
     return [self isCancelled] ? nil : modifiedReponse;
 }
 
@@ -473,30 +462,19 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     __block NSURLRequest *modifiedRequest = nil;
 
-    if (delegateResponds) {
-        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-            });
-        } else {
+    void (^modifyRequest)() = ^{
+        if (delegateResponds)
             modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-        }
-    }
-
-    if (requestBodyResponds) {
-        if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-            });
-        } else {
+        if (requestBodyResponds)
             modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-        }
-    }
-
-    if (self.willSendRequestRedirectBlock) {
-        dispatch_sync(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+        if (self.willSendRequestRedirectBlock)
             modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
-        });
+    };
+    
+    if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), modifyRequest);
+    } else {
+        modifyRequest();
     }
 
     if (!modifiedRequest && !redirectResponse)
