@@ -452,8 +452,6 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
-    self.lastRequest = request;
-
     BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
     BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
 
