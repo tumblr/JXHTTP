@@ -7,7 +7,7 @@
 + (NSString *)encodedString:(NSString *)string
 {
     if (![string length])
-        return nil;
+        return @"";
     
     CFStringRef static const charsToLeave = CFSTR("-._~"); // RFC 3986 unreserved
     CFStringRef static const charsToEscape = CFSTR(":/?#[]@!$&'()*+,;="); // RFC 3986 reserved
@@ -22,7 +22,7 @@
 + (NSString *)formEncodedString:(NSString *)string
 {
     if (![string length])
-        return nil;
+        return @"";
 
     return [[self encodedString:string] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
 }
@@ -32,7 +32,7 @@
 + (NSString *)encodedDictionary:(NSDictionary *)dictionary
 {
     if (![dictionary count])
-        return nil;
+        return @"";
     
     NSMutableArray *arguments = [[NSMutableArray alloc] initWithCapacity:[dictionary count]];
     NSArray *sortedKeys = [[dictionary allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
@@ -47,7 +47,7 @@
 + (NSString *)formEncodedDictionary:(NSDictionary *)dictionary
 {
     if (![dictionary count])
-        return nil;
+        return @"";
     
     return [[self encodedDictionary:dictionary] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
 }

@@ -12,7 +12,6 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 
 @property (weak) NSObject <JXHTTPOperationDelegate> *delegate;
 @property (strong) NSObject <JXHTTPRequestBody> *requestBody;
-@property (strong) NSURLRequest *lastRequest;
 @property (strong, readonly) NSString *uniqueString;
 @property (copy, nonatomic) NSString *responseDataFilePath;
 @property (assign) BOOL performsDelegateMethodsOnMainThread;

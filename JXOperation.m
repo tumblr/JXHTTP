@@ -27,6 +27,7 @@
     
     #if !OS_OBJECT_USE_OBJC
     dispatch_release(_stateQueue);
+    _stateQueue = NULL;
     #endif
 }
 
