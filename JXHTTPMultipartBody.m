@@ -171,7 +171,7 @@ typedef enum {
 
 - (instancetype)initWithDictionary:(NSDictionary *)stringParameters
 {
-    if (self = [super init]) {
+    if (self = [self init]) {
         for (NSString *key in [stringParameters allKeys]) {
             [self addString:[stringParameters objectForKey:key] forKey:key];
         }
