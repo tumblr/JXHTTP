@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = 'JXHTTP'
   s.version      = '0.1.0'
-  s.author       = { 'Justin Ouellette' => 'justin@justinouellette.com' }
+  s.author       = { 'Justin Ouellette' => 'jstn@justinouellette.com' }
   s.source_files = '*.{h,m}'
   s.requires_arc = true
   s.ios.deployment_target = '5.0'
