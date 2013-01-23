@@ -55,10 +55,7 @@
 {
     [super finish];
 
-    [self performSelector:@selector(stopConnection)
-                 onThread:[[self class] sharedThread]
-               withObject:nil
-            waitUntilDone:[NSThread currentThread] == [[self class] sharedThread]];
+    [self performSelectorInBackground:@selector(stopConnection) withObject:nil];
 }
 
 #pragma mark - Siren Song

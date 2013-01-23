@@ -28,6 +28,11 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)dealloc
 {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        static int count = 0;
+        NSLog(@"dealloc %d", ++count);
+    }];
+    
     [self decrementOperationCount];
 
     #if !OS_OBJECT_USE_OBJC
