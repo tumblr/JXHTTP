@@ -16,12 +16,6 @@
 - (void)dealloc
 {
     [self stopConnection];
-
-
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        static int count = 0;
-        NSLog(@"dealloc %d", ++count);
-    }];
 }
 
 - (instancetype)init
