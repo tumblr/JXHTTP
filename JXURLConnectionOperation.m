@@ -16,6 +16,12 @@
 - (void)dealloc
 {
     [self stopConnection];
+
+
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        static int count = 0;
+        NSLog(@"dealloc %d", ++count);
+    }];
 }
 
 - (instancetype)init
@@ -53,16 +59,18 @@
 
 - (void)cancel
 {
-    if ([self isCancelled])
+    if ([NSThread currentThread] != [[self class] sharedThread]) {
+        [self performSelector:@selector(cancel) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:NO];
         return;
+    }
 
-    [super performSelector:@selector(cancel) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:NO];
+    [super cancel];
 }
 
 - (void)finish
 {
     [super finish];
-    
+
     [self stopConnection];
 }
 
