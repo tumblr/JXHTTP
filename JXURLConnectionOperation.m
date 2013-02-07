@@ -51,11 +51,19 @@
     [self startConnection];
 }
 
+- (void)cancel
+{
+    if ([self isCancelled])
+        return;
+
+    [super performSelector:@selector(cancel) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:NO];
+}
+
 - (void)finish
 {
     [super finish];
-
-    [self performSelectorInBackground:@selector(stopConnection) withObject:nil];
+    
+    [self stopConnection];
 }
 
 #pragma mark - Siren Song
