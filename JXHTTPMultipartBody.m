@@ -75,8 +75,7 @@ typedef enum {
     } else if (self.multipartType == JXHTTPMultipartFile) {
         NSError *error = nil;
         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self filePath] error:&error];
-        if (error != nil)
-            JXLogError(error);
+        JXError(error);
         
         NSNumber *fileSize = [attributes objectForKey:NSFileSize];
         if (fileSize)
@@ -302,8 +301,7 @@ typedef enum {
         return;
     
     if (eventCode == NSStreamEventErrorOccurred) {
-        if (stream.streamError)
-            JXLogError(stream.streamError);
+        JXError(stream.streamError);
         [self.httpOutputStream close];
         return;
     }

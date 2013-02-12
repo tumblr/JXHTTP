@@ -31,8 +31,7 @@
 {
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionaryOrArray options:0 error:&error];
-    if (error != nil)
-        JXLogError(error);
+    JXError(error);
         
     return [self withData:data];
 }

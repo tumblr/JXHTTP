@@ -38,8 +38,7 @@
 
     NSError *error = nil;
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.filePath error:&error];
-    if (error != nil)
-        JXLogError(error);
+    JXError(error);
 
     NSNumber *fileSize = [attributes objectForKey:NSFileSize];
     if (fileSize)

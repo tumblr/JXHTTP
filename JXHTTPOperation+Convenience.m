@@ -129,8 +129,7 @@
 
     NSError *error = nil;
     id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    if (error != nil)
-        JXLogError(error);
+    JXError(error);
     
     return json;
 }

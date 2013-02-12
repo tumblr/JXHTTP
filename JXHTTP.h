@@ -45,6 +45,7 @@ SOFTWARE.
 #import "JXHTTPMultipartBody.h"
 
 // Error Logging
-#define JXLogError(error) NSLog(@"%@ (%d) ERROR: %@", \
-            [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
-            __LINE__, [error localizedDescription]);
+#define JXError(error) if (error) { \
+                        NSLog(@"%@ (%d) ERROR: %@", \
+                        [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
+                        __LINE__, [error localizedDescription]); }
