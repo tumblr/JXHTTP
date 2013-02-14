@@ -51,21 +51,32 @@
     [self startConnection];
 }
 
-- (void)cancel
-{
-    if ([NSThread currentThread] != [[self class] sharedThread]) {
-        [self performSelector:@selector(cancel) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:NO];
-        return;
-    }
-
-    [super cancel];
-}
-
 - (void)finish
 {
     [super finish];
 
     [self stopConnection];
+}
+
+- (void)cancel
+{
+    // Do this asynchronously to avoid deadlocking when `cancel` is called from
+    // a delegate method on a non-shared thread (e.g., the main thread).
+
+    __weak __typeof(self) weakSelf = self;
+
+    if ([NSThread currentThread] != [[self class] sharedThread]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [weakSelf superCancel];
+        });
+    } else {
+        [weakSelf superCancel];
+    }
+}
+
+- (void)superCancel
+{
+    [super cancel];
 }
 
 #pragma mark - Siren Song
