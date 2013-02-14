@@ -118,7 +118,7 @@
             self.isFinished = YES;
             [self didChangeValueForKey:@"isExecuting"];
             [self didChangeValueForKey:@"isFinished"];
-        } else {
+        } else if (!self.isFinished) {
             self.isExecuting = NO;
             self.isFinished = YES;
         }
