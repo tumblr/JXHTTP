@@ -146,9 +146,7 @@
     __weak __typeof(self) weakSelf = self;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        __typeof(weakSelf) strongSelf = weakSelf;
-
-        if (!strongSelf || [strongSelf isCancelled] || strongSelf.isFinished)
+        if (!weakSelf || [weakSelf isCancelled] || weakSelf.isFinished)
             return;
 
         UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
@@ -156,7 +154,7 @@
             [[UIApplication sharedApplication] endBackgroundTask:taskID];
         }];
 
-        strongSelf.backgroundTaskID = taskID;
+        weakSelf.backgroundTaskID = taskID;
     });
 
     #endif
