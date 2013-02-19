@@ -60,9 +60,6 @@
 
 - (void)cancel
 {
-    // Do this asynchronously to avoid deadlocking when `cancel` is called from
-    // a delegate method on a non-shared thread (e.g., the main thread).
-
     __weak __typeof(self) weakSelf = self;
 
     if ([NSThread currentThread] != [[self class] sharedThread]) {
@@ -70,7 +67,7 @@
             [weakSelf superCancel];
         });
     } else {
-        [weakSelf superCancel];
+        [super cancel];
     }
 }
 
