@@ -39,6 +39,4 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 + (instancetype)sharedQueue;
 
-+ (instancetype)queue;
-
 @end

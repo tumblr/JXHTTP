@@ -92,11 +92,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     return sharedQueue;
 }
 
-+ (instancetype)queue
-{
-    return [[self alloc] init];
-}
-
 #pragma mark - Accessors
 
 - (NSTimeInterval)elapsedSeconds
