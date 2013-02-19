@@ -58,7 +58,7 @@
     [self stopConnection];
 }
 
-#pragma mark - Siren Song
+#pragma mark - Scheduling
 
 - (void)startConnection
 {
