@@ -148,7 +148,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         dispatch_async(dispatch_get_main_queue(), ^{
             ++JXHTTPOperationCount;
             [JXHTTPActivityTimer invalidate];
-            [JXHTTPOperation toggleNetworkActivityVisible:@YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         });
 
         self.didIncrementCount = YES;
@@ -189,23 +189,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 + (void)networkActivityTimerDidFire:(NSTimer *)timer
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    [JXHTTPOperation toggleNetworkActivityVisible:@NO];
-    
-    #endif
-}
-
-+ (void)toggleNetworkActivityVisible:(NSNumber *)visibility
-{
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(toggleNetworkActivityVisible:) withObject:visibility waitUntilDone:YES];
-        return;
-    }
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[visibility boolValue]];
-
     #endif
 }
 
