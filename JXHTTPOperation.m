@@ -400,6 +400,12 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
+    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)];
+    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willCacheResponse:)];
+
+    if (!delegateResponds && !requestBodyResponds && !self.willCacheResponseBlock)
+        return cachedResponse;
+
     __block NSCachedURLResponse *modifiedReponse = nil;
 
     if ([self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)])
@@ -414,7 +420,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         });
     }
 
-    return [self isCancelled] || !modifiedReponse ? nil : modifiedReponse;
+    return [self isCancelled] ? nil : modifiedReponse;
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
@@ -422,12 +428,18 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
+    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
+    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
+
+    if (!delegateResponds && !requestBodyResponds && !self.willSendRequestRedirectBlock)
+        return request;
+
     __block NSURLRequest *modifiedRequest = nil;
 
-    if ([self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
+    if (delegateResponds)
         modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
 
-    if ([self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
+    if (requestBodyResponds)
         modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
 
     if (self.willSendRequestRedirectBlock) {
@@ -439,7 +451,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if (!modifiedRequest && !redirectResponse)
         [self cancel];
 
-    return [self isCancelled] || !modifiedRequest ? nil : modifiedRequest;
+    return [self isCancelled] ? nil : modifiedRequest;
 }
 
 @end
