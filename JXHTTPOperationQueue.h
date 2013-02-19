@@ -7,7 +7,6 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 // Core
 
 @property (weak) NSObject <JXHTTPOperationQueueDelegate> *delegate;
-@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (strong, readonly) NSString *uniqueString;
 
 // Progress
@@ -29,7 +28,7 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 // Blocks
 
-@property (assign) BOOL performsBlocksOnMainThread;
+@property (assign) BOOL performsBlocksOnMainQueue;
 @property (copy) JXHTTPQueueBlock willStartBlock;
 @property (copy) JXHTTPQueueBlock willFinishBlock;
 @property (copy) JXHTTPQueueBlock didStartBlock;

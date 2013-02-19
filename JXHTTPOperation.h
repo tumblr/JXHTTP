@@ -14,7 +14,6 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 @property (strong) NSObject <JXHTTPRequestBody> *requestBody;
 @property (strong, readonly) NSString *uniqueString;
 @property (copy, nonatomic) NSString *responseDataFilePath;
-@property (assign) BOOL performsDelegateMethodsOnMainThread;
 @property (strong) id userObject;
 
 // Security
@@ -41,7 +40,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 
 // Blocks
 
-@property (assign) BOOL performsBlocksOnMainThread;
+@property (assign) BOOL performsBlocksOnMainQueue;
 @property (copy) JXHTTPBlock willStartBlock;
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
 @property (copy) JXHTTPBlock willSendRequestForAuthenticationChallengeBlock;

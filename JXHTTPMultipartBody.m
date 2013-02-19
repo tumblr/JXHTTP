@@ -249,7 +249,7 @@ typedef enum {
         self.httpOutputStream = (__bridge_transfer NSOutputStream *)writeStream;
         
         self.httpOutputStream.delegate = self;
-        [self.httpOutputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+        [self scheduleOutputStreamOnThread:[JXHTTPOperation sharedThread]];
         [self.httpOutputStream open];
 
         readStream = NULL;
@@ -261,6 +261,19 @@ typedef enum {
     if (writeStream != NULL)
         CFRelease(writeStream);
 }
+
+- (void)scheduleOutputStreamOnThread:(NSThread *)thread
+{
+    if (thread && thread != [NSThread currentThread]) {
+        [self performSelector:@selector(scheduleOutputStreamOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+        return;
+    }
+
+    self.httpOutputStream.delegate = self;
+    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [self.httpOutputStream open];
+}
+
 
 - (void)setPartWithType:(JXHTTPMultipartPartType)type forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil data:(NSData *)data
 {

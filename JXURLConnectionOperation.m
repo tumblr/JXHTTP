@@ -58,24 +58,6 @@
     [self stopConnection];
 }
 
-- (void)cancel
-{
-    __weak __typeof(self) weakSelf = self;
-
-    if ([NSThread currentThread] != [[self class] sharedThread]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [weakSelf superCancel];
-        });
-    } else {
-        [super cancel];
-    }
-}
-
-- (void)superCancel
-{
-    [super cancel];
-}
-
 #pragma mark - Siren Song
 
 - (void)startConnection

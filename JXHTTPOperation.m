@@ -45,8 +45,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.downloadProgress = @0.0f;
         self.uploadProgress = @0.0f;
-        self.performsDelegateMethodsOnMainThread = NO;
-        self.performsBlocksOnMainThread = NO;
+        self.performsBlocksOnMainQueue = NO;
         self.updatesNetworkActivityIndicator = YES;
         self.authenticationChallenge = nil;
         self.responseDataFilePath = nil;
@@ -100,22 +99,16 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled] || (!self.delegate && !block))
         return;
 
-    if (self.performsDelegateMethodsOnMainThread) {
-        if ([self.delegate respondsToSelector:selector])
-            [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
-        if ([self.requestBody respondsToSelector:selector])
-            [self.requestBody performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
-    } else {
-        if ([self.delegate respondsToSelector:selector])
-            [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
-        if ([self.requestBody respondsToSelector:selector])
-            [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
-    }
+    if ([self.delegate respondsToSelector:selector])
+        [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
+
+    if ([self.requestBody respondsToSelector:selector])
+        [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
 
     if (!block)
         return;
 
-    dispatch_async(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+    dispatch_async(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
         if (![self isCancelled])
             block(self);
     });
@@ -421,30 +414,21 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
-    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)];
-    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willCacheResponse:)];
-
-    if (!delegateResponds && !requestBodyResponds && !self.willCacheResponseBlock)
-        return cachedResponse;
-
     __block NSCachedURLResponse *modifiedReponse = nil;
 
-    void (^modifyResponse)() = ^{
-        if (delegateResponds)
-            modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
-        if (requestBodyResponds)
-            modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
-        if (self.willCacheResponseBlock)
-            modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
-    };
+    if ([self.delegate respondsToSelector:@selector(httpOperation:willCacheResponse:)])
+        modifiedReponse = [self.delegate httpOperation:self willCacheResponse:cachedResponse];
 
-    if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-        dispatch_sync(dispatch_get_main_queue(), modifyResponse);
-    } else {
-        modifyResponse();
+    if ([self.requestBody respondsToSelector:@selector(httpOperation:willCacheResponse:)])
+        modifiedReponse = [self.requestBody httpOperation:self willCacheResponse:cachedResponse];
+
+    if (self.willCacheResponseBlock) {
+        dispatch_sync(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
+            modifiedReponse = self.willCacheResponseBlock(self, cachedResponse);
+        });
     }
-    
-    return [self isCancelled] ? nil : modifiedReponse;
+
+    return [self isCancelled] || !modifiedReponse ? nil : modifiedReponse;
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
@@ -452,33 +436,24 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     if ([self isCancelled])
         return nil;
 
-    BOOL delegateResponds = [self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
-    BOOL requestBodyResponds = [self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)];
-
-    if (!delegateResponds && !requestBodyResponds && !self.willSendRequestRedirectBlock)
-        return request;
-
     __block NSURLRequest *modifiedRequest = nil;
 
-    void (^modifyRequest)() = ^{
-        if (delegateResponds)
-            modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-        if (requestBodyResponds)
-            modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
-        if (self.willSendRequestRedirectBlock)
+    if ([self.delegate respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
+        modifiedRequest = [self.delegate httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+
+    if ([self.requestBody respondsToSelector:@selector(httpOperation:willSendRequest:redirectResponse:)])
+        modifiedRequest = [self.requestBody httpOperation:self willSendRequest:request redirectResponse:redirectResponse];
+
+    if (self.willSendRequestRedirectBlock) {
+        dispatch_sync(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
             modifiedRequest = self.willSendRequestRedirectBlock(self, request, redirectResponse);
-    };
-    
-    if (self.performsDelegateMethodsOnMainThread && ![NSThread isMainThread]) {
-        dispatch_sync(dispatch_get_main_queue(), modifyRequest);
-    } else {
-        modifyRequest();
+        });
     }
 
     if (!modifiedRequest && !redirectResponse)
         [self cancel];
 
-    return [self isCancelled] ? nil : modifiedRequest;
+    return [self isCancelled] || !modifiedRequest ? nil : modifiedRequest;
 }
 
 @end

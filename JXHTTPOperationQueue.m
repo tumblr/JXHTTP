@@ -54,8 +54,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         self.maxConcurrentOperationCount = JXHTTPOperationQueueDefaultMaxOps;
         self.uniqueString = [[NSProcessInfo processInfo] globallyUniqueString];
         self.observedOperationSet = [[NSMutableSet alloc] init];
-        self.performsDelegateMethodsOnMainThread = NO;
-        self.performsBlocksOnMainThread = NO;
+        self.performsBlocksOnMainQueue = NO;
         self.delegate = nil;
         self.startDate = nil;
         self.finishDate = nil;
@@ -114,23 +113,15 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
 - (void)performDelegateMethod:(SEL)selector
 {
+    if ([self.delegate respondsToSelector:selector])
+        [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
+
     JXHTTPQueueBlock block = [self blockForSelector:selector];
-    
-    if (!self.delegate && !block)
-        return;
-    
-    if (self.performsDelegateMethodsOnMainThread) {
-        if ([self.delegate respondsToSelector:selector])
-            [self.delegate performSelectorOnMainThread:selector withObject:self waitUntilDone:YES];
-    } else {
-        if ([self.delegate respondsToSelector:selector])
-            [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
-    }
 
     if (!block)
         return;
 
-    dispatch_async(self.performsBlocksOnMainThread ? dispatch_get_main_queue() : self.blockQueue, ^{
+    dispatch_async(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
         block(self);
     });
 }
