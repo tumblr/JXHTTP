@@ -94,18 +94,18 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)performDelegateMethod:(SEL)selector
 {
-    JXHTTPBlock block = [self blockForSelector:selector];
-
-    if ([self isCancelled] || (!self.delegate && !block))
+    if ([self isCancelled])
         return;
-
+    
     if ([self.delegate respondsToSelector:selector])
         [self.delegate performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
 
     if ([self.requestBody respondsToSelector:selector])
         [self.requestBody performSelector:selector onThread:[NSThread currentThread] withObject:self waitUntilDone:YES];
 
-    if (!block)
+    JXHTTPBlock block = [self blockForSelector:selector];
+
+    if ([self isCancelled] || !block)
         return;
 
     dispatch_async(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
