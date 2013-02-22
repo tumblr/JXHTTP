@@ -104,8 +104,10 @@
 - (void)cancel
 {
     [super cancel];
-
-    [self finish];
+    
+    @synchronized(self) {
+        [self finish];
+    }
 }
 
 - (void)finish
