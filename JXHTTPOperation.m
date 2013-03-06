@@ -262,9 +262,9 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     [self performDelegateMethod:@selector(httpOperationDidStart:)];
 }
 
-- (void)finish
+- (void)willFinish
 {
-    [super finish];
+    [super willFinish];
 
     [self decrementOperationCount];
 }

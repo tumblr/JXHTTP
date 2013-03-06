@@ -9,6 +9,7 @@
 + (instancetype)operation;
 
 - (void)startAndWaitUntilFinished;
+- (void)willFinish;
 - (void)finish;
 
 @end

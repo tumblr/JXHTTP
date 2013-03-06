@@ -51,9 +51,9 @@
     [self startConnection];
 }
 
-- (void)finish
+- (void)willFinish
 {
-    [super finish];
+    [super willFinish];
 
     [self stopConnection];
 }

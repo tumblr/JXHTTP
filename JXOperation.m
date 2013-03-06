@@ -108,9 +108,16 @@
     [self finish];
 }
 
+- (void)willFinish
+{
+    [self endAppBackgroundTask];
+}
+
 - (void)finish
 {
     dispatch_sync(self.stateQueue, ^{
+        [self willFinish];
+
         if (self.isExecuting) {
             [self willChangeValueForKey:@"isExecuting"];
             [self willChangeValueForKey:@"isFinished"];
@@ -122,8 +129,6 @@
             self.isExecuting = NO;
             self.isFinished = YES;
         }
-        
-        [self endAppBackgroundTask];
     });
 }
 
