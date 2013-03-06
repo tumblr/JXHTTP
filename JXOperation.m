@@ -116,6 +116,9 @@
 - (void)finish
 {
     dispatch_sync(self.stateQueue, ^{
+        if (self.isFinished)
+            return;
+
         [self willFinish];
 
         if (self.isExecuting) {
