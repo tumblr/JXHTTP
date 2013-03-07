@@ -39,7 +39,6 @@
 
         self.isExecuting = NO;
         self.isFinished = NO;
-        self.startsOnMainThread = NO;
         self.continuesInAppBackground = NO;
         
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
@@ -58,11 +57,6 @@
 
 - (void)start
 {
-    if (self.startsOnMainThread && ![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
-        return;
-    }
-    
     if (![self isReady] || [self isCancelled])
         return;
     
