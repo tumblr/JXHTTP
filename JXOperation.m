@@ -57,15 +57,12 @@
 
 - (void)start
 {
-    if ([self isCancelled])
-        return;
-
     __block BOOL shouldStart = YES;
     
     dispatch_sync(self.stateQueue, ^{
-        if (![self isReady] || [self isCancelled] || self.isExecuting || self.isFinished) {
+        if (![self isReady] || self.isExecuting || self.isFinished) {
             shouldStart = NO;
-        } else {
+        } else if (![self isCancelled]) {
             [self willChangeValueForKey:@"isExecuting"];
             self.isExecuting = YES;
             [self didChangeValueForKey:@"isExecuting"];
