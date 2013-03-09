@@ -69,11 +69,11 @@
 - (void)startAndWaitUntilFinished;
 
 /**
- Subclasses should override this method (and call `super`) rather than overriding
- <finish>. In addition, this method should never be called manually. It is
- guaranteed to be called exactly one time from one thread just before the operation
- is marked as finished (and thus potentially deallocated). If your operation
- has any cleanup to do before it disappears forever, do it here.
+ Called just before the operation finishes, on the same thread. Guaranteed to
+ be called only once. Subclasses should override this method (and call `super`)
+ rather than overriding <finish>.
+ 
+ @warning Do not call this method yourself.
  */
 - (void)willFinish;
 
