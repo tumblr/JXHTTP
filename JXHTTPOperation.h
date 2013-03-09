@@ -23,6 +23,18 @@
  On iOS, the system network activity indicator is updated by default. It waits on a
  0.25 second timer from the end of the last operation to prevent flickering. On OS X
  the <updatesNetworkActivityIndicator> property is ignored.
+ 
+ ## Examples ##
+ 
+ ### Basic Operation ###
+    
+     JXHTTPOperation *op = [JXHTTPOperation withURLString:@"http://jxhttp.com/"];
+     op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
+        NSLog(@"some html: %@", op.responseString);
+     };
+     
+     [[JXHTTPOperationQueue sharedQueue] addOperation:op];
+ 
  */
 
 #import "JXURLConnectionOperation.h"
@@ -154,6 +166,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed at the very start of the operation, before the connection object is created.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock willStartBlock;
 
@@ -162,6 +176,10 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  for the <requestBody> when a retransmission is necessary.
  
  Safe to access and change from any thread at any time.
+ 
+ @warning For notification purposes only, do not use this block to supply the stream.
+ 
+ @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock willNeedNewBodyStreamBlock;
 
@@ -169,6 +187,9 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed when the underlying `NSURLConnection` receives a request for authentication.
  
  Safe to access and change from any thread at any time.
+ 
+ @warning For notification purposes only, do not use this block to supply the credential.
+ @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock willSendRequestForAuthenticationChallengeBlock;
 
@@ -176,6 +197,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed immediately after the underlying `NSURLConnection` begins.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didStartBlock;
 
@@ -183,6 +206,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed immediately after the underlying `NSURLConnection` receives a response.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didReceiveResponseBlock;
 
@@ -190,6 +215,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed every time the underlying `NSURLConnection` receives response data.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didReceiveDataBlock;
 
@@ -197,6 +224,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed every time the underlying `NSURLConnection` sends request data.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didSendDataBlock;
 
@@ -204,6 +233,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  Performed when the underlying `NSURLConnection` finishes loading successfully.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didFinishLoadingBlock;
 
@@ -212,6 +243,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  is available for inspection.
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPBlock didFailBlock;
 
@@ -219,6 +252,8 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  TKTK
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPCacheBlock willCacheResponseBlock;
 
@@ -226,12 +261,29 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  TKTK
  
  Safe to access and change from any thread at any time.
+ 
+  @see <JXHTTPOperationDelegate>
  */
 @property (copy) JXHTTPRedirectBlock willSendRequestRedirectBlock;
 
 /// @name Initialization
 
+/**
+ Creates and returns a new `JXHTTPOperation` with the specified URL.
+ 
+ @param urlString The URL to request.
+ @returns An autoreleased operation.
+ */
 + (instancetype)withURLString:(NSString *)urlString;
+
+/**
+ Creates and returns a new `JXHTTPOperation` with the specified URL and query parameters,
+ escaped via <JXURLEncoding>.
+ 
+ @param urlString The URL to request.
+ @param parameters A dictionary of keys and values to form the query string.
+ @returns An autoreleased operation.
+ */
 + (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
 @end

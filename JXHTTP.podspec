@@ -9,4 +9,14 @@ Pod::Spec.new do |s|
   s.frameworks   = 'Foundation'
   s.ios.weak_frameworks = 'UIKit'
   s.osx.weak_frameworks = 'AppKit'
+  s.documentation = {
+    :html => 'http://jxhttp.com/docs',
+    :appledoc => [
+      '--project-name', 'JXHTTP',
+      '--project-company', 'JSTN',
+      '--docset-copyright', 'Justin Ouellette',
+      '--clean-output',
+      '--explicit-crossref',
+      '--no-repeat-first-par'
+      ]}
 end
