@@ -1,8 +1,8 @@
 /**
  `JXOperation` is an abstract `NSOperation` subclass that implements all the
- methods necessary for what Apple calls "concurrent" operations (see the sections
+ methods necessary for what Apple calls "concurrent" operations. See the sections
  titled _Subclassing Notes_ and _Multicore Considerations_ in the `NSOperation`
- class reference, this subclass does all of it for you.)
+ class reference, this class does all of it for you.)
  
  The main advantage of concurrent operations is that they allow for the use of
  asynchronous APIs. Normally, when the `main` method of an `NSOperation` exits,
@@ -12,9 +12,9 @@
  can wait for delegate callbacks or any other asynchronous event.
  
  Unfortunately, `NSOperation` has some quirks and ensuring thread safety as
- the operation changes state can be tricky. `JXOperation` makes it easy by
+ the operation changes state can be tricky. `JXOperation` makes it easier by
  providing a simple <finish> method that can be called at any time from any
- thread without worrying about the operation's current state.
+ thread, without worrying about the operation's current state.
  
  Heavily inspired by Dave Dribin, and building on his work detailed here:
 
@@ -69,9 +69,9 @@
 - (void)startAndWaitUntilFinished;
 
 /**
- Called just before the operation finishes, on the same thread. Guaranteed to
- be called only once. Subclasses should override this method (and call `super`)
- rather than overriding <finish>.
+ Called just before the operation finishes (including as a result of being cancelled)
+ on the same thread. Guaranteed to be called only once. Subclasses should override this
+ method (and call `super`) instead of overriding <finish>.
  
  @warning Do not call this method yourself.
  */
@@ -86,8 +86,8 @@
  before the operation has started.
  
  @warning To ensure thread saftey, do not override this method (use <willFinish>
- instead). Once the operation has finished to do not attempt to access any of its
- properties as it may be released by a queue or other retaining object from a
+ instead). After the operation has finished do not attempt to access any of its
+ properties as it may have been released by a queue or other retaining object from a
  different thread.
  */
 - (void)finish;

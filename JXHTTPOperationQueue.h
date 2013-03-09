@@ -1,15 +1,24 @@
+/**
+ `JXHTTPOperationQueue` is an `NSOperationQueue` subclass and can be used to group
+ multiple instances of <JXHTTPOperation> for progress tracking, timing, or cancellation.
+ It provides blocks and delegate methods via the <JXHTTPOperationQueueDelegate> protocol.
+ 
+ Any `NSOperation` subclass can be added to this queue, classes other than <JXHTTPOperation>
+ are ignored.
+ */
+
 #import "JXHTTPOperationQueueDelegate.h"
 
 typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 
 @interface JXHTTPOperationQueue : NSOperationQueue
 
-// Core
+/// @name Core
 
 @property (weak) NSObject <JXHTTPOperationQueueDelegate> *delegate;
 @property (strong, readonly) NSString *uniqueString;
 
-// Progress
+/// @name Progress
 
 @property (strong, readonly) NSNumber *downloadProgress;
 @property (strong, readonly) NSNumber *uploadProgress;
@@ -20,13 +29,13 @@ typedef void (^JXHTTPQueueBlock)(JXHTTPOperationQueue *queue);
 @property (strong, readonly) NSNumber *expectedDownloadBytes;
 @property (strong, readonly) NSNumber *expectedUploadBytes;
 
-// Timing
+/// @name Timing
 
 @property (strong, readonly) NSDate *startDate;
 @property (strong, readonly) NSDate *finishDate;
 @property (readonly) NSTimeInterval elapsedSeconds;
 
-// Blocks
+/// @name Blocks
 
 @property (assign) BOOL performsBlocksOnMainQueue;
 @property (copy) JXHTTPQueueBlock willStartBlock;
