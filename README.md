@@ -1,12 +1,10 @@
 # JXHTTP #
 
-## You Know, For Networking ##
-
-JXHTTP uses ARC and GCD, and thus requires iOS 5.0 or OS X 10.7 (or newer). Better docs coming soon.
+JXHTTP uses ARC and GCD, and thus requires iOS 5.0 or OS X 10.7 (or newer).
 
 ## Examples ##
 
-`#import "JXHTTP.h"` somewhere convenient. We assume you've already imported `Foundation.h` somewhere.
+`#import "JXHTTP.h"` somewhere convenient.
 
 ### Asynchronous ###
 
@@ -27,7 +25,3 @@ JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.
 
 NSLog(@"%@", op.responseString);
 ```
-
-## License ##
-
-MIT License, see [JXHTTP.h](https://github.com/jstn/JXHTTP/blob/master/JXHTTP.h)
