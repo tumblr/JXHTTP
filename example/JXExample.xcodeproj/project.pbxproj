@@ -18,6 +18,7 @@
 		D04867C516EE75E000473908 /* JXOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D04867B816EE75E000473908 /* JXOperation.m */; };
 		D04867C616EE75E000473908 /* JXURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D04867BA16EE75E000473908 /* JXURLConnectionOperation.m */; };
 		D04867C716EE75E000473908 /* JXURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = D04867BC16EE75E000473908 /* JXURLEncoding.m */; };
+		D04867CA16EE770500473908 /* JXRemoteImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04867C916EE770500473908 /* JXRemoteImageView.m */; };
 		D0DD85F116EE75A000B293D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DD85F016EE75A000B293D5 /* UIKit.framework */; };
 		D0DD85F316EE75A000B293D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DD85F216EE75A000B293D5 /* Foundation.framework */; };
 		D0DD85F516EE75A000B293D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DD85F416EE75A000B293D5 /* CoreGraphics.framework */; };
@@ -52,6 +53,8 @@
 		D04867BA16EE75E000473908 /* JXURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXURLConnectionOperation.m; sourceTree = "<group>"; };
 		D04867BB16EE75E000473908 /* JXURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXURLEncoding.h; sourceTree = "<group>"; };
 		D04867BC16EE75E000473908 /* JXURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXURLEncoding.m; sourceTree = "<group>"; };
+		D04867C816EE770500473908 /* JXRemoteImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXRemoteImageView.h; sourceTree = "<group>"; };
+		D04867C916EE770500473908 /* JXRemoteImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXRemoteImageView.m; sourceTree = "<group>"; };
 		D0DD85ED16EE75A000B293D5 /* JXExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JXExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0DD85F016EE75A000B293D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0DD85F216EE75A000B293D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -143,6 +146,8 @@
 			children = (
 				D0DD85FF16EE75A000B293D5 /* JXAppDelegate.h */,
 				D0DD860016EE75A000B293D5 /* JXAppDelegate.m */,
+				D04867C816EE770500473908 /* JXRemoteImageView.h */,
+				D04867C916EE770500473908 /* JXRemoteImageView.m */,
 				D04867A216EE75E000473908 /* JXHTTP */,
 				D0DD85F716EE75A000B293D5 /* Supporting Files */,
 			);
@@ -234,6 +239,7 @@
 				D04867C516EE75E000473908 /* JXOperation.m in Sources */,
 				D04867C616EE75E000473908 /* JXURLConnectionOperation.m in Sources */,
 				D04867C716EE75E000473908 /* JXURLEncoding.m in Sources */,
+				D04867CA16EE770500473908 /* JXRemoteImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
