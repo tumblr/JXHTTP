@@ -13,8 +13,9 @@
         JXHTTPOperation *op = [[JXHTTPOperation alloc] initWithURL:imageURL];
 
         op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
+            UIImage *image = [[UIImage alloc] initWithData:[op responseData]];
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = [[UIImage alloc] initWithData:[op responseData]];
+                self.image = image;
             });
         };
 
