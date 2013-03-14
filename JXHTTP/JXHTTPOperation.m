@@ -141,6 +141,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)incrementOperationCount
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     dispatch_once(&_incrementCountOnce, ^{
         if (!self.updatesNetworkActivityIndicator)
             return;
@@ -153,10 +155,14 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
         self.didIncrementCount = YES;
     });
+    
+    #endif
 }
 
 - (void)decrementOperationCount
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     if (!self.didIncrementCount)
         return;
     
@@ -169,6 +175,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
                 [JXHTTPOperation restartActivityTimer];
         });
     });
+
+    #endif
 }
 
 + (void)restartActivityTimer
