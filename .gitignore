@@ -3,6 +3,7 @@
 *.mode2v3
 *.pbxuser
 *.perspectivev3
-xcuserdata
+*.xcworkspace
 *.swp
 *~.nib
+xcuserdata
