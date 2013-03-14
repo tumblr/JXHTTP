@@ -20,6 +20,8 @@ Pod::Spec.new do |s|
       '--project-name', 'JXHTTP',
       '--project-company', 'JSTN',
       '--project-version', '1.0.0',
+  		'--docset-bundle-id', '%COMPANYID.%PROJECTID-%VERSIONID',
+  		'--docset-bundle-filename', '%COMPANYID.%PROJECTID-%VERSIONID.docset',
       '--ignore', 'example',
       '--ignore', 'docs',
       '--no-repeat-first-par',
