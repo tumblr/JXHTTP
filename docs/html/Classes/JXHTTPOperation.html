@@ -253,11 +253,11 @@ protocol. The most common are premade:</p>
 <li><a href="../Classes/JXHTTPMultipartBody.html">JXHTTPMultipartBody</a> (multipart streaming from disk and memory)</li>
 <li><a href="../Classes/JXHTTPFileBody.html">JXHTTPFileBody</a> (single part streaming from disk)</li>
 <li><a href="../Classes/JXHTTPJSONBody.html">JXHTTPJSONBody</a> (JSON from collection objects or string)</li>
-<li><a href="../Classes/JXHTTPDataBody.html">JXHTTPDataBody</a> (raw request data)</li>
+<li><JXHTTPDataBody> (raw request data)</li>
 </ul>
 
 
-<p>In addition, this family of classes makes use of <JXURLEncoding> to escape strings
+<p>In addition, this family of classes makes use of <a href="../Classes/JXURLEncoding.html">JXURLEncoding</a> to escape strings
 and &lt;JXHTTPOperation+Convenience> to provide easier access to the underlying
 properties of request and response objects.</p>
 
@@ -504,7 +504,7 @@ is available for inspection.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/withURLString:queryParameters:">+&nbsp;withURLString:queryParameters:</a></code>
 		<span class="tooltip"><p>Creates and returns a new <code>JXHTTPOperation</code> with the specified URL and query parameters,
-escaped via <JXURLEncoding>.</p></span>
+escaped via <a href="../Classes/JXURLEncoding.html">JXURLEncoding</a>.</p></span>
 	</span>
 	
 	
@@ -521,7 +521,7 @@ escaped via <JXURLEncoding>.</p></span>
 		<code><a href="#//api/name/willFinish">&ndash;&nbsp;willFinish</a></code>
 		<span class="tooltip"><p>Called just before the operation finishes on the same thread (including as a result of
 being cancelled). Guaranteed to be called only once. Subclasses should override this
-method (and call <code>super</code>) instead of overriding <a href="../Classes/JXOperation.html#//api/name/finish">finish</a>.</p></span>
+method (and call <code>super</code>) instead of overriding <a href="#//api/name/finish">finish</a>.</p></span>
 	</span>
 	
 	
@@ -562,7 +562,7 @@ method (and call <code>super</code>) instead of overriding <a href="../Classes/J
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Delegate methods will be called on a background thread, but other than that no
+		<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Delegate methods will be called on a background thread. No other
 guarantees are made about thread continuity.</p></div>
 	</div>
 	
@@ -1660,7 +1660,7 @@ for the <a href="#//api/name/requestBody">requestBody</a> when a retransmission 
 	
 	<div class="method-subsection brief-description">
 		<p>Creates and returns a new <code>JXHTTPOperation</code> with the specified URL and query parameters,
-escaped via <JXURLEncoding>.</p>
+escaped via <a href="../Classes/JXURLEncoding.html">JXURLEncoding</a>.</p>
 	</div>		
 	
     
@@ -1726,7 +1726,7 @@ escaped via <JXURLEncoding>.</p>
 	<div class="method-subsection brief-description">
 		<p>Called just before the operation finishes on the same thread (including as a result of
 being cancelled). Guaranteed to be called only once. Subclasses should override this
-method (and call <code>super</code>) instead of overriding <a href="../Classes/JXOperation.html#//api/name/finish">finish</a>.</p>
+method (and call <code>super</code>) instead of overriding <a href="#//api/name/finish">finish</a>.</p>
 	</div>		
 	
     

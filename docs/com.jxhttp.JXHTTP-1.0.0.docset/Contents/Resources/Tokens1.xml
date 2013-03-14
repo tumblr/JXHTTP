@@ -667,7 +667,7 @@ is available for inspection.</Abstract>
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPOperation/withURLString:queryParameters:</TokenIdentifier>
 			<Abstract type="html">Creates and returns a new JXHTTPOperation with the specified URL and query parameters,
-escaped via &lt;JXURLEncoding&gt;.</Abstract>
+escaped via JXURLEncoding.</Abstract>
 			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
 			
 			<Declaration>+ (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters</Declaration>

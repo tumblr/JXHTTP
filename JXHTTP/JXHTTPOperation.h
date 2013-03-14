@@ -54,7 +54,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  
  Safe to access from any thread at any time.
  
- @warning Delegate methods will be called on a background thread, but other than that no
+ @warning Delegate methods will be called on a background thread. No other
  guarantees are made about thread continuity.
  */
 @property (weak) NSObject <JXHTTPOperationDelegate> *delegate;

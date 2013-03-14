@@ -2,7 +2,7 @@
  `JXOperation` is an abstract `NSOperation` subclass that implements all the
  methods necessary for what Apple calls "concurrent" operations. See the sections
  titled _Subclassing Notes_ and _Multicore Considerations_ in the `NSOperation`
- class reference, this class does all of it for you.)
+ class reference, this class does all of it for you.
  
  The main advantage of concurrent operations is that they allow for the use of
  asynchronous APIs. Normally, when the `main` method of an `NSOperation` exits,
@@ -42,7 +42,7 @@
 @property (assign, readonly) BOOL isFinished;
 
 /**
- Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to cause the
+ Upon being set to `YES`, retrieves a `UIBackgroundTaskIdentifier` to allow the
  operation to continue running when the application enters the background.
  
  Safe to access from any thread at any time.

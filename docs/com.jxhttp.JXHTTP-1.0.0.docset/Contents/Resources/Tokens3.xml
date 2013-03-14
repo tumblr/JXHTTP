@@ -7,7 +7,7 @@
 			<Abstract type="html">JXOperation is an abstract NSOperation subclass that implements all the
 methods necessary for what Apple calls &quot;concurrent&quot; operations. See the sections
 titled Subclassing Notes and Multicore Considerations in the NSOperation
-class reference, this class does all of it for you.)</Abstract>
+class reference, this class does all of it for you.</Abstract>
 			<DeclaredIn>JXOperation.h</DeclaredIn>
 			
 			<NodeRef refid="3"/>
@@ -60,7 +60,7 @@ class reference, this class does all of it for you.)</Abstract>
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/setContinuesInAppBackground:</TokenIdentifier>
-			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to cause the
+			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to allow the
 operation to continue running when the application enters the background.</Abstract>
 			<DeclaredIn>JXOperation.h</DeclaredIn>			
 			
@@ -72,7 +72,7 @@ operation to continue running when the application enters the background.</Abstr
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instp/JXOperation/continuesInAppBackground</TokenIdentifier>
-			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to cause the
+			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to allow the
 operation to continue running when the application enters the background.</Abstract>
 			<DeclaredIn>JXOperation.h</DeclaredIn>			
 			
