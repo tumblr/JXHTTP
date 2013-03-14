@@ -69,8 +69,8 @@
 - (void)startAndWaitUntilFinished;
 
 /**
- Called just before the operation finishes (including as a result of being cancelled)
- on the same thread. Guaranteed to be called only once. Subclasses should override this
+ Called just before the operation finishes on the same thread (including as a result of
+ being cancelled). Guaranteed to be called only once. Subclasses should override this
  method (and call `super`) instead of overriding <finish>.
  
  @warning Do not call this method yourself.

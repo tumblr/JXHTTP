@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPOperationQueue.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPOperationQueue</TokenIdentifier>
+			<Abstract type="html">JXHTTPOperationQueue is an NSOperationQueue subclass and can be used to group
+multiple instances of JXHTTPOperation for progress tracking, timing, or cancellation.
+It provides blocks and delegate methods via the JXHTTPOperationQueueDelegate protocol.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+	</File>
+</Tokens>
