@@ -60,9 +60,9 @@
     __block BOOL shouldStart = YES;
     
     dispatch_sync(self.stateQueue, ^{
-        if (![self isReady] || self.isExecuting || self.isFinished) {
+        if (![self isReady] || [self isCancelled] || self.isExecuting || self.isFinished) {
             shouldStart = NO;
-        } else if (![self isCancelled]) {
+        } else {
             [self willChangeValueForKey:@"isExecuting"];
             self.isExecuting = YES;
             [self didChangeValueForKey:@"isExecuting"];
@@ -145,7 +145,9 @@
     __weak __typeof(self) weakSelf = self;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (!weakSelf || [weakSelf isCancelled] || weakSelf.isFinished)
+        __typeof(weakSelf) strongSelf = weakSelf;
+
+        if (!strongSelf || [strongSelf isCancelled] || strongSelf.isFinished)
             return;
 
         UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
@@ -153,7 +155,7 @@
             [[UIApplication sharedApplication] endBackgroundTask:taskID];
         }];
 
-        weakSelf.backgroundTaskID = taskID;
+        strongSelf.backgroundTaskID = taskID;
     });
 
     #endif
