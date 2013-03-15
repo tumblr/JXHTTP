@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
   s.name          = 'JXHTTP'
   s.version       = '1.0.0'
-  s.source        = { :git => 'git://github.com/jstn/JXHTTP.git', :tag => '1.0.0' }
-  s.authors       = { 'Justin Ouellette' => 'jstn@jxhttp.com' }
-  s.license       = { :type => 'MIT', :file => 'LICENSE.txt' }
-  s.homepage      = 'http://jxhttp.com'
-  s.summary       = 'networking for iOS and OS X'
   s.source_files  = 'JXHTTP/*.{h,m}'
-  s.requires_arc  = true
+  s.homepage      = 'http://jxhttp.com'
+  s.summary       = 'Networking for iOS and OS X.'
+  s.authors       = { 'Justin Ouellette' => 'jstn@jxhttp.com' }
+  s.source        = { :git => 'https://github.com/jstn/JXHTTP.git', :tag => "#{s.version}" }
+  s.license       = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.frameworks    = 'Foundation'
+  s.requires_arc  = true
   s.ios.weak_frameworks   = 'UIKit'
   s.osx.weak_frameworks   = 'AppKit'
   s.ios.deployment_target = '5.0'
@@ -21,9 +21,12 @@ Pod::Spec.new do |s|
       '--project-company', 'JSTN',
       '--project-version', '1.0.0',
       '--docset-min-xcode-version', '4.3',
+      '--docset-bundle-name', '%PROJECT',
       '--docset-bundle-id', '%COMPANYID.%PROJECTID',
-      '--docset-bundle-name', '%PROJECTID',
       '--docset-bundle-filename', '%COMPANYID.%PROJECTID-%VERSIONID.docset',
+      '--docset-feed-name', '%PROJECT',
+      '--docset-feed-url', 'http://jxhttp.com/docs/publish/%DOCSETATOMFILENAME',
+      '--docset-package-url', 'http://jxhttp.com/docs/publish/%DOCSETPACKAGEFILENAME',
       '--docset-fallback-url', 'http://jxhttp.com/docs/html/',
       '--ignore', 'example',
       '--ignore', 'docs',
