@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.jxhttp.JXHTTP-1.0.0</string>
+	<string>com.jxhttp.JXHTTP</string>
 	<key>CFBundleName</key>
-	<string>JXHTTP Documentation</string>
+	<string>JXHTTP</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
@@ -15,13 +15,14 @@
 	
 	
 	
-	
+	<key>DocSetFallbackURL</key>
+	<string>http://jxhttp.com/docs/html/</string>
 	<key>DocSetFeedName</key>
-	<string>JXHTTP Documentation</string>
+	<string>JXHTTP</string>
 	<key>DocSetFeedURL</key>
 	<string>http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP.atom</string>
 	<key>DocSetMinimumXcodeVersion</key>
-	<string>3.0</string>
+	<string>4.3</string>
 	
 	<key>DashDocSetFamily</key>
 	<string>appledoc</string>

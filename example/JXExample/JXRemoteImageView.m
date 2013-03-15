@@ -6,9 +6,9 @@
 - (instancetype)initWithURL:(NSURL *)imageURL
 {
     if (self = [self initWithFrame:CGRectZero]) {
-        self.contentMode = UIViewContentModeScaleAspectFit;
-        self.backgroundColor = [UIColor clearColor];
-        self.opaque = NO;
+        self.contentMode = UIViewContentModeScaleAspectFill;
+        self.backgroundColor = [UIColor blackColor];
+        self.opaque = YES;
 
         JXHTTPOperation *op = [[JXHTTPOperation alloc] initWithURL:imageURL];
 

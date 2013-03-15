@@ -98,10 +98,10 @@
 + (NSThread *)sharedThread;
 
 /**
- Creates a new `JXURLConnectionOperation` with a specified URL.
+ Creates a new operation with a specified URL.
  
  @param url The URL to request.
- @returns An autoreleased operation.
+ @returns An operation.
  */
 - (instancetype)initWithURL:(NSURL *)url;
 

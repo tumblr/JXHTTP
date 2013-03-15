@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXURLConnectionOperation.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXURLConnectionOperation</TokenIdentifier>
+			<Abstract type="html">JXURLConnectionOperation is a JXOperation subclass that encapsulates an
+NSURLConnection. It implements a basic set of delegate methods for writing
+response data to an NSOutputStream and counting the bytes transferred.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>
+			
+			<NodeRef refid="9"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setRequest:</TokenIdentifier>
+			<Abstract type="html">The request used to create the connection when the operation starts.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSMutableURLRequest *request</Declaration>
+			
+			
+			<Anchor>//api/name/request</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/request</TokenIdentifier>
+			<Abstract type="html">The request used to create the connection when the operation starts.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSMutableURLRequest *request</Declaration>
+			
+			
+			<Anchor>//api/name/request</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setResponse:</TokenIdentifier>
+			<Abstract type="html">The connection response if one has been received, otherwise nil.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSURLResponse *response</Declaration>
+			
+			
+			<Anchor>//api/name/response</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/response</TokenIdentifier>
+			<Abstract type="html">The connection response if one has been received, otherwise nil.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSURLResponse *response</Declaration>
+			
+			
+			<Anchor>//api/name/response</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setError:</TokenIdentifier>
+			<Abstract type="html">The connection error if one has been received, otherwise nil.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSError *error</Declaration>
+			
+			
+			<Anchor>//api/name/error</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/error</TokenIdentifier>
+			<Abstract type="html">The connection error if one has been received, otherwise nil.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSError *error</Declaration>
+			
+			
+			<Anchor>//api/name/error</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setOutputStream:</TokenIdentifier>
+			<Abstract type="html">The stream to which downloaded bytes will be written.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSOutputStream *outputStream</Declaration>
+			
+			
+			<Anchor>//api/name/outputStream</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/outputStream</TokenIdentifier>
+			<Abstract type="html">The stream to which downloaded bytes will be written.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSOutputStream *outputStream</Declaration>
+			
+			
+			<Anchor>//api/name/outputStream</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setBytesDownloaded:</TokenIdentifier>
+			<Abstract type="html">The number of bytes downloaded.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) long long bytesDownloaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesDownloaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/bytesDownloaded</TokenIdentifier>
+			<Abstract type="html">The number of bytes downloaded.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) long long bytesDownloaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesDownloaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setBytesUploaded:</TokenIdentifier>
+			<Abstract type="html">The number of bytes uploaded.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) long long bytesUploaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesUploaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/bytesUploaded</TokenIdentifier>
+			<Abstract type="html">The number of bytes uploaded.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) long long bytesUploaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesUploaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXURLConnectionOperation/sharedThread</TokenIdentifier>
+			<Abstract type="html">A shared thread that never exits. All connections and streams are scheduled
+on this thread&apos;s runloop.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>+ (NSThread *)sharedThread</Declaration>
+			
+			<ReturnValue><Abstract type="html">The shared thread used by all connections and streams.</Abstract></ReturnValue>
+			<Anchor>//api/name/sharedThread</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/initWithURL:</TokenIdentifier>
+			<Abstract type="html">Creates a new operation with a specified URL.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>- (instancetype)initWithURL:(NSURL *)url</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>url</Name>
+					<Abstract type="html">The URL to request.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithURL:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

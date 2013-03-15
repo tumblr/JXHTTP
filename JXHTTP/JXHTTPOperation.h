@@ -54,7 +54,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  
  Safe to access from any thread at any time.
  
- @warning Delegate methods will be called on a background thread, but other than that no
+ @warning Delegate methods will be called on a background thread. No other
  guarantees are made about thread continuity.
  */
 @property (weak) NSObject <JXHTTPOperationDelegate> *delegate;
@@ -269,20 +269,20 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 /// @name Initialization
 
 /**
- Creates and returns a new `JXHTTPOperation` with the specified URL.
+ Creates a new `JXHTTPOperation` with the specified URL.
  
  @param urlString The URL to request.
- @returns An autoreleased operation.
+ @returns An operation.
  */
 + (instancetype)withURLString:(NSString *)urlString;
 
 /**
- Creates and returns a new `JXHTTPOperation` with the specified URL and query parameters,
+ Creates a new `JXHTTPOperation` with the specified URL and query parameters,
  escaped via <JXURLEncoding>.
  
  @param urlString The URL to request.
  @param parameters A dictionary of keys and values to form the query string.
- @returns An autoreleased operation.
+ @returns An operation.
  */
 + (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
 
