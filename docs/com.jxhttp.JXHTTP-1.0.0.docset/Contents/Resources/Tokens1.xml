@@ -660,7 +660,7 @@ is available for inspection.</Abstract>
 					<Abstract type="html">The URL to request.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased operation.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
 			<Anchor>//api/name/withURLString:</Anchor>
 		</Token>
 		
@@ -680,7 +680,7 @@ escaped via JXURLEncoding.</Abstract>
 					<Abstract type="html">A dictionary of keys and values to form the query string.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased operation.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
 			<Anchor>//api/name/withURLString:queryParameters:</Anchor>
 		</Token>
 		

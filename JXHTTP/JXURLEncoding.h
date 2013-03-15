@@ -1,8 +1,6 @@
 /**
  `JXURLEncoding` is an abstract class providing methods for encoding strings according
  to [RFC 3986]( http://www.ietf.org/rfc/rfc3986.txt ) (aka "percent escaping").
- 
- As with the rest of `JXHTTP`, input and output strings should always be UTF-8.
  */
 
 @interface JXURLEncoding : NSObject
@@ -11,57 +9,60 @@
  Encodes a string according to RFC 3986.
 
  @param string A string to encode.
- @returns An autoreleased string.
+ @returns An encoded string.
  */
 + (NSString *)encodedString:(NSString *)string;
 
 /**
- Encodes a string according to RFC 3986, except with "+" replacing spaces.
+ Encodes a string according to RFC 3986, but with `+` replacing spaces instead of `%20`.
  Commonly used by web browsers to submit forms.
 
  @param string A string to encode.
- @returns An autoreleased string.
+ @returns An encoded string.
  */
 + (NSString *)formEncodedString:(NSString *)string;
 
 /**
  Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
- into a query string. Dictionary values must be a either string or a collection object
- that contains strings or nested collections of strings (i.e., `NSArray` or `NSDictionary`).
+ into a query string. Dictionary values must be a either string or a dictionary with further
+ strings and/or nested dictionaries.
  
  ### Example ###
  
     NSDictionary *params = @{
-        @"make": @"BMW",
-        @"model": @"335i",
-        @"options": @[ @"heated seats", @"navigation system" ]
+        @"make": @"Ferrari",
+        @"model": @"458 Italia",
+        @"options": @[ @"heated seats", @"cup holders" ]
     };
  
-    // make=BMW&model=335i&options[0]=heated%20seats&options[1]=navigation%20system
+    NSString *escaped = [JXURLEncoding encodedDictionary:params];
+    // make=Ferrari&model=458%20Italia&options[0]=heated%20seats&options[1]=cup&20holders
 
  @param dictionary A dictionary to encode.
- @returns An autoreleased string.
+ @returns An encoded string.
  */
 + (NSString *)encodedDictionary:(NSDictionary *)dictionary;
 
 /**
  Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
- into a query string. Dictionary values must be a either string or a collection object
- that contains strings or nested collections of strings (i.e., `NSArray` or `NSDictionary`).
- Identical to <encodedDictionary:> except with "+" replacing spaces.
+ into a query string. Dictionary values must be a either string or a dictionary with further
+ strings and/or nested dictionaries.
+ 
+ Identical to <encodedDictionary:> but with `+` replacing spaces instead of `%20`.
 
  ### Example ###
 
      NSDictionary *params = @{
-         @"make": @"BMW",
-         @"model": @"335i",
-         @"options": @[ @"heated seats", @"navigation system" ]
+         @"make": @"Ferrari",
+         @"model": @"458 Italia",
+         @"options": @[ @"heated seats", @"cup holders" ]
      };
 
-     // make=BMW&model=335i&options[0]=heated+seats&options[1]=navigation+system
+     NSString *escaped = [JXURLEncoding encodedDictionary:params];
+     // make=Ferrari&model=458+Italia&options[0]=heated+seats&options[1]=cup+holders
 
  @param dictionary A dictionary to encode.
- @returns An autoreleased string.
+ @returns An encoded string.
  */
 + (NSString *)formEncodedDictionary:(NSDictionary *)dictionary;
 

@@ -169,7 +169,7 @@ on this thread&apos;s runloop.</Abstract>
 					<Abstract type="html">The URL to request.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased operation.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
 			<Anchor>//api/name/initWithURL:</Anchor>
 		</Token>
 		

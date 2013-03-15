@@ -24,13 +24,13 @@ to [RFC 3986]( http://www.ietf.org/rfc/rfc3986.txt ) (aka &quot;percent escaping
 					<Abstract type="html">A string to encode.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased string.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
 			<Anchor>//api/name/encodedString:</Anchor>
 		</Token>
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedString:</TokenIdentifier>
-			<Abstract type="html">Encodes a string according to RFC 3986, except with &quot;+&quot; replacing spaces.
+			<Abstract type="html">Encodes a string according to RFC 3986, but with + replacing spaces instead of %20.
 Commonly used by web browsers to submit forms.</Abstract>
 			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
 			
@@ -41,15 +41,15 @@ Commonly used by web browsers to submit forms.</Abstract>
 					<Abstract type="html">A string to encode.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased string.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
 			<Anchor>//api/name/formEncodedString:</Anchor>
 		</Token>
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/encodedDictionary:</TokenIdentifier>
 			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
-into a query string. Dictionary values must be a either string or a collection object
-that contains strings or nested collections of strings (i.e., NSArray or NSDictionary).</Abstract>
+into a query string. Dictionary values must be a either string or a dictionary with further
+strings and/or nested dictionaries.</Abstract>
 			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
 			
 			<Declaration>+ (NSString *)encodedDictionary:(NSDictionary *)dictionary</Declaration>
@@ -59,16 +59,15 @@ that contains strings or nested collections of strings (i.e., NSArray or NSDicti
 					<Abstract type="html">A dictionary to encode.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased string.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
 			<Anchor>//api/name/encodedDictionary:</Anchor>
 		</Token>
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedDictionary:</TokenIdentifier>
 			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
-into a query string. Dictionary values must be a either string or a collection object
-that contains strings or nested collections of strings (i.e., NSArray or NSDictionary).
-Identical to encodedDictionary: except with &quot;+&quot; replacing spaces.</Abstract>
+into a query string. Dictionary values must be a either string or a dictionary with further
+strings and/or nested dictionaries.</Abstract>
 			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
 			
 			<Declaration>+ (NSString *)formEncodedDictionary:(NSDictionary *)dictionary</Declaration>
@@ -78,7 +77,7 @@ Identical to encodedDictionary: except with &quot;+&quot; replacing spaces.</Abs
 					<Abstract type="html">A dictionary to encode.</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">An autoreleased string.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
 			<Anchor>//api/name/formEncodedDictionary:</Anchor>
 		</Token>
 		

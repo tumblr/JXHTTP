@@ -89,7 +89,7 @@ operation to continue running when the application enters the background.</Abstr
 			
 			<Declaration>+ (instancetype)operation</Declaration>
 			
-			<ReturnValue><Abstract type="html">An autoreleased operation.</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
 			<Anchor>//api/name/operation</Anchor>
 		</Token>
 		

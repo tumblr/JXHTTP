@@ -57,7 +57,7 @@
 /**
  Creates a new operation.
  
- @returns An autoreleased operation.
+ @returns An operation.
  */
 + (instancetype)operation;
 
