@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.1 (build 840)" />
+		<meta name="generator" content="appledoc 2.1 (build 858)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -157,21 +157,21 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>JXOperation</code> is an abstract <code>NSOperation</code> subclass that implements all the
-methods necessary for what Apple calls &ldquo;concurrent&rdquo; operations. See the sections
-titled <em>Subclassing Notes</em> and <em>Multicore Considerations</em> in the <code>NSOperation</code>
+						<p><code>JXOperation</code> is an abstract <code>NSOperation</code> subclass that implements all the<br/>
+methods necessary for what Apple calls &ldquo;concurrent&rdquo; operations. See the sections<br/>
+titled <em>Subclassing Notes</em> and <em>Multicore Considerations</em> in the <code>NSOperation</code><br/>
 class reference, this class does all of it for you.</p>
 
-<p>The main advantage of concurrent operations is that they allow for the use of
-asynchronous APIs. Normally, when the <code>main</code> method of an <code>NSOperation</code> exits,
-the operation marks itself as finished and deallocation is imminent. In a
-concurrent operation, nothing happens when <code>main</code> exits and it&rsquo;s up to you to
-manually report that the operation has finished (via KVO). In the meantime you
+<p>The main advantage of concurrent operations is that they allow for the use of<br/>
+asynchronous APIs. Normally, when the <code>main</code> method of an <code>NSOperation</code> exits,<br/>
+the operation marks itself as finished and deallocation is imminent. In a<br/>
+concurrent operation, nothing happens when <code>main</code> exits and it&rsquo;s up to you to<br/>
+manually report that the operation has finished (via KVO). In the meantime you<br/>
 can wait for delegate callbacks or any other asynchronous event.</p>
 
-<p>Unfortunately, <code>NSOperation</code> has some quirks and ensuring thread safety as
-the operation changes state can be tricky. <code>JXOperation</code> makes it easier by
-providing a simple <a href="#//api/name/finish">finish</a> method that can be called at any time from any
+<p>Unfortunately, <code>NSOperation</code> has some quirks and ensuring thread safety as<br/>
+the operation changes state can be tricky. <code>JXOperation</code> makes it easier by<br/>
+providing a simple <a href="#//api/name/finish">finish</a> method that can be called at any time from any<br/>
 thread, without worrying about the operation&rsquo;s current state.</p>
 
 <p>Heavily inspired by Dave Dribin, and building on his work detailed here:</p>
@@ -211,7 +211,7 @@ thread, without worrying about the operation&rsquo;s current state.</p>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/continuesInAppBackground">&nbsp;&nbsp;continuesInAppBackground</a></code>
-		<span class="tooltip"><p>Upon being set to <code>YES</code>, retrieves a <code>UIBackgroundTaskIdentifier</code> to allow the
+		<span class="tooltip"><p>Upon being set to <code>YES</code>, retrieves a <code>UIBackgroundTaskIdentifier</code> to allow the<br/>
 operation to continue running when the application enters the background.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
@@ -249,8 +249,8 @@ operation to continue running when the application enters the background.</p></s
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/willFinish">&ndash;&nbsp;willFinish</a></code>
-		<span class="tooltip"><p>Called just before the operation finishes on the same thread (including as a result of
-being cancelled). Guaranteed to be called only once. Subclasses should override this
+		<span class="tooltip"><p>Called just before the operation finishes on the same thread (including as a result of<br/>
+being cancelled). Guaranteed to be called only once. Subclasses should override this<br/>
 method (and call <code>super</code>) instead of overriding <a href="#//api/name/finish">finish</a>.</p></span>
 	</span>
 	
@@ -258,8 +258,8 @@ method (and call <code>super</code>) instead of overriding <a href="#//api/name/
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/finish">&ndash;&nbsp;finish</a></code>
-		<span class="tooltip"><p>Ends the operation and marks it for removal from its queue (if applicable).
-Subclasses must eventually call this method to cause the operation to finish,
+		<span class="tooltip"><p>Ends the operation and marks it for removal from its queue (if applicable).<br/>
+Subclasses must eventually call this method to cause the operation to finish,<br/>
 typically after the work performed in <code>main</code> is complete.</p></span>
 	</span>
 	
@@ -284,7 +284,7 @@ typically after the work performed in <code>main</code> is complete.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Upon being set to <code>YES</code>, retrieves a <code>UIBackgroundTaskIdentifier</code> to allow the
+		<p>Upon being set to <code>YES</code>, retrieves a <code>UIBackgroundTaskIdentifier</code> to allow the<br/>
 operation to continue running when the application enters the background.</p>
 	</div>		
 	
@@ -302,8 +302,9 @@ operation to continue running when the application enters the background.</p>
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Changing this property to <code>YES</code> after the operation has started will
-have no effect. Changing it to <code>NO</code> will discontinue background execution.</p></div>
+		<p>Safe to access from any thread at any time.</p><blockquote><p>%warning%<br/>
+<strong>Warning:</strong> Changing this property to <code>YES</code> after the operation has started will<br/>
+have no effect. Changing it to <code>NO</code> will discontinue background execution.</p></blockquote>
 	</div>
 	
 	
@@ -466,8 +467,8 @@ have no effect. Changing it to <code>NO</code> will discontinue background execu
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Ends the operation and marks it for removal from its queue (if applicable).
-Subclasses must eventually call this method to cause the operation to finish,
+		<p>Ends the operation and marks it for removal from its queue (if applicable).<br/>
+Subclasses must eventually call this method to cause the operation to finish,<br/>
 typically after the work performed in <code>main</code> is complete.</p>
 	</div>		
 	
@@ -485,11 +486,12 @@ typically after the work performed in <code>main</code> is complete.</p>
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method is safe to call multiple times from any thread at any time, including
-before the operation has started.</p><div class="warning"><p><strong>Warning:</strong> To ensure thread saftey, do not override this method (use <a href="#//api/name/willFinish">willFinish</a>
-instead). After the operation has finished do not attempt to access any of its
-properties as it may have been released by a queue or other retaining object from a
-different thread.</p></div>
+		<p>This method is safe to call multiple times from any thread at any time, including<br/>
+before the operation has started.</p><blockquote><p>%warning%<br/>
+<strong>Warning:</strong> To ensure thread saftey, do not override this method (use <a href="#//api/name/willFinish">willFinish</a><br/>
+instead). After the operation has finished do not attempt to access any of its<br/>
+properties as it may have been released by a queue or other retaining object from a<br/>
+different thread.</p></blockquote>
 	</div>
 	
 	
@@ -549,8 +551,8 @@ different thread.</p></div>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Called just before the operation finishes on the same thread (including as a result of
-being cancelled). Guaranteed to be called only once. Subclasses should override this
+		<p>Called just before the operation finishes on the same thread (including as a result of<br/>
+being cancelled). Guaranteed to be called only once. Subclasses should override this<br/>
 method (and call <code>super</code>) instead of overriding <a href="#//api/name/finish">finish</a>.</p>
 	</div>		
 	
@@ -568,7 +570,8 @@ method (and call <code>super</code>) instead of overriding <a href="#//api/name/
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> Do not call this method yourself.</p></div>
+		<blockquote><p>%warning%<br/>
+<strong>Warning:</strong> Do not call this method yourself.</p></blockquote>
 	</div>
 	
 	
@@ -600,7 +603,7 @@ method (and call <code>super</code>) instead of overriding <a href="#//api/name/
 					<div class="footer-copyright">
 						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-15)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						
 					</div>
 				</div>
