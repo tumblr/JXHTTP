@@ -1,84 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/JXURLEncoding.html">
+	<File path="Classes/JXHTTPMultipartBody.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/JXURLEncoding</TokenIdentifier>
-			<Abstract type="html">JXURLEncoding is an abstract class providing methods for encoding strings according
-to [RFC 3986]( http://www.ietf.org/rfc/rfc3986.txt ) (aka &quot;percent escaping&quot;).</Abstract>
-			<DeclaredIn>JXURLEncoding.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPMultipartBody</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>
 			
 			<NodeRef refid="5"/>
 		</Token>
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/encodedString:</TokenIdentifier>
-			<Abstract type="html">Encodes a string according to RFC 3986.</Abstract>
-			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/setStreamBufferLength:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
 			
-			<Declaration>+ (NSString *)encodedString:(NSString *)string</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>string</Name>
-					<Abstract type="html">A string to encode.</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
-			<Anchor>//api/name/encodedString:</Anchor>
+			<Declaration>@property (assign, nonatomic) NSUInteger streamBufferLength</Declaration>
+			
+			
+			<Anchor>//api/name/streamBufferLength</Anchor>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedString:</TokenIdentifier>
-			<Abstract type="html">Encodes a string according to RFC 3986, but with + replacing spaces instead of %20.
-Commonly used by web browsers to submit forms.</Abstract>
-			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPMultipartBody/streamBufferLength</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
 			
-			<Declaration>+ (NSString *)formEncodedString:(NSString *)string</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>string</Name>
-					<Abstract type="html">A string to encode.</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
-			<Anchor>//api/name/formEncodedString:</Anchor>
+			<Declaration>@property (assign, nonatomic) NSUInteger streamBufferLength</Declaration>
+			
+			
+			<Anchor>//api/name/streamBufferLength</Anchor>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/encodedDictionary:</TokenIdentifier>
-			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
-into a query string. Dictionary values must be a either string or a dictionary with further
-strings and/or nested dictionaries.</Abstract>
-			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPMultipartBody/withDictionary:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
 			
-			<Declaration>+ (NSString *)encodedDictionary:(NSDictionary *)dictionary</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>dictionary</Name>
-					<Abstract type="html">A dictionary to encode.</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
-			<Anchor>//api/name/encodedDictionary:</Anchor>
+			<Declaration>+ (instancetype)withDictionary:(NSDictionary *)stringParameters</Declaration>
+			
+			
+			<Anchor>//api/name/withDictionary:</Anchor>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedDictionary:</TokenIdentifier>
-			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
-into a query string. Dictionary values must be a either string or a dictionary with further
-strings and/or nested dictionaries.</Abstract>
-			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/initWithDictionary:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
 			
-			<Declaration>+ (NSString *)formEncodedDictionary:(NSDictionary *)dictionary</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>dictionary</Name>
-					<Abstract type="html">A dictionary to encode.</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
-			<Anchor>//api/name/formEncodedDictionary:</Anchor>
+			<Declaration>- (instancetype)initWithDictionary:(NSDictionary *)stringParameters</Declaration>
+			
+			
+			<Anchor>//api/name/initWithDictionary:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/addString:forKey:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)addString:(NSString *)string forKey:(NSString *)key</Declaration>
+			
+			
+			<Anchor>//api/name/addString:forKey:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/setString:forKey:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)setString:(NSString *)string forKey:(NSString *)key</Declaration>
+			
+			
+			<Anchor>//api/name/setString:forKey:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/addData:forKey:contentType:fileName:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)addData:(NSData *)data forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/addData:forKey:contentType:fileName:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/setData:forKey:contentType:fileName:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)setData:(NSData *)data forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/setData:forKey:contentType:fileName:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/addFile:forKey:contentType:fileName:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)addFile:(NSString *)filePath forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/addFile:forKey:contentType:fileName:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPMultipartBody/setFile:forKey:contentType:fileName:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPMultipartBody.h</DeclaredIn>			
+			
+			<Declaration>- (void)setFile:(NSString *)filePath forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/setFile:forKey:contentType:fileName:</Anchor>
 		</Token>
 		
 	</File>

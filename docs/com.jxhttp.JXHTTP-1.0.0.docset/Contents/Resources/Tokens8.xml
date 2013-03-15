@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXOperation.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXOperation</TokenIdentifier>
+			<Abstract type="html">JXOperation is an abstract NSOperation subclass that implements all the
+methods necessary for what Apple calls &quot;concurrent&quot; operations. See the sections
+titled Subclassing Notes and Multicore Considerations in the NSOperation
+class reference, this class does all of it for you.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>
+			
+			<NodeRef refid="8"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/setIsExecuting:</TokenIdentifier>
+			<Abstract type="html">YES while the operation is executing, otherwise NO.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) BOOL isExecuting</Declaration>
+			
+			
+			<Anchor>//api/name/isExecuting</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXOperation/isExecuting</TokenIdentifier>
+			<Abstract type="html">YES while the operation is executing, otherwise NO.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) BOOL isExecuting</Declaration>
+			
+			
+			<Anchor>//api/name/isExecuting</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/setIsFinished:</TokenIdentifier>
+			<Abstract type="html">YES if the operation has finished, otherwise NO.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) BOOL isFinished</Declaration>
+			
+			
+			<Anchor>//api/name/isFinished</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXOperation/isFinished</TokenIdentifier>
+			<Abstract type="html">YES if the operation has finished, otherwise NO.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, readonly) BOOL isFinished</Declaration>
+			
+			
+			<Anchor>//api/name/isFinished</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/setContinuesInAppBackground:</TokenIdentifier>
+			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to allow the
+operation to continue running when the application enters the background.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL continuesInAppBackground</Declaration>
+			
+			
+			<Anchor>//api/name/continuesInAppBackground</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXOperation/continuesInAppBackground</TokenIdentifier>
+			<Abstract type="html">Upon being set to YES, retrieves a UIBackgroundTaskIdentifier to allow the
+operation to continue running when the application enters the background.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL continuesInAppBackground</Declaration>
+			
+			
+			<Anchor>//api/name/continuesInAppBackground</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXOperation/operation</TokenIdentifier>
+			<Abstract type="html">Creates a new operation.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)operation</Declaration>
+			
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
+			<Anchor>//api/name/operation</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/startAndWaitUntilFinished</TokenIdentifier>
+			<Abstract type="html">Starts the operation and blocks the calling thread until it has finished.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>- (void)startAndWaitUntilFinished</Declaration>
+			
+			
+			<Anchor>//api/name/startAndWaitUntilFinished</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/willFinish</TokenIdentifier>
+			<Abstract type="html">Called just before the operation finishes on the same thread (including as a result of
+being cancelled). Guaranteed to be called only once. Subclasses should override this
+method (and call super) instead of overriding finish.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>- (void)willFinish</Declaration>
+			
+			
+			<Anchor>//api/name/willFinish</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXOperation/finish</TokenIdentifier>
+			<Abstract type="html">Ends the operation and marks it for removal from its queue (if applicable).
+Subclasses must eventually call this method to cause the operation to finish,
+typically after the work performed in main is complete.</Abstract>
+			<DeclaredIn>JXOperation.h</DeclaredIn>			
+			
+			<Declaration>- (void)finish</Declaration>
+			
+			
+			<Anchor>//api/name/finish</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

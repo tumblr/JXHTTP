@@ -269,7 +269,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 /// @name Initialization
 
 /**
- Creates and returns a new `JXHTTPOperation` with the specified URL.
+ Creates a new `JXHTTPOperation` with the specified URL.
  
  @param urlString The URL to request.
  @returns An operation.
@@ -277,7 +277,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 + (instancetype)withURLString:(NSString *)urlString;
 
 /**
- Creates and returns a new `JXHTTPOperation` with the specified URL and query parameters,
+ Creates a new `JXHTTPOperation` with the specified URL and query parameters,
  escaped via <JXURLEncoding>.
  
  @param urlString The URL to request.

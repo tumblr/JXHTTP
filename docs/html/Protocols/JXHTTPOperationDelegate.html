@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>JXHTTPOperationDelegate Protocol Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">JXHTTP </a></h1>
+				<a id="developerHome" href="../index.html">JSTN</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">JXHTTPOperationDelegate Protocol Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/httpOperation:willCacheResponse:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperation:willCacheResponse:</option>
+	
+	<option value="//api/name/httpOperation:willSendRequest:redirectResponse:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperation:willSendRequest:redirectResponse:</option>
+	
+	<option value="//api/name/httpOperationDidFail:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidFail:</option>
+	
+	<option value="//api/name/httpOperationDidFinishLoading:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidFinishLoading:</option>
+	
+	<option value="//api/name/httpOperationDidReceiveData:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidReceiveData:</option>
+	
+	<option value="//api/name/httpOperationDidReceiveResponse:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidReceiveResponse:</option>
+	
+	<option value="//api/name/httpOperationDidSendData:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidSendData:</option>
+	
+	<option value="//api/name/httpOperationDidStart:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationDidStart:</option>
+	
+	<option value="//api/name/httpOperationWillNeedNewBodyStream:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationWillNeedNewBodyStream:</option>
+	
+	<option value="//api/name/httpOperationWillSendRequestForAuthenticationChallenge:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationWillSendRequestForAuthenticationChallenge:</option>
+	
+	<option value="//api/name/httpOperationWillStart:">&nbsp;&nbsp;&nbsp;&nbsp;- httpOperationWillStart:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperation:willCacheResponse:">httpOperation:willCacheResponse:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperation:willSendRequest:redirectResponse:">httpOperation:willSendRequest:redirectResponse:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidFail:">httpOperationDidFail:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidFinishLoading:">httpOperationDidFinishLoading:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidReceiveData:">httpOperationDidReceiveData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidReceiveResponse:">httpOperationDidReceiveResponse:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidSendData:">httpOperationDidSendData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationDidStart:">httpOperationDidStart:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationWillNeedNewBodyStream:">httpOperationWillNeedNewBodyStream:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationWillSendRequestForAuthenticationChallenge:">httpOperationWillSendRequestForAuthenticationChallenge:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpOperationWillStart:">httpOperationWillStart:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="JXHTTPOperationDelegate Protocol Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">JXHTTPOperationDelegate Protocol Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">JXHTTPOperationDelegate.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationWillStart:">&ndash;&nbsp;httpOperationWillStart:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationWillNeedNewBodyStream:">&ndash;&nbsp;httpOperationWillNeedNewBodyStream:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationWillSendRequestForAuthenticationChallenge:">&ndash;&nbsp;httpOperationWillSendRequestForAuthenticationChallenge:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidStart:">&ndash;&nbsp;httpOperationDidStart:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidReceiveResponse:">&ndash;&nbsp;httpOperationDidReceiveResponse:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidReceiveData:">&ndash;&nbsp;httpOperationDidReceiveData:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidSendData:">&ndash;&nbsp;httpOperationDidSendData:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidFinishLoading:">&ndash;&nbsp;httpOperationDidFinishLoading:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperationDidFail:">&ndash;&nbsp;httpOperationDidFail:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperation:willCacheResponse:">&ndash;&nbsp;httpOperation:willCacheResponse:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/httpOperation:willSendRequest:redirectResponse:">&ndash;&nbsp;httpOperation:willSendRequest:redirectResponse:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperation:willCacheResponse:" title="httpOperation:willCacheResponse:"></a>
+	<h3 class="subsubtitle method-title">httpOperation:willCacheResponse:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (NSCachedURLResponse *)httpOperation:(JXHTTPOperation *)<em>operation</em> willCacheResponse:(NSCachedURLResponse *)<em>cachedResponse</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperation:willSendRequest:redirectResponse:" title="httpOperation:willSendRequest:redirectResponse:"></a>
+	<h3 class="subsubtitle method-title">httpOperation:willSendRequest:redirectResponse:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (NSURLRequest *)httpOperation:(JXHTTPOperation *)<em>operation</em> willSendRequest:(NSURLRequest *)<em>request</em> redirectResponse:(NSURLResponse *)<em>redirectResponse</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidFail:" title="httpOperationDidFail:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidFail:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidFail:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidFinishLoading:" title="httpOperationDidFinishLoading:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidFinishLoading:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidReceiveData:" title="httpOperationDidReceiveData:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidReceiveData:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidReceiveData:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidReceiveResponse:" title="httpOperationDidReceiveResponse:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidReceiveResponse:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidReceiveResponse:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidSendData:" title="httpOperationDidSendData:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidSendData:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidSendData:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationDidStart:" title="httpOperationDidStart:"></a>
+	<h3 class="subsubtitle method-title">httpOperationDidStart:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationDidStart:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationWillNeedNewBodyStream:" title="httpOperationWillNeedNewBodyStream:"></a>
+	<h3 class="subsubtitle method-title">httpOperationWillNeedNewBodyStream:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationWillSendRequestForAuthenticationChallenge:" title="httpOperationWillSendRequestForAuthenticationChallenge:"></a>
+	<h3 class="subsubtitle method-title">httpOperationWillSendRequestForAuthenticationChallenge:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationWillSendRequestForAuthenticationChallenge:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/httpOperationWillStart:" title="httpOperationWillStart:"></a>
+	<h3 class="subsubtitle method-title">httpOperationWillStart:</h3>
+	
+	
+
+	<div class="method-subsection method-declaration"><code>- (void)httpOperationWillStart:(JXHTTPOperation *)<em>operation</em></code></div>
+
+    
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-15)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

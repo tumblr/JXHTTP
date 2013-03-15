@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/JXHTTPRequestBody.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/JXHTTPRequestBody</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>
+			
+			<NodeRef refid="13"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpInputStream</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (NSInputStream *)httpInputStream</Declaration>
+			
+			
+			<Anchor>//api/name/httpInputStream</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpContentType</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)httpContentType</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpContentLength</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (long long)httpContentLength</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentLength</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

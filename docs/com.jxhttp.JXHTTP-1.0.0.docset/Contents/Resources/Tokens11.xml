@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/JXHTTPOperationDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="11"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillStart:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillStart:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationWillStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillNeedNewBodyStream:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationWillNeedNewBodyStream:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillSendRequestForAuthenticationChallenge:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillSendRequestForAuthenticationChallenge:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationWillSendRequestForAuthenticationChallenge:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidStart:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidStart:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidReceiveResponse:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidReceiveResponse:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidReceiveResponse:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidReceiveData:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidReceiveData:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidReceiveData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidSendData:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidSendData:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidSendData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidFinishLoading:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidFinishLoading:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidFail:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidFail:(JXHTTPOperation *)operation</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperationDidFail:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperation:willCacheResponse:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (NSCachedURLResponse *)httpOperation:(JXHTTPOperation *)operation willCacheResponse:(NSCachedURLResponse *)cachedResponse</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperation:willCacheResponse:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperation:willSendRequest:redirectResponse:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (NSURLRequest *)httpOperation:(JXHTTPOperation *)operation willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse</Declaration>
+			
+			
+			<Anchor>//api/name/httpOperation:willSendRequest:redirectResponse:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,17 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/JXHTTPOperationQueue.html">
+	<File path="Classes/JXHTTPFileBody.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPOperationQueue</TokenIdentifier>
-			<Abstract type="html">JXHTTPOperationQueue is an NSOperationQueue subclass and can be used to group
-multiple instances of JXHTTPOperation for progress tracking, timing, or cancellation.
-It provides blocks and delegate methods via the JXHTTPOperationQueueDelegate protocol.</Abstract>
-			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPFileBody</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>
 			
 			<NodeRef refid="2"/>
 		</Token>
 		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPFileBody/setFilePath:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *filePath</Declaration>
+			
+			
+			<Anchor>//api/name/filePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPFileBody/filePath</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *filePath</Declaration>
+			
+			
+			<Anchor>//api/name/filePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPFileBody/setHttpContentType:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *httpContentType</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPFileBody/httpContentType</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *httpContentType</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPFileBody/withFilePath:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withFilePath:(NSString *)filePath</Declaration>
+			
+			
+			<Anchor>//api/name/withFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPFileBody/withFilePath:contentType:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withFilePath:(NSString *)filePath contentType:(NSString *)contentType</Declaration>
+			
+			
+			<Anchor>//api/name/withFilePath:contentType:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPFileBody/initWithFilePath:contentType:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPFileBody.h</DeclaredIn>			
+			
+			<Declaration>- (instancetype)initWithFilePath:(NSString *)filePath contentType:(NSString *)contentType</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFilePath:contentType:</Anchor>
+		</Token>
 		
 	</File>
 </Tokens>

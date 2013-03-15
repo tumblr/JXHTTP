@@ -1,20 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:docset="http://developer.apple.com/rss/docset_extensions" xml:lang="en">
-    <id>http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP.atom/20130315131308</id>
-    <title type="text">JXHTTP Documentation</title>
+    <id>http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP.atom/20130315155432</id>
+    <title type="text">JXHTTP</title>
     <rights>Copyright © 2013 JSTN. All rights reserved.</rights>
     <link rel="self" href="http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP.atom"></link>
     <docset:publisherName>JSTN</docset:publisherName>
     <docset:publisherID>com.jxhttp.documentation</docset:publisherID>
-    <updated>2013-03-15T13:13:08-04:00</updated>
+    <updated>2013-03-15T15:54:32-04:00</updated>
     <entry>
-        <id>tag:jxhttp.com,2013-03-15:com.jxhttp.JXHTTP-1.0.0/1.0.0</id>
-        <title type="text">JXHTTP 1.0.0</title>
-        <updated>2013-03-15T13:13:08-04:00</updated>
-        <content type="text">JXHTTP 1.0.0 (v1.0.0)</content>
-        <link rel="enclosure" type="application/octet-stream" href="http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP-1.0.0.xar" length="72965"></link>
-        <docset:identifier>com.jxhttp.JXHTTP-1.0.0</docset:identifier>
+        <id>tag:jxhttp.com,2013-03-15:com.jxhttp.JXHTTP/1.0.0</id>
+        <title type="text">JXHTTP</title>
+        <updated>2013-03-15T15:54:32-04:00</updated>
+        <content type="text">JXHTTP (v1.0.0)</content>
+        <link rel="enclosure" type="application/octet-stream" href="http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP-1.0.0.xar" length="125370"></link>
+        <docset:identifier>com.jxhttp.JXHTTP</docset:identifier>
         <docset:version>1.0.0</docset:version>
-        <docset:minimumXcodeVersion>3.0.0</docset:minimumXcodeVersion>
+        <docset:minimumXcodeVersion>4.3.0</docset:minimumXcodeVersion>
     </entry>
 </feed>
