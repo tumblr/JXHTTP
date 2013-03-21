@@ -65,4 +65,6 @@ op.didSendDataBlock = ^(JXHTTPOperation *op) {
 
 ## Contact ##
 
-`JXHTTP` was created by [Justin Ouellette](http://justinouellette.com/). Email [jstn@jxhttp.com](mailto:jstn@jxhttp.com) with questions. Forks, pull requests, suggestions, and general feedback are all very welcome.
+JXHTTP was created by [Justin Ouellette](http://justinouellette.com/).
+
+Email [jstn@jxhttp.com](mailto:jstn@jxhttp.com) with questions.
