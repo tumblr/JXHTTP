@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.1 (build 858)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -164,33 +164,33 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>JXURLConnectionOperation</code> is a <a href="../Classes/JXOperation.html">JXOperation</a> subclass that encapsulates an<br/>
-<code>NSURLConnection</code>. It implements a basic set of delegate methods for writing<br/>
+						<p><code>JXURLConnectionOperation</code> is a <a href="../Classes/JXOperation.html">JXOperation</a> subclass that encapsulates an
+<code>NSURLConnection</code>. It implements a basic set of delegate methods for writing
 response data to an <code>NSOutputStream</code> and counting the bytes transferred.</p>
 
-<p>All connections and streams are scheduled on the runloop of a <a href="#//api/name/sharedThread">sharedThread</a><br/>
-that never exits. This is preferable to using the runloop of a thread provided<br/>
-by a queue because GCD manages its threads dynamically and there&rsquo;s no guarantee<br/>
-about the lifetime of a GCD thread. There is also evidence that manipulating<br/>
+<p>All connections and streams are scheduled on the runloop of a <a href="#//api/name/sharedThread">sharedThread</a>
+that never exits. This is preferable to using the runloop of a thread provided
+by a queue because GCD manages its threads dynamically and there&rsquo;s no guarantee
+about the lifetime of a GCD thread. There is also evidence that manipulating
 the runloop of a GCD thread confuses the GCD scheduler. For more discussion:</p>
 
 <p><a href="http://stackoverflow.com/questions/7213845/">http://stackoverflow.com/questions/7213845/</a></p>
 
-<p>From the <em>Concurrency Programming Guide</em>: &ldquo;Although you can obtain information<br/>
-about the underlying thread running a task, it is better to avoid doing so."<br/>
+<p>From the <em>Concurrency Programming Guide</em>: &ldquo;Although you can obtain information
+about the underlying thread running a task, it is better to avoid doing so.&rdquo;
 And so we provide our own thread.</p>
 
-<h2>Example ##</h2>
+<h2>Example</h2>
 
-<p>Although <code>JXURLConnectionOperation</code> is essentially a building block towards<br/>
+<p>Although <code>JXURLConnectionOperation</code> is essentially a building block towards
 <a href="../Classes/JXHTTPOperation.html">JXHTTPOperation</a> it can be used effectively (if tediously) on its own:</p>
 
-<pre><code> NSURL *url = [[NSURL alloc] initWithString:@"http://jxhttp.com/"];  
- JXURLConnectionOperation *op = [[JXURLConnectionOperation alloc] initWithURL:url];  
- [op startAndWaitUntilFinished];  
+<pre><code> NSURL *url = [[NSURL alloc] initWithString:@"http://jxhttp.com/"];
+ JXURLConnectionOperation *op = [[JXURLConnectionOperation alloc] initWithURL:url];
+ [op startAndWaitUntilFinished];
 
- NSData *responseData = [op.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];  
- NSString *someHTML = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];  
+ NSData *responseData = [op.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+ NSString *someHTML = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
  NSLog(@"%@", someHTML);
 </code></pre>
 					</div>
@@ -269,7 +269,7 @@ And so we provide our own thread.</p>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/sharedThread">+&nbsp;sharedThread</a></code>
-		<span class="tooltip"><p>A shared thread that never exits. All connections and streams are scheduled<br/>
+		<span class="tooltip"><p>A shared thread that never exits. All connections and streams are scheduled
 on this thread&rsquo;s runloop.</p></span>
 	</span>
 	
@@ -441,12 +441,11 @@ on this thread&rsquo;s runloop.</p></span>
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This can be set to any <code>NSOutputStream</code> or subclass thereof, providing that<br/>
-it is new and unopened. If this property is <code>nil</code> when the operation starts<br/>
+		<p>This can be set to any <code>NSOutputStream</code> or subclass thereof, providing that
+it is new and unopened. If this property is <code>nil</code> when the operation starts
 an <code>outputStreamToMemory</code> is created by default.</p>
 
-<p>Safe to access from any thread at any time.</p><blockquote><p>%warning%<br/>
-<strong>Warning:</strong> Do not change this property after the operation has started.</p></blockquote>
+<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Do not change this property after the operation has started.</p></div>
 	</div>
 	
 	
@@ -560,7 +559,7 @@ an <code>outputStreamToMemory</code> is created by default.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>A shared thread that never exits. All connections and streams are scheduled<br/>
+		<p>A shared thread that never exits. All connections and streams are scheduled
 on this thread&rsquo;s runloop.</p>
 	</div>		
 	
@@ -672,9 +671,9 @@ on this thread&rsquo;s runloop.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-15)</span><br />
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-21)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>

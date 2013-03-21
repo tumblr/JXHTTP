@@ -1,5 +1,5 @@
 @interface JXRemoteImageView : UIImageView
 
-- (instancetype)initWithURL:(NSURL *)imageURL;
+@property (strong, nonatomic) NSURL *imageURL;
 
 @end

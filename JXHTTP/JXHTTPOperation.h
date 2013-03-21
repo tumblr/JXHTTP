@@ -11,7 +11,7 @@
  protocol. The most common are premade:
  
  - <JXHTTPFormEncodedBody> (browser-style form encoding)
- - <JXHTTPMultipartBody> (multipart streaming from disk and memory)
+ - <JXHTTPMultipartBody> (multipart streaming from disk or memory)
  - <JXHTTPFileBody> (single part streaming from disk)
  - <JXHTTPJSONBody> (JSON from collection objects or string)
  - <JXHTTPDataBody> (raw request data)
@@ -21,8 +21,7 @@
  properties of request and response objects.
  
  On iOS, the system network activity indicator is updated by default. It waits on a
- 0.25 second timer from the end of the last operation to prevent flickering. On OS X
- the <updatesNetworkActivityIndicator> property is ignored.
+ 0.25 second timer from the end of the last operation to prevent flickering.
  
  ## Examples ##
  

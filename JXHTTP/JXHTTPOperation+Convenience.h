@@ -1,3 +1,9 @@
+/**
+ These methods and properties provide convenient access to the request and response objects of
+ the underlying `NSURLConnection`. In most cases they simply pass through the property of the
+ same name.
+ */
+
 #import "JXHTTPOperation.h"
 
 @interface JXHTTPOperation (JXHTTPOperationConvenience)

@@ -15,7 +15,7 @@
 
 /**
  Encodes a string according to RFC 3986, but with `+` replacing spaces instead of `%20`.
- Commonly used by web browsers to submit forms.
+ Commonly used by web browsers to submit forms. When in doubt, use <encodedString:>.
 
  @param string A string to encode.
  @returns An encoded string.
@@ -24,8 +24,7 @@
 
 /**
  Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
- into a query string. Dictionary values must be a either string or a dictionary with further
- strings and/or nested dictionaries.
+ into a query string. Dictionary values must be one of `NSString`, `NSArray`, or `NSDictionary`.
  
  ### Example ###
  
@@ -45,8 +44,7 @@
 
 /**
  Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
- into a query string. Dictionary values must be a either string or a dictionary with further
- strings and/or nested dictionaries.
+ into a query string. Dictionary values must be one of `NSString`, `NSArray`, or `NSDictionary`.
  
  Identical to <encodedDictionary:> but with `+` replacing spaces instead of `%20`.
 

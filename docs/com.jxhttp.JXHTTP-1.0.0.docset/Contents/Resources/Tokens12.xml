@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/JXHTTPOperationQueueDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationQueueDelegate</TokenIdentifier>
+			<Abstract type="html">JXHTTPOperationQueueDelegate is a protocol that allows any object to receive synchronous
+callbacks about the progress of a JXHTTPOperationQueue.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="12"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueWillStart:</TokenIdentifier>
+			<Abstract type="html">Called when the queue adds an operation from an empty state.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueWillStart:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueWillStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueWillFinish:</TokenIdentifier>
+			<Abstract type="html">Called when the queue has completed all operations.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueWillFinish:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueWillFinish:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueDidStart:</TokenIdentifier>
+			<Abstract type="html">Called just after the first operation is added to the queue.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueDidStart:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueDidStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueDidUpload:</TokenIdentifier>
+			<Abstract type="html">Called periodically as operations in the queue upload data.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueDidUpload:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueDidUpload:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueDidDownload:</TokenIdentifier>
+			<Abstract type="html">Called periodically as operations in the queue download data.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueDidDownload:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueDidDownload:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueDidMakeProgress:</TokenIdentifier>
+			<Abstract type="html">Called periodically as operations in the queue download or upload data.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueDidMakeProgress:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueDidMakeProgress:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationQueueDelegate/httpOperationQueueDidFinish:</TokenIdentifier>
+			<Abstract type="html">Called when the last operation in the queue finishes.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueueDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationQueueDidFinish:(JXHTTPOperationQueue *)queue</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>queue</Name>
+					<Abstract type="html">The queue.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationQueueDidFinish:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

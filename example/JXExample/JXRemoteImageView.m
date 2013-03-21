@@ -1,31 +1,47 @@
 #import "JXRemoteImageView.h"
 #import "JXHTTP.h"
 
+@interface JXRemoteImageView ()
+@property (strong, nonatomic) JXHTTPOperation *operation;
+@end
+
 @implementation JXRemoteImageView
 
-- (instancetype)initWithURL:(NSURL *)imageURL
+- (void)dealloc
 {
-    if (self = [self initWithFrame:CGRectZero]) {
-        self.contentMode = UIViewContentModeScaleAspectFill;
-        self.backgroundColor = [UIColor blackColor];
-        self.opaque = YES;
+    [self.operation cancel];
+}
 
-        JXHTTPOperation *op = [[JXHTTPOperation alloc] initWithURL:imageURL];
-
-        op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
-            UIImage *image = [[UIImage alloc] initWithData:[op responseData]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = image;
-            });
-        };
-
-        op.didFailBlock = ^(JXHTTPOperation *op) {
-            NSLog(@"image load failed! error: %@", op.error);
-        };
-
-        [[JXHTTPOperationQueue sharedQueue] addOperation:op];
+- (void)setImageURL:(NSURL *)imageURL
+{
+    _imageURL = imageURL;
+    
+    if (self.operation) {
+        [self.operation cancel];
+        self.operation = nil;
     }
-    return self;
+    
+    if (!self.imageURL) {
+        self.image = nil;
+        return;
+    }
+    
+    self.operation = [[JXHTTPOperation alloc] initWithURL:self.imageURL];
+    self.operation.performsBlocksOnMainQueue = YES;
+    
+    __weak __typeof(self) weakSelf = self;
+
+    self.operation.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
+        weakSelf.image = [[UIImage alloc] initWithData:[op responseData]];
+        weakSelf.operation = nil;
+    };
+    
+    self.operation.didFailBlock = ^(JXHTTPOperation *op) {
+        NSLog(@"load failed! received %lld bytes. error: %@", op.bytesDownloaded, op.error);
+        weakSelf.operation = nil;
+    };
+    
+    [[JXHTTPOperationQueue sharedQueue] addOperation:self.operation];
 }
 
 @end

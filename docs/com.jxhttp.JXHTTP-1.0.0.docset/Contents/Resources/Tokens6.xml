@@ -1,0 +1,1183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPOperation.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPOperation</TokenIdentifier>
+			<Abstract type="html">JXHTTPOperation adds many features to JXURLConnectionOperation, including blocks
+and delegate methods via the JXHTTPOperationDelegate protocol. Blocks are
+performed serially on a private background queue unless performsBlocksOnMainQueue
+is set to YES.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>
+			
+			<NodeRef refid="6"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDelegate:</TokenIdentifier>
+			<Abstract type="html">An optional, non-retained object conforming to the JXHTTPOperationDelegate protocol.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (weak) NSObject&lt;JXHTTPOperationDelegate&gt; *delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/delegate</TokenIdentifier>
+			<Abstract type="html">An optional, non-retained object conforming to the JXHTTPOperationDelegate protocol.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (weak) NSObject&lt;JXHTTPOperationDelegate&gt; *delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestBody:</TokenIdentifier>
+			<Abstract type="html">An optional request body object. The JXHTTPRequestBody protocol extends JXHTTPOperationDelegate,
+and has an opportunity to respond to the same messages immediately after the delegate.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSObject&lt;JXHTTPRequestBody&gt; *requestBody</Declaration>
+			
+			
+			<Anchor>//api/name/requestBody</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestBody</TokenIdentifier>
+			<Abstract type="html">An optional request body object. The JXHTTPRequestBody protocol extends JXHTTPOperationDelegate,
+and has an opportunity to respond to the same messages immediately after the delegate.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSObject&lt;JXHTTPRequestBody&gt; *requestBody</Declaration>
+			
+			
+			<Anchor>//api/name/requestBody</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUniqueString:</TokenIdentifier>
+			<Abstract type="html">A string guaranteed to be unique for the lifetime of the application process, useful
+for keying operations stored in a collection.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSString *uniqueString</Declaration>
+			
+			
+			<Anchor>//api/name/uniqueString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/uniqueString</TokenIdentifier>
+			<Abstract type="html">A string guaranteed to be unique for the lifetime of the application process, useful
+for keying operations stored in a collection.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSString *uniqueString</Declaration>
+			
+			
+			<Anchor>//api/name/uniqueString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setResponseDataFilePath:</TokenIdentifier>
+			<Abstract type="html">A convenience property for creating an NSOutputStream that streams response data to disk.
+If this property is nil when the operation starts the outputStream property is used instead,
+which defaults to in-memory storage.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *responseDataFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/responseDataFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/responseDataFilePath</TokenIdentifier>
+			<Abstract type="html">A convenience property for creating an NSOutputStream that streams response data to disk.
+If this property is nil when the operation starts the outputStream property is used instead,
+which defaults to in-memory storage.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *responseDataFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/responseDataFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUserObject:</TokenIdentifier>
+			<Abstract type="html">A user-supplied object retained for the lifetime of the operation.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) id userObject</Declaration>
+			
+			
+			<Anchor>//api/name/userObject</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/userObject</TokenIdentifier>
+			<Abstract type="html">A user-supplied object retained for the lifetime of the operation.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) id userObject</Declaration>
+			
+			
+			<Anchor>//api/name/userObject</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setAuthenticationChallenge:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSURLAuthenticationChallenge *authenticationChallenge</Declaration>
+			
+			
+			<Anchor>//api/name/authenticationChallenge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/authenticationChallenge</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSURLAuthenticationChallenge *authenticationChallenge</Declaration>
+			
+			
+			<Anchor>//api/name/authenticationChallenge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setCredential:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSURLCredential *credential</Declaration>
+			
+			
+			<Anchor>//api/name/credential</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/credential</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong) NSURLCredential *credential</Declaration>
+			
+			
+			<Anchor>//api/name/credential</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUseCredentialStorage:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL useCredentialStorage</Declaration>
+			
+			
+			<Anchor>//api/name/useCredentialStorage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/useCredentialStorage</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL useCredentialStorage</Declaration>
+			
+			
+			<Anchor>//api/name/useCredentialStorage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setTrustAllHosts:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL trustAllHosts</Declaration>
+			
+			
+			<Anchor>//api/name/trustAllHosts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/trustAllHosts</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL trustAllHosts</Declaration>
+			
+			
+			<Anchor>//api/name/trustAllHosts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setTrustedHosts:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSArray *trustedHosts</Declaration>
+			
+			
+			<Anchor>//api/name/trustedHosts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/trustedHosts</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSArray *trustedHosts</Declaration>
+			
+			
+			<Anchor>//api/name/trustedHosts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUsername:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSString *username</Declaration>
+			
+			
+			<Anchor>//api/name/username</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/username</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSString *username</Declaration>
+			
+			
+			<Anchor>//api/name/username</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setPassword:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSString *password</Declaration>
+			
+			
+			<Anchor>//api/name/password</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/password</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) NSString *password</Declaration>
+			
+			
+			<Anchor>//api/name/password</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDownloadProgress:</TokenIdentifier>
+			<Abstract type="html">A number between 0.0 and 1.0 indicating the download progress of the response,
+or NSURLResponseUnknownLength if the expected content length is unknown.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *downloadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/downloadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/downloadProgress</TokenIdentifier>
+			<Abstract type="html">A number between 0.0 and 1.0 indicating the download progress of the response,
+or NSURLResponseUnknownLength if the expected content length is unknown.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *downloadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/downloadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUploadProgress:</TokenIdentifier>
+			<Abstract type="html">A number between 0.0 and 1.0 indicating the upload progress of the response,
+or NSURLResponseUnknownLength if the expected content length is unknown.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *uploadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/uploadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/uploadProgress</TokenIdentifier>
+			<Abstract type="html">A number between 0.0 and 1.0 indicating the upload progress of the response,
+or NSURLResponseUnknownLength if the expected content length is unknown.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *uploadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/uploadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setUpdatesNetworkActivityIndicator:</TokenIdentifier>
+			<Abstract type="html">If YES, the system network activity indicator is updated (iOS only). Defaults to YES.
+A timer is used to prevent flickering.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL updatesNetworkActivityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/updatesNetworkActivityIndicator</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/updatesNetworkActivityIndicator</TokenIdentifier>
+			<Abstract type="html">If YES, the system network activity indicator is updated (iOS only). Defaults to YES.
+A timer is used to prevent flickering.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL updatesNetworkActivityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/updatesNetworkActivityIndicator</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setStartDate:</TokenIdentifier>
+			<Abstract type="html">The start date of the operation or nil if the operation has not started.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *startDate</Declaration>
+			
+			
+			<Anchor>//api/name/startDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/startDate</TokenIdentifier>
+			<Abstract type="html">The start date of the operation or nil if the operation has not started.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *startDate</Declaration>
+			
+			
+			<Anchor>//api/name/startDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setFinishDate:</TokenIdentifier>
+			<Abstract type="html">The finish date of the operation or nil if the operation has not finished.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *finishDate</Declaration>
+			
+			
+			<Anchor>//api/name/finishDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/finishDate</TokenIdentifier>
+			<Abstract type="html">The finish date of the operation or nil if the operation has not finished.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *finishDate</Declaration>
+			
+			
+			<Anchor>//api/name/finishDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setElapsedSeconds:</TokenIdentifier>
+			<Abstract type="html">The number of seconds elapsed since the operation started, 0.0 if it has not.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (readonly) NSTimeInterval elapsedSeconds</Declaration>
+			
+			
+			<Anchor>//api/name/elapsedSeconds</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/elapsedSeconds</TokenIdentifier>
+			<Abstract type="html">The number of seconds elapsed since the operation started, 0.0 if it has not.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (readonly) NSTimeInterval elapsedSeconds</Declaration>
+			
+			
+			<Anchor>//api/name/elapsedSeconds</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setPerformsBlocksOnMainQueue:</TokenIdentifier>
+			<Abstract type="html">If YES, blocks are dispatched to the main queue and run on the main thread.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL performsBlocksOnMainQueue</Declaration>
+			
+			
+			<Anchor>//api/name/performsBlocksOnMainQueue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/performsBlocksOnMainQueue</TokenIdentifier>
+			<Abstract type="html">If YES, blocks are dispatched to the main queue and run on the main thread.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL performsBlocksOnMainQueue</Declaration>
+			
+			
+			<Anchor>//api/name/performsBlocksOnMainQueue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setWillStartBlock:</TokenIdentifier>
+			<Abstract type="html">Performed at the very start of the operation, before the connection object is created.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/willStartBlock</TokenIdentifier>
+			<Abstract type="html">Performed at the very start of the operation, before the connection object is created.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setWillNeedNewBodyStreamBlock:</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection requires a new, unopened stream
+for the requestBody when a retransmission is necessary.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willNeedNewBodyStreamBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willNeedNewBodyStreamBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/willNeedNewBodyStreamBlock</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection requires a new, unopened stream
+for the requestBody when a retransmission is necessary.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willNeedNewBodyStreamBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willNeedNewBodyStreamBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setWillSendRequestForAuthenticationChallengeBlock:</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection receives a request for authentication.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willSendRequestForAuthenticationChallengeBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willSendRequestForAuthenticationChallengeBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/willSendRequestForAuthenticationChallengeBlock</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection receives a request for authentication.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock willSendRequestForAuthenticationChallengeBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willSendRequestForAuthenticationChallengeBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidStartBlock:</TokenIdentifier>
+			<Abstract type="html">Performed immediately after the underlying NSURLConnection begins.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didStartBlock</TokenIdentifier>
+			<Abstract type="html">Performed immediately after the underlying NSURLConnection begins.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidReceiveResponseBlock:</TokenIdentifier>
+			<Abstract type="html">Performed immediately after the underlying NSURLConnection receives a response.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didReceiveResponseBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveResponseBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didReceiveResponseBlock</TokenIdentifier>
+			<Abstract type="html">Performed immediately after the underlying NSURLConnection receives a response.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didReceiveResponseBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveResponseBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidReceiveDataBlock:</TokenIdentifier>
+			<Abstract type="html">Performed every time the underlying NSURLConnection receives response data.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didReceiveDataBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveDataBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didReceiveDataBlock</TokenIdentifier>
+			<Abstract type="html">Performed every time the underlying NSURLConnection receives response data.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didReceiveDataBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveDataBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidSendDataBlock:</TokenIdentifier>
+			<Abstract type="html">Performed every time the underlying NSURLConnection sends request data.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didSendDataBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didSendDataBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didSendDataBlock</TokenIdentifier>
+			<Abstract type="html">Performed every time the underlying NSURLConnection sends request data.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didSendDataBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didSendDataBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidFinishLoadingBlock:</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection finishes loading successfully.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didFinishLoadingBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFinishLoadingBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didFinishLoadingBlock</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection finishes loading successfully.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didFinishLoadingBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFinishLoadingBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setDidFailBlock:</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection fails to load. The error property
+is available for inspection.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didFailBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFailBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/didFailBlock</TokenIdentifier>
+			<Abstract type="html">Performed when the underlying NSURLConnection fails to load. The error property
+is available for inspection.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPBlock didFailBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFailBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setWillCacheResponseBlock:</TokenIdentifier>
+			<Abstract type="html">TKTK</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPCacheBlock willCacheResponseBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willCacheResponseBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/willCacheResponseBlock</TokenIdentifier>
+			<Abstract type="html">TKTK</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPCacheBlock willCacheResponseBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willCacheResponseBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setWillSendRequestRedirectBlock:</TokenIdentifier>
+			<Abstract type="html">TKTK</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPRedirectBlock willSendRequestRedirectBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willSendRequestRedirectBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/willSendRequestRedirectBlock</TokenIdentifier>
+			<Abstract type="html">TKTK</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>@property (copy) JXHTTPRedirectBlock willSendRequestRedirectBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willSendRequestRedirectBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPOperation/withURLString:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPOperation with the specified URL.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withURLString:(NSString *)urlString</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>urlString</Name>
+					<Abstract type="html">The URL to request.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
+			<Anchor>//api/name/withURLString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPOperation/withURLString:queryParameters:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPOperation with the specified URL and query parameters,
+escaped via JXURLEncoding.</Abstract>
+			<DeclaredIn>JXHTTPOperation.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>urlString</Name>
+					<Abstract type="html">The URL to request.</Abstract>
+				</Parameter><Parameter>
+					<Name>parameters</Name>
+					<Abstract type="html">A dictionary of keys and values to form the query string.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An operation.</Abstract></ReturnValue>
+			<Anchor>//api/name/withURLString:queryParameters:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestCachePolicy:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSURLCacheStoragePolicy requestCachePolicy</Declaration>
+			
+			
+			<Anchor>//api/name/requestCachePolicy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestCachePolicy</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSURLCacheStoragePolicy requestCachePolicy</Declaration>
+			
+			
+			<Anchor>//api/name/requestCachePolicy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestShouldUsePipelining:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) BOOL requestShouldUsePipelining</Declaration>
+			
+			
+			<Anchor>//api/name/requestShouldUsePipelining</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestShouldUsePipelining</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) BOOL requestShouldUsePipelining</Declaration>
+			
+			
+			<Anchor>//api/name/requestShouldUsePipelining</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestMainDocumentURL:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSURL *requestMainDocumentURL</Declaration>
+			
+			
+			<Anchor>//api/name/requestMainDocumentURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestMainDocumentURL</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSURL *requestMainDocumentURL</Declaration>
+			
+			
+			<Anchor>//api/name/requestMainDocumentURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestTimeoutInterval:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSTimeInterval requestTimeoutInterval</Declaration>
+			
+			
+			<Anchor>//api/name/requestTimeoutInterval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestTimeoutInterval</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSTimeInterval requestTimeoutInterval</Declaration>
+			
+			
+			<Anchor>//api/name/requestTimeoutInterval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestNetworkServiceType:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSURLRequestNetworkServiceType requestNetworkServiceType</Declaration>
+			
+			
+			<Anchor>//api/name/requestNetworkServiceType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestNetworkServiceType</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) NSURLRequestNetworkServiceType requestNetworkServiceType</Declaration>
+			
+			
+			<Anchor>//api/name/requestNetworkServiceType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestURL:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSURL *requestURL</Declaration>
+			
+			
+			<Anchor>//api/name/requestURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestURL</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSURL *requestURL</Declaration>
+			
+			
+			<Anchor>//api/name/requestURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestHeaders:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSDictionary *requestHeaders</Declaration>
+			
+			
+			<Anchor>//api/name/requestHeaders</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestHeaders</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSDictionary *requestHeaders</Declaration>
+			
+			
+			<Anchor>//api/name/requestHeaders</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestMethod:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSString *requestMethod</Declaration>
+			
+			
+			<Anchor>//api/name/requestMethod</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestMethod</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSString *requestMethod</Declaration>
+			
+			
+			<Anchor>//api/name/requestMethod</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setRequestShouldHandleCookies:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) BOOL requestShouldHandleCookies</Declaration>
+			
+			
+			<Anchor>//api/name/requestShouldHandleCookies</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperation/requestShouldHandleCookies</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>@property (assign, nonatomic) BOOL requestShouldHandleCookies</Declaration>
+			
+			
+			<Anchor>//api/name/requestShouldHandleCookies</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/addValue:forRequestHeader:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (void)addValue:(NSString *)valueString forRequestHeader:(NSString *)headerFieldString</Declaration>
+			
+			
+			<Anchor>//api/name/addValue:forRequestHeader:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/setValue:forRequestHeader:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (void)setValue:(NSString *)valueString forRequestHeader:(NSString *)headerFieldString</Declaration>
+			
+			
+			<Anchor>//api/name/setValue:forRequestHeader:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseData</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSData *)responseData</Declaration>
+			
+			
+			<Anchor>//api/name/responseData</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseString</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)responseString</Declaration>
+			
+			
+			<Anchor>//api/name/responseString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseJSON</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (id)responseJSON</Declaration>
+			
+			
+			<Anchor>//api/name/responseJSON</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseHeaders</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSDictionary *)responseHeaders</Declaration>
+			
+			
+			<Anchor>//api/name/responseHeaders</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseStatusCode</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)responseStatusCode</Declaration>
+			
+			
+			<Anchor>//api/name/responseStatusCode</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseStatusString</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)responseStatusString</Declaration>
+			
+			
+			<Anchor>//api/name/responseStatusString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseExpectedContentLength</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (long long)responseExpectedContentLength</Declaration>
+			
+			
+			<Anchor>//api/name/responseExpectedContentLength</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseExpectedFileName</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)responseExpectedFileName</Declaration>
+			
+			
+			<Anchor>//api/name/responseExpectedFileName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseMIMEType</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)responseMIMEType</Declaration>
+			
+			
+			<Anchor>//api/name/responseMIMEType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseTextEncodingName</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)responseTextEncodingName</Declaration>
+			
+			
+			<Anchor>//api/name/responseTextEncodingName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperation/responseURL</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperation+Convenience.h</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)responseURL</Declaration>
+			
+			
+			<Anchor>//api/name/responseURL</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
