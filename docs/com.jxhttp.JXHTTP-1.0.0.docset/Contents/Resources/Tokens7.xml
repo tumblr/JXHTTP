@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPOperationQueue.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPOperationQueue</TokenIdentifier>
+			<Abstract type="html">JXHTTPOperationQueue is an NSOperationQueue subclass and can be used to group
+multiple instances of JXHTTPOperation for progress tracking, timing, or cancellation.
+It provides blocks and delegate methods via the JXHTTPOperationQueueDelegate protocol.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>
+			
+			<NodeRef refid="7"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDelegate:</TokenIdentifier>
+			<Abstract type="html">The operation&apos;s delegate, conforming to JXHTTPOperationDelegate.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (weak) NSObject&lt;JXHTTPOperationQueueDelegate&gt; *delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/delegate</TokenIdentifier>
+			<Abstract type="html">The operation&apos;s delegate, conforming to JXHTTPOperationDelegate.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (weak) NSObject&lt;JXHTTPOperationQueueDelegate&gt; *delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setUniqueString:</TokenIdentifier>
+			<Abstract type="html">A string guaranteed to be unique for the lifetime of the application process.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSString *uniqueString</Declaration>
+			
+			
+			<Anchor>//api/name/uniqueString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/uniqueString</TokenIdentifier>
+			<Abstract type="html">A string guaranteed to be unique for the lifetime of the application process.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSString *uniqueString</Declaration>
+			
+			
+			<Anchor>//api/name/uniqueString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDownloadProgress:</TokenIdentifier>
+			<Abstract type="html">A number between 0 and 1 representing the percentage of download progress.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *downloadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/downloadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/downloadProgress</TokenIdentifier>
+			<Abstract type="html">A number between 0 and 1 representing the percentage of download progress.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *downloadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/downloadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setUploadProgress:</TokenIdentifier>
+			<Abstract type="html">A number between 0 and 1 representing the percentage of upload progress.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *uploadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/uploadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/uploadProgress</TokenIdentifier>
+			<Abstract type="html">A number between 0 and 1 representing the percentage of upload progress.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *uploadProgress</Declaration>
+			
+			
+			<Anchor>//api/name/uploadProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setBytesDownloaded:</TokenIdentifier>
+			<Abstract type="html">The total number of bytes downloaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *bytesDownloaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesDownloaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/bytesDownloaded</TokenIdentifier>
+			<Abstract type="html">The total number of bytes downloaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *bytesDownloaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesDownloaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setBytesUploaded:</TokenIdentifier>
+			<Abstract type="html">The total number of bytes uploaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *bytesUploaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesUploaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/bytesUploaded</TokenIdentifier>
+			<Abstract type="html">The total number of bytes uploaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *bytesUploaded</Declaration>
+			
+			
+			<Anchor>//api/name/bytesUploaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setExpectedDownloadBytes:</TokenIdentifier>
+			<Abstract type="html">The total number of bytes expected to be downloaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *expectedDownloadBytes</Declaration>
+			
+			
+			<Anchor>//api/name/expectedDownloadBytes</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/expectedDownloadBytes</TokenIdentifier>
+			<Abstract type="html">The total number of bytes expected to be downloaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *expectedDownloadBytes</Declaration>
+			
+			
+			<Anchor>//api/name/expectedDownloadBytes</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setExpectedUploadBytes:</TokenIdentifier>
+			<Abstract type="html">The total number of bytes expected to be uploaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *expectedUploadBytes</Declaration>
+			
+			
+			<Anchor>//api/name/expectedUploadBytes</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/expectedUploadBytes</TokenIdentifier>
+			<Abstract type="html">The total number of bytes expected to be uploaded.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSNumber *expectedUploadBytes</Declaration>
+			
+			
+			<Anchor>//api/name/expectedUploadBytes</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setStartDate:</TokenIdentifier>
+			<Abstract type="html">The date the request started.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *startDate</Declaration>
+			
+			
+			<Anchor>//api/name/startDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/startDate</TokenIdentifier>
+			<Abstract type="html">The date the request started.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *startDate</Declaration>
+			
+			
+			<Anchor>//api/name/startDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setFinishDate:</TokenIdentifier>
+			<Abstract type="html">The date the request finished (or failed).</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *finishDate</Declaration>
+			
+			
+			<Anchor>//api/name/finishDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/finishDate</TokenIdentifier>
+			<Abstract type="html">The date the request finished (or failed).</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly) NSDate *finishDate</Declaration>
+			
+			
+			<Anchor>//api/name/finishDate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setElapsedSeconds:</TokenIdentifier>
+			<Abstract type="html">The number of seconds elapsed between the startDate and the finishDate (or the
+current date if the request is still running). 0.0 if the request has not started.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (readonly) NSTimeInterval elapsedSeconds</Declaration>
+			
+			
+			<Anchor>//api/name/elapsedSeconds</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/elapsedSeconds</TokenIdentifier>
+			<Abstract type="html">The number of seconds elapsed between the startDate and the finishDate (or the
+current date if the request is still running). 0.0 if the request has not started.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (readonly) NSTimeInterval elapsedSeconds</Declaration>
+			
+			
+			<Anchor>//api/name/elapsedSeconds</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setPerformsBlocksOnMainQueue:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL performsBlocksOnMainQueue</Declaration>
+			
+			
+			<Anchor>//api/name/performsBlocksOnMainQueue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/performsBlocksOnMainQueue</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (assign) BOOL performsBlocksOnMainQueue</Declaration>
+			
+			
+			<Anchor>//api/name/performsBlocksOnMainQueue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setWillStartBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock willStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/willStartBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock willStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setWillFinishBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock willFinishBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willFinishBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/willFinishBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock willFinishBlock</Declaration>
+			
+			
+			<Anchor>//api/name/willFinishBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDidStartBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/didStartBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didStartBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didStartBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDidUploadBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didUploadBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didUploadBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/didUploadBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didUploadBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didUploadBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDidDownloadBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didDownloadBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didDownloadBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/didDownloadBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didDownloadBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didDownloadBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDidMakeProgressBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didMakeProgressBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didMakeProgressBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/didMakeProgressBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didMakeProgressBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didMakeProgressBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPOperationQueue/setDidFinishBlock:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didFinishBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFinishBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPOperationQueue/didFinishBlock</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>@property (copy) JXHTTPQueueBlock didFinishBlock</Declaration>
+			
+			
+			<Anchor>//api/name/didFinishBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPOperationQueue/sharedQueue</TokenIdentifier>
+			<Abstract type="html">A singleton queue with a default maxConcurrentOperationCount of 4.</Abstract>
+			<DeclaredIn>JXHTTPOperationQueue.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)sharedQueue</Declaration>
+			
+			<ReturnValue><Abstract type="html">The shared HTTP operation queue.</Abstract></ReturnValue>
+			<Anchor>//api/name/sharedQueue</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

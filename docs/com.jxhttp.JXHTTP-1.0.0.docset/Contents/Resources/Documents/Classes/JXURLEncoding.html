@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.1 (build 858)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -125,7 +125,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>JXURLEncoding</code> is an abstract class providing methods for encoding strings according<br/>
+						<p><code>JXURLEncoding</code> is an abstract class providing methods for encoding strings according
 to <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a> (aka &ldquo;percent escaping&rdquo;).</p>
 					</div>
 					
@@ -152,26 +152,24 @@ to <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a> (aka &ldquo;percen
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/formEncodedString:">+&nbsp;formEncodedString:</a></code>
-		<span class="tooltip"><p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.<br/>
-Commonly used by web browsers to submit forms.</p></span>
+		<span class="tooltip"><p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.
+Commonly used by web browsers to submit forms. When in doubt, use <a href="#//api/name/encodedString:">encodedString:</a>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/encodedDictionary:">+&nbsp;encodedDictionary:</a></code>
-		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened<br/>
-into a query string. Dictionary values must be a either string or a dictionary with further<br/>
-strings and/or nested dictionaries.</p></span>
+		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/formEncodedDictionary:">+&nbsp;formEncodedDictionary:</a></code>
-		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened<br/>
-into a query string. Dictionary values must be a either string or a dictionary with further<br/>
-strings and/or nested dictionaries.</p></span>
+		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p></span>
 	</span>
 	
 	
@@ -197,9 +195,8 @@ strings and/or nested dictionaries.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened<br/>
-into a query string. Dictionary values must be a either string or a dictionary with further<br/>
-strings and/or nested dictionaries.</p>
+		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p>
 	</div>		
 	
     
@@ -231,15 +228,15 @@ strings and/or nested dictionaries.</p>
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<h3>Example ###</h3>
+		<h3>Example</h3>
 
-<pre><code>NSDictionary *params = @{  
-    @"make": @"Ferrari",  
-    @"model": @"458 Italia",  
-    @"options": @[ @"heated seats", @"cup holders" ]  
-};  
+<pre><code>NSDictionary *params = @{
+    @"make": @"Ferrari",
+    @"model": @"458 Italia",
+    @"options": @[ @"heated seats", @"cup holders" ]
+};
 
-NSString *escaped = [JXURLEncoding encodedDictionary:params];  
+NSString *escaped = [JXURLEncoding encodedDictionary:params];
 // make=Ferrari&amp;model=458%20Italia&amp;options[0]=heated%20seats&amp;options[1]=cup&amp;20holders
 </code></pre>
 	</div>
@@ -316,9 +313,8 @@ NSString *escaped = [JXURLEncoding encodedDictionary:params];
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened<br/>
-into a query string. Dictionary values must be a either string or a dictionary with further<br/>
-strings and/or nested dictionaries.</p>
+		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p>
 	</div>		
 	
     
@@ -352,15 +348,15 @@ strings and/or nested dictionaries.</p>
 		<h4 class="method-subtitle">Discussion</h4>
 		<p>Identical to <a href="#//api/name/encodedDictionary:">encodedDictionary:</a> but with <code>+</code> replacing spaces instead of <code>%20</code>.</p>
 
-<h3>Example ###</h3>
+<h3>Example</h3>
 
-<pre><code> NSDictionary *params = @{  
-     @"make": @"Ferrari",  
-     @"model": @"458 Italia",  
-     @"options": @[ @"heated seats", @"cup holders" ]  
- };  
+<pre><code> NSDictionary *params = @{
+     @"make": @"Ferrari",
+     @"model": @"458 Italia",
+     @"options": @[ @"heated seats", @"cup holders" ]
+ };
 
- NSString *escaped = [JXURLEncoding encodedDictionary:params];  
+ NSString *escaped = [JXURLEncoding encodedDictionary:params];
  // make=Ferrari&amp;model=458+Italia&amp;options[0]=heated+seats&amp;options[1]=cup+holders
 </code></pre>
 	</div>
@@ -386,8 +382,8 @@ strings and/or nested dictionaries.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.<br/>
-Commonly used by web browsers to submit forms.</p>
+		<p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.
+Commonly used by web browsers to submit forms. When in doubt, use <a href="#//api/name/encodedString:">encodedString:</a>.</p>
 	</div>		
 	
     
@@ -446,9 +442,9 @@ Commonly used by web browsers to submit forms.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-15)</span><br />
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-21)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>

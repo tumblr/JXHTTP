@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXURLEncoding.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXURLEncoding</TokenIdentifier>
+			<Abstract type="html">JXURLEncoding is an abstract class providing methods for encoding strings according
+to [RFC 3986]( http://www.ietf.org/rfc/rfc3986.txt ) (aka &quot;percent escaping&quot;).</Abstract>
+			<DeclaredIn>JXURLEncoding.h</DeclaredIn>
+			
+			<NodeRef refid="10"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/encodedString:</TokenIdentifier>
+			<Abstract type="html">Encodes a string according to RFC 3986.</Abstract>
+			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)encodedString:(NSString *)string</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>string</Name>
+					<Abstract type="html">A string to encode.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
+			<Anchor>//api/name/encodedString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedString:</TokenIdentifier>
+			<Abstract type="html">Encodes a string according to RFC 3986, but with + replacing spaces instead of %20.
+Commonly used by web browsers to submit forms. When in doubt, use encodedString:.</Abstract>
+			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)formEncodedString:(NSString *)string</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>string</Name>
+					<Abstract type="html">A string to encode.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
+			<Anchor>//api/name/formEncodedString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/encodedDictionary:</TokenIdentifier>
+			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of NSString, NSArray, or NSDictionary.</Abstract>
+			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)encodedDictionary:(NSDictionary *)dictionary</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>dictionary</Name>
+					<Abstract type="html">A dictionary to encode.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
+			<Anchor>//api/name/encodedDictionary:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXURLEncoding/formEncodedDictionary:</TokenIdentifier>
+			<Abstract type="html">Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of NSString, NSArray, or NSDictionary.</Abstract>
+			<DeclaredIn>JXURLEncoding.h</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)formEncodedDictionary:(NSDictionary *)dictionary</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>dictionary</Name>
+					<Abstract type="html">A dictionary to encode.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">An encoded string.</Abstract></ReturnValue>
+			<Anchor>//api/name/formEncodedDictionary:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

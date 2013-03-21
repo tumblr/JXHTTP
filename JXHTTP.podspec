@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.authors       = { 'Justin Ouellette' => 'jstn@jxhttp.com' }
   s.source        = { :git => 'https://github.com/jstn/JXHTTP.git', :tag => "#{s.version}" }
   s.license       = { :type => 'MIT', :file => 'LICENSE.txt' }
-  s.frameworks    = 'Foundation'
   s.requires_arc  = true
+  s.frameworks    = 'Foundation'
   s.ios.weak_frameworks   = 'UIKit'
   s.osx.weak_frameworks   = 'AppKit'
   s.ios.deployment_target = '5.0'
@@ -33,7 +33,11 @@ Pod::Spec.new do |s|
       '--ignore', '*.m',
       '--no-repeat-first-par',
       '--explicit-crossref',
-      '--clean-output'
+      '--clean-output',
+      '--keep-undocumented-objects',
+      '--keep-undocumented-members',
+      '--no-search-undocumented-doc',
+      '--no-warn-undocumented-member'
     ]
   }
 end

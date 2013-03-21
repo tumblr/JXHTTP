@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/JXHTTPRequestBody.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/JXHTTPRequestBody</TokenIdentifier>
+			<Abstract type="html">JXHTTPRequestBody is a protocol that allows any object to provide request body data for a
+JXHTTPOperation. Conforming objects also receive the standard JXHTTPOperationDelegate
+calls (if implemented). This allows, for example, last minute creation of an input stream
+when the operation starts.</Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>
+			
+			<NodeRef refid="13"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpInputStream</TokenIdentifier>
+			<Abstract type="html">A stream that will supply the data for the request body section of an HTTP request.</Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (NSInputStream *)httpInputStream</Declaration>
+			
+			<ReturnValue><Abstract type="html">An input stream.</Abstract></ReturnValue>
+			<Anchor>//api/name/httpInputStream</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpContentType</TokenIdentifier>
+			<Abstract type="html">A string that represents the MIME content type of the request data. If nil, defaults to
+application/octet-stream.</Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)httpContentType</Declaration>
+			
+			<ReturnValue><Abstract type="html">A string.</Abstract></ReturnValue>
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPRequestBody/httpContentLength</TokenIdentifier>
+			<Abstract type="html">The expected length of the request data, used to calculate upload progress. If unknown
+this method is expected to return NSURLResponseUnknownLength.</Abstract>
+			<DeclaredIn>JXHTTPRequestBody.h</DeclaredIn>			
+			
+			<Declaration>- (long long)httpContentLength</Declaration>
+			
+			<ReturnValue><Abstract type="html">An integer.</Abstract></ReturnValue>
+			<Anchor>//api/name/httpContentLength</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
