@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPJSONBody.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPJSONBody</TokenIdentifier>
+			<Abstract type="html">JXHTTPJSONBody conforms to JXHTTPRequestBody and provides functionality for JSON
+POST request bodies.</Abstract>
+			<DeclaredIn>JXHTTPJSONBody.h</DeclaredIn>
+			
+			<NodeRef refid="4"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPJSONBody/withData:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPJSONBody.</Abstract>
+			<DeclaredIn>JXHTTPJSONBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withData:(NSData *)data</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract type="html">The UTF-8 data of a previously serialized JSON string.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A JSON request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPJSONBody/withString:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPJSONBody.</Abstract>
+			<DeclaredIn>JXHTTPJSONBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withString:(NSString *)string</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>string</Name>
+					<Abstract type="html">A previously serialized JSON string.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A JSON request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPJSONBody/withJSONObject:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPJSONBody.</Abstract>
+			<DeclaredIn>JXHTTPJSONBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withJSONObject:(id)dictionaryOrArray</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>dictionaryOrArray</Name>
+					<Abstract type="html">A dictionary or array, which will be serialized into a JSON string.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A JSON request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withJSONObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPJSONBody/initWithData:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPJSONBody.</Abstract>
+			<DeclaredIn>JXHTTPJSONBody.h</DeclaredIn>			
+			
+			<Declaration>- (instancetype)initWithData:(NSData *)data</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract type="html">The UTF-8 data of a previously serialized JSON string.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A JSON request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithData:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

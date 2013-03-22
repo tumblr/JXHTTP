@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPFormEncodedBody.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPFormEncodedBody</TokenIdentifier>
+			<Abstract type="html">JXHTTPFormEncodedBody conforms to JXHTTPRequestBody and provides functionality for
+form-encoded request bodies (i.e., the type usually sent by browsers.)</Abstract>
+			<DeclaredIn>JXHTTPFormEncodedBody.h</DeclaredIn>
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPFormEncodedBody/setDictionary:</TokenIdentifier>
+			<Abstract type="html">A dictionary that will be form-encoded upon transmission.</Abstract>
+			<DeclaredIn>JXHTTPFormEncodedBody.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly, nonatomic) NSMutableDictionary *dictionary</Declaration>
+			
+			
+			<Anchor>//api/name/dictionary</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPFormEncodedBody/dictionary</TokenIdentifier>
+			<Abstract type="html">A dictionary that will be form-encoded upon transmission.</Abstract>
+			<DeclaredIn>JXHTTPFormEncodedBody.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, readonly, nonatomic) NSMutableDictionary *dictionary</Declaration>
+			
+			
+			<Anchor>//api/name/dictionary</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPFormEncodedBody/withDictionary:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPFormEncodedBody.</Abstract>
+			<DeclaredIn>JXHTTPFormEncodedBody.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/cl/JXURLEncoding</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>+ (instancetype)withDictionary:(NSDictionary *)dictionary</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>dictionary</Name>
+					<Abstract type="html">A dictionary that will be form-encoded upon transmission.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withDictionary:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPFormEncodedBody/initWithDictionary:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPFormEncodedBody.</Abstract>
+			<DeclaredIn>JXHTTPFormEncodedBody.h</DeclaredIn>			
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/cl/JXURLEncoding</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>- (instancetype)initWithDictionary:(NSDictionary *)dictionary</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>dictionary</Name>
+					<Abstract type="html">A dictionary that will be form-encoded upon transmission.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithDictionary:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.jxhttp.JXHTTP</string>
+	<key>CFBundleName</key>
+	<string>JXHTTP</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	
+	
+	
+	<key>DocSetFallbackURL</key>
+	<string>http://jxhttp.com/docs/html/</string>
+	<key>DocSetFeedName</key>
+	<string>JXHTTP</string>
+	<key>DocSetFeedURL</key>
+	<string>http://jxhttp.com/docs/publish/com.jxhttp.JXHTTP.atom</string>
+	<key>DocSetMinimumXcodeVersion</key>
+	<string>4.3</string>
+	
+	<key>DashDocSetFamily</key>
+	<string>appledoc</string>
+	<key>DocSetPublisherIdentifier</key>
+	<string>com.jxhttp.documentation</string>
+	<key>DocSetPublisherName</key>
+	<string>JSTN</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2013 JSTN. All rights reserved.</string>
+</dict>
+</plist>

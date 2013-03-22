@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/JXHTTPDataBody.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/JXHTTPDataBody</TokenIdentifier>
+			<Abstract type="html">JXHTTPDataBody conforms to JXHTTPRequestBody and provides functionality for streaming
+request bodies directly from memory, with any content type.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPDataBody/setData:</TokenIdentifier>
+			<Abstract type="html">The data to upload.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSData *data</Declaration>
+			
+			
+			<Anchor>//api/name/data</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPDataBody/data</TokenIdentifier>
+			<Abstract type="html">The data to upload.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSData *data</Declaration>
+			
+			
+			<Anchor>//api/name/data</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPDataBody/setHttpContentType:</TokenIdentifier>
+			<Abstract type="html">The MIME content type of the data to upload.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *httpContentType</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXHTTPDataBody/httpContentType</TokenIdentifier>
+			<Abstract type="html">The MIME content type of the data to upload.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>@property (copy, nonatomic) NSString *httpContentType</Declaration>
+			
+			
+			<Anchor>//api/name/httpContentType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPDataBody/withData:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPDataBody with the given data.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withData:(NSData *)data</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract type="html">The data to upload.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/JXHTTPDataBody/withData:contentType:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPDataBody with the given data and MIME content type.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>+ (instancetype)withData:(NSData *)data contentType:(NSString *)contentType</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract type="html">The data to upload.</Abstract>
+				</Parameter><Parameter>
+					<Name>contentType</Name>
+					<Abstract type="html">The MIME content type of the data to upload.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/withData:contentType:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXHTTPDataBody/initWithData:contentType:</TokenIdentifier>
+			<Abstract type="html">Creates a new JXHTTPDataBody with the given data and MIME content type.</Abstract>
+			<DeclaredIn>JXHTTPDataBody.h</DeclaredIn>			
+			
+			<Declaration>- (instancetype)initWithData:(NSData *)data contentType:(NSString *)contentType</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract type="html">The data to upload.</Abstract>
+				</Parameter><Parameter>
+					<Name>contentType</Name>
+					<Abstract type="html">The MIME content type of the data to upload.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A request body.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithData:contentType:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

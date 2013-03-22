@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/JXHTTPOperationDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/JXHTTPOperationDelegate</TokenIdentifier>
+			<Abstract type="html">JXHTTPOperationDelegate is a protocol that allows any object to receive synchronous callbacks about
+the progress of a JXHTTPOperation and optionally influence its execution.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="11"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillStart:</TokenIdentifier>
+			<Abstract type="html">Called at the very beginning of the operation, before the connection starts and before the
+request body is setup.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillStart:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationWillStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillNeedNewBodyStream:</TokenIdentifier>
+			<Abstract type="html">Called when the connection needs a new, unopened body stream.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationWillNeedNewBodyStream:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationWillSendRequestForAuthenticationChallenge:</TokenIdentifier>
+			<Abstract type="html">Called when the underlying NSURLConnection receives willSendRequestForAuthenticationChallenge:,
+see the NSURLConnectionDelegate docs for more information.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationWillSendRequestForAuthenticationChallenge:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationWillSendRequestForAuthenticationChallenge:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidStart:</TokenIdentifier>
+			<Abstract type="html">Called just after the connection starts. At this point all streams will be open.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidStart:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidReceiveResponse:</TokenIdentifier>
+			<Abstract type="html">Called when the connection receives a response (zero or once per operation).</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidReceiveResponse:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidReceiveResponse:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidReceiveData:</TokenIdentifier>
+			<Abstract type="html">Called periodically as the connection receives data.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidReceiveData:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidReceiveData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidSendData:</TokenIdentifier>
+			<Abstract type="html">Called periodically as the connection sends data.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidSendData:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidSendData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidFinishLoading:</TokenIdentifier>
+			<Abstract type="html">Called when the connection finishes loading data, but before the operation has completed.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidFinishLoading:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperationDidFail:</TokenIdentifier>
+			<Abstract type="html">Called when the operation fails (zero or once per operation).</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)httpOperationDidFail:(JXHTTPOperation *)operation</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/httpOperationDidFail:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperation:willCacheResponse:</TokenIdentifier>
+			<Abstract type="html">Called before the operation caches a response. The response can be modified before storage.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (NSCachedURLResponse *)httpOperation:(JXHTTPOperation *)operation willCacheResponse:(NSCachedURLResponse *)cachedResponse</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter><Parameter>
+					<Name>cachedResponse</Name>
+					<Abstract type="html">The response to be cached.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A modified cache response, the original cache response, or nil if no caching should occur.</Abstract></ReturnValue>
+			<Anchor>//api/name/httpOperation:willCacheResponse:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/JXHTTPOperationDelegate/httpOperation:willSendRequest:redirectResponse:</TokenIdentifier>
+			<Abstract type="html">Called before the underlying NSURLConnection changes URLs in response to a redirection.
+May be called multiple times.</Abstract>
+			<DeclaredIn>JXHTTPOperationDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (NSURLRequest *)httpOperation:(JXHTTPOperation *)operation willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>operation</Name>
+					<Abstract type="html">The operation.</Abstract>
+				</Parameter><Parameter>
+					<Name>request</Name>
+					<Abstract type="html">The proposed redirect request.</Abstract>
+				</Parameter><Parameter>
+					<Name>redirectResponse</Name>
+					<Abstract type="html">The response that caused the direct (may be nil).</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A new request for redirection, the original request to continue redirection,or nil to prevent redirection.</Abstract></ReturnValue>
+			<Anchor>//api/name/httpOperation:willSendRequest:redirectResponse:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

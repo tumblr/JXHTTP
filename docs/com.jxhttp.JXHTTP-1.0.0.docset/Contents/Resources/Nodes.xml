@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+    <TOC>
+        <Node type="folder">
+            <Name>JXHTTP</Name>
+            <Path>index.html</Path>
+			<Subnodes>
+                
+				
+				<Node type="folder">
+					<Name>Classes</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="1"/>
+						<NodeRef refid="2"/>
+						<NodeRef refid="3"/>
+						<NodeRef refid="4"/>
+						<NodeRef refid="5"/>
+						<NodeRef refid="6"/>
+						<NodeRef refid="7"/>
+						<NodeRef refid="8"/>
+						<NodeRef refid="9"/>
+						<NodeRef refid="10"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				
+				<Node type="folder">
+					<Name>Protocols</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="11"/>
+						<NodeRef refid="12"/>
+						<NodeRef refid="13"/>
+						
+					</Subnodes>
+				</Node>
+				
+			</Subnodes>
+        </Node>
+    </TOC>
+	<Library>
+		
+		<Node id="1">
+			<Name>JXHTTPDataBody</Name>
+			<Path>Classes/JXHTTPDataBody.html</Path>
+		</Node>
+		<Node id="2">
+			<Name>JXHTTPFileBody</Name>
+			<Path>Classes/JXHTTPFileBody.html</Path>
+		</Node>
+		<Node id="3">
+			<Name>JXHTTPFormEncodedBody</Name>
+			<Path>Classes/JXHTTPFormEncodedBody.html</Path>
+		</Node>
+		<Node id="4">
+			<Name>JXHTTPJSONBody</Name>
+			<Path>Classes/JXHTTPJSONBody.html</Path>
+		</Node>
+		<Node id="5">
+			<Name>JXHTTPMultipartBody</Name>
+			<Path>Classes/JXHTTPMultipartBody.html</Path>
+		</Node>
+		<Node id="6">
+			<Name>JXHTTPOperation</Name>
+			<Path>Classes/JXHTTPOperation.html</Path>
+		</Node>
+		<Node id="7">
+			<Name>JXHTTPOperationQueue</Name>
+			<Path>Classes/JXHTTPOperationQueue.html</Path>
+		</Node>
+		<Node id="8">
+			<Name>JXOperation</Name>
+			<Path>Classes/JXOperation.html</Path>
+		</Node>
+		<Node id="9">
+			<Name>JXURLConnectionOperation</Name>
+			<Path>Classes/JXURLConnectionOperation.html</Path>
+		</Node>
+		<Node id="10">
+			<Name>JXURLEncoding</Name>
+			<Path>Classes/JXURLEncoding.html</Path>
+		</Node>
+		
+		
+		<Node id="11">
+			<Name>JXHTTPOperationDelegate</Name>
+			<Path>Protocols/JXHTTPOperationDelegate.html</Path>
+		</Node>
+		<Node id="12">
+			<Name>JXHTTPOperationQueueDelegate</Name>
+			<Path>Protocols/JXHTTPOperationQueueDelegate.html</Path>
+		</Node>
+		<Node id="13">
+			<Name>JXHTTPRequestBody</Name>
+			<Path>Protocols/JXHTTPRequestBody.html</Path>
+		</Node>
+		
+	</Library>
+</DocSetNodes>
