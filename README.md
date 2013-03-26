@@ -17,7 +17,7 @@ JXHTTP requires iOS 5.0 or OS X 10.7 or newer.
 - requests run entirely on background threads, away from the main thread and UI
 - particular attention has been paid to thread safety and is well-documented throughout
 
-JXHTTP is production-ready and currently powers the [Tumblr iOS SDK](http://tumblr.com/mobile); thousands of successful requests were performed while you read this paragraph!
+JXHTTP is production-ready and currently powers the [Tumblr SDK](https://github.com/tumblr/TMTumblrSDK); thousands of successful requests were performed while you read this paragraph!
 
 ## Examples ##
 
@@ -25,43 +25,37 @@ See the included [example project](example/) for a real-world use case in iOS.
 
 ### Asynchronous ###
 
-```objective-c
-JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
-op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
-    NSLog(@"%@", op.responseString);
-};
+	JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+	op.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
+	    NSLog(@"%@", op.responseString);
+	};
 
-[[JXHTTPOperationQueue sharedQueue] addOperation:op];
-```
+	[[JXHTTPOperationQueue sharedQueue] addOperation:op];
 
 ### Synchronous ###
 
-```objective-c
-JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
-[op startAndWaitUntilFinished];
+	JXHTTPOperation *op = [JXHTTPOperation withURLString:@"https://encrypted.google.com/"];
+	[op startAndWaitUntilFinished];
 
-NSLog(@"%@", op.responseString);
-```
+	NSLog(@"%@", op.responseString);
 
 ### Complex ###
 
-```objective-c
-NSURL *postURL = [NSURL URLWithString:@"https://web.site/api/POST"];
-NSDictionary *postParams = @{ @"make": @"Ferrari", @"model": @"458 Italia" };
+	NSURL *postURL = [NSURL URLWithString:@"https://web.site/api/POST"];
+	NSDictionary *postParams = @{ @"make": @"Ferrari", @"model": @"458 Italia" };
 
-JXHTTPOperation *op = [[JXHTTPOperation alloc] initWithURL:postURL];
-op.requestBody = [[JXHTTPFormEncodedBody alloc] initWithDictionary:postParams];
-op.requestCachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-op.responseDataFilePath = @"/tmp/downloaded_data";
-op.trustedHosts = @[ postURL.host ];
-op.performsBlocksOnMainQueue = YES;
+	JXHTTPOperation *op = [[JXHTTPOperation alloc] initWithURL:postURL];
+	op.requestBody = [[JXHTTPFormEncodedBody alloc] initWithDictionary:postParams];
+	op.requestCachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+	op.responseDataFilePath = @"/tmp/downloaded_data";
+	op.trustedHosts = @[ postURL.host ];
+	op.performsBlocksOnMainQueue = YES;
 
-op.didSendDataBlock = ^(JXHTTPOperation *op) {
-    NSLog(@"%lld bytes uploaded so far", op.bytesUploaded);
-};
+	op.didSendDataBlock = ^(JXHTTPOperation *op) {
+	    NSLog(@"%lld bytes uploaded so far", op.bytesUploaded);
+	};
 
-[[JXHTTPOperationQueue sharedQueue] addOperation:op];
-```
+	[[JXHTTPOperationQueue sharedQueue] addOperation:op];
 
 ## Contact ##
 
