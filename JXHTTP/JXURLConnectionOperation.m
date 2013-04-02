@@ -29,6 +29,8 @@
 
         self.bytesDownloaded = 0LL;
         self.bytesUploaded = 0LL;
+
+        self.runLoopModes = [[NSSet alloc] initWithObjects:NSDefaultRunLoopMode, nil];
     }
     return self;
 }
@@ -60,6 +62,19 @@
 
 #pragma mark - Scheduling
 
+- (void)setRunLoopModes:(NSSet *)runLoopModes
+{
+    if ([NSThread currentThread] != [[self class] sharedThread]) {
+        [self performSelector:@selector(setRunLoopModes:) onThread:[[self class] sharedThread] withObject:runLoopModes waitUntilDone:YES];
+        return;
+    }
+
+    if (self.connection)
+        return;
+
+    _runLoopModes = runLoopModes;
+}
+
 - (void)startConnection
 {
     if ([NSThread currentThread] != [[self class] sharedThread]) {
@@ -69,14 +84,17 @@
     
     if ([self isCancelled])
         return;
+
+    self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
     
     if (!self.outputStream)
         self.outputStream = [[NSOutputStream alloc] initToMemory];
 
-    [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    for (NSString *mode in self.runLoopModes) {
+        [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+        [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    }
 
-    self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
-    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [self.connection start];
 }
 
@@ -87,10 +105,12 @@
         return;
     }
 
-    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    for (NSString *mode in self.runLoopModes) {
+        [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+        [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    }
+    
     [self.connection cancel];
-
-    [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [self.outputStream close];
 }
 

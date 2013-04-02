@@ -69,6 +69,14 @@
  */
 @property (strong) NSOutputStream *outputStream;
 
+/**
+ The run loop modes in which the connection and output stream will be scheduled.
+ Defaults to a single-member set with `NSDefaultRunLoopMode`.
+ 
+ @warning This property cannot be changed once the connection has started.
+ */
+@property (strong, nonatomic) NSSet *runLoopModes;
+
 /// @name Progress
 
 /**
