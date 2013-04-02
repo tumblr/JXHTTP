@@ -118,7 +118,20 @@
 
 - (NSString *)responseString
 {
-    return [[NSString alloc] initWithData:[self responseData] encoding:NSUTF8StringEncoding];
+    NSData *data = [self responseData];
+    if (![data length])
+        return @"";
+
+    NSStringEncoding encoding = NSUTF8StringEncoding;
+
+    if (self.response.textEncodingName) {
+        CFStringRef encodingName = (__bridge CFStringRef)self.response.textEncodingName;
+        CFStringEncoding responseEncoding = CFStringConvertIANACharSetNameToEncoding(encodingName);
+        if (responseEncoding != kCFStringEncodingInvalidId)
+            encoding = CFStringConvertEncodingToNSStringEncoding(responseEncoding);
+    }
+
+    return [[NSString alloc] initWithData:data encoding:encoding];
 }
 
 - (id)responseJSON
