@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>JXHTTPFileBody Class Reference</title>
+		<title>JXURLEncoding Class Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">JXHTTPFileBody Class Reference</h1>
+				<h1 class="hideInXcode">JXURLEncoding Class Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -38,27 +38,19 @@
 	
 	
 	
-	<option value="properties">Properties</option>
-	
-	<option value="//api/name/filePath">&nbsp;&nbsp;&nbsp;&nbsp;filePath</option>
-	
-	<option value="//api/name/httpContentType">&nbsp;&nbsp;&nbsp;&nbsp;httpContentType</option>
-	
-	
 	
 	
 	<option value="class_methods">Class Methods</option>
 	
-	<option value="//api/name/withFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;+ withFilePath:</option>
+	<option value="//api/name/encodedDictionary:">&nbsp;&nbsp;&nbsp;&nbsp;+ encodedDictionary:</option>
 	
-	<option value="//api/name/withFilePath:contentType:">&nbsp;&nbsp;&nbsp;&nbsp;+ withFilePath:contentType:</option>
+	<option value="//api/name/encodedString:">&nbsp;&nbsp;&nbsp;&nbsp;+ encodedString:</option>
+	
+	<option value="//api/name/formEncodedDictionary:">&nbsp;&nbsp;&nbsp;&nbsp;+ formEncodedDictionary:</option>
+	
+	<option value="//api/name/formEncodedString:">&nbsp;&nbsp;&nbsp;&nbsp;+ formEncodedString:</option>
 	
 	
-	
-	
-	<option value="instance_methods">Instance Methods</option>
-	
-	<option value="//api/name/initWithFilePath:contentType:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithFilePath:contentType:</option>
 	
 	
 	
@@ -82,38 +74,28 @@
 
 
 
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/filePath">filePath</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpContentType">httpContentType</a></span></li>
-	
-</ul></li>
-
 
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withFilePath:">withFilePath:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/encodedDictionary:">encodedDictionary:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withFilePath:contentType:">withFilePath:contentType:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/encodedString:">encodedString:</a></span></li>
 	
-</ul></li>
-
-
-
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/formEncodedDictionary:">formEncodedDictionary:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithFilePath:contentType:">initWithFilePath:contentType:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/formEncodedString:">formEncodedString:</a></span></li>
 	
 </ul></li>
+
+
 
 
 			</ul>
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="JXHTTPFileBody Class Reference" name="top"></a>
+				<a title="JXURLEncoding Class Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -122,7 +104,7 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">JXHTTPFileBody Class Reference</h1>
+						<h1 class="title title-header">JXURLEncoding Class Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
@@ -132,11 +114,8 @@
 	<td class="specification-title">Inherits from</td>
 	<td class="specification-value">NSObject</td>
 </tr><tr>
-	<td class="specification-title">Conforms to</td>
-	<td class="specification-value"><a href="../Protocols/JXHTTPRequestBody.html">JXHTTPRequestBody</a></td>
-</tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">JXHTTPFileBody.h</td>
+	<td class="specification-value">JXURLEncoding.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -146,8 +125,8 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>JXHTTPFileBody</code> conforms to <a href="../Protocols/JXHTTPRequestBody.html">JXHTTPRequestBody</a> and provides functionality for streaming
-request bodies directly from disk, with any content type.</p>
+						<p><code>JXURLEncoding</code> is an abstract class providing methods for encoding strings according
+to <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a> (aka &ldquo;percent escaping&rdquo;).</p>
 					</div>
 					
 					
@@ -165,36 +144,32 @@ request bodies directly from disk, with any content type.</p>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/filePath">&nbsp;&nbsp;filePath</a></code>
-		<span class="tooltip"><p>The path of the file to upload.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/httpContentType">&nbsp;&nbsp;httpContentType</a></code>
-		<span class="tooltip"><p>The MIME content type of the file to upload.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/withFilePath:">+&nbsp;withFilePath:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p></span>
+		<code><a href="#//api/name/encodedString:">+&nbsp;encodedString:</a></code>
+		<span class="tooltip"><p>Encodes a string according to RFC 3986.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/withFilePath:contentType:">+&nbsp;withFilePath:contentType:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p></span>
+		<code><a href="#//api/name/formEncodedString:">+&nbsp;formEncodedString:</a></code>
+		<span class="tooltip"><p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.
+Commonly used by web browsers to submit forms. When in doubt, use <a href="#//api/name/encodedString:">encodedString:</a>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/initWithFilePath:contentType:">&ndash;&nbsp;initWithFilePath:contentType:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p></span>
+		<code><a href="#//api/name/encodedDictionary:">+&nbsp;encodedDictionary:</a></code>
+		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/formEncodedDictionary:">+&nbsp;formEncodedDictionary:</a></code>
+		<span class="tooltip"><p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p></span>
 	</span>
 	
 	
@@ -207,84 +182,6 @@ request bodies directly from disk, with any content type.</p>
 					
 					
 					
-					<div class="section section-methods">
-						<a title="Properties" name="properties"></a>
-						<h2 class="subtitle subtitle-methods">Properties</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/filePath" title="filePath"></a>
-	<h3 class="subsubtitle method-title">filePath</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The path of the file to upload.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (copy, nonatomic) NSString *filePath</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPFileBody.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/httpContentType" title="httpContentType"></a>
-	<h3 class="subsubtitle method-title">httpContentType</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The MIME content type of the file to upload.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (copy, nonatomic) NSString *httpContentType</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPFileBody.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
-					
 					
 					
 					<div class="section section-methods">
@@ -292,18 +189,19 @@ request bodies directly from disk, with any content type.</p>
 						<h2 class="subtitle subtitle-methods">Class Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/withFilePath:" title="withFilePath:"></a>
-	<h3 class="subsubtitle method-title">withFilePath:</h3>
+	<a name="//api/name/encodedDictionary:" title="encodedDictionary:"></a>
+	<h3 class="subsubtitle method-title">encodedDictionary:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p>
+		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>+ (instancetype)withFilePath:(NSString *)<em>filePath</em></code></div>
+	<div class="method-subsection method-declaration"><code>+ (NSString *)encodedDictionary:(NSDictionary *)<em>dictionary</em></code></div>
 
     
 	
@@ -311,8 +209,8 @@ request bodies directly from disk, with any content type.</p>
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>filePath</em></dt>
-			<dd><p>The local path of the file.</p></dd>
+			<dt><em>dictionary</em></dt>
+			<dd><p>A dictionary to encode.</p></dd>
 		</dl>
 		
 	</div>
@@ -321,12 +219,27 @@ request bodies directly from disk, with any content type.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
+		<p>An encoded string.</p>
 	</div>
 	
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<h3>Example</h3>
+
+<pre><code>NSDictionary *params = @{
+    @"make": @"Ferrari",
+    @"model": @"458 Italia",
+    @"options": @[ @"heated seats", @"cup holders" ]
+};
+
+NSString *escaped = [JXURLEncoding encodedDictionary:params];
+// make=Ferrari&amp;model=458%20Italia&amp;options[0]=heated%20seats&amp;options[1]=cup&amp;20holders
+</code></pre>
+	</div>
 	
 	
 	
@@ -336,25 +249,25 @@ request bodies directly from disk, with any content type.</p>
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPFileBody.h</code><br />
+		<code class="declared-in-ref">JXURLEncoding.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/withFilePath:contentType:" title="withFilePath:contentType:"></a>
-	<h3 class="subsubtitle method-title">withFilePath:contentType:</h3>
+	<a name="//api/name/encodedString:" title="encodedString:"></a>
+	<h3 class="subsubtitle method-title">encodedString:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p>
+		<p>Encodes a string according to RFC 3986.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>+ (instancetype)withFilePath:(NSString *)<em>filePath</em> contentType:(NSString *)<em>contentType</em></code></div>
+	<div class="method-subsection method-declaration"><code>+ (NSString *)encodedString:(NSString *)<em>string</em></code></div>
 
     
 	
@@ -362,13 +275,8 @@ request bodies directly from disk, with any content type.</p>
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>filePath</em></dt>
-			<dd><p>The local path of the file.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>contentType</em></dt>
-			<dd><p>The MIME content type of the file.</p></dd>
+			<dt><em>string</em></dt>
+			<dd><p>A string to encode.</p></dd>
 		</dl>
 		
 	</div>
@@ -377,7 +285,7 @@ request bodies directly from disk, with any content type.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
+		<p>An encoded string.</p>
 	</div>
 	
 	
@@ -392,7 +300,128 @@ request bodies directly from disk, with any content type.</p>
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPFileBody.h</code><br />
+		<code class="declared-in-ref">JXURLEncoding.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/formEncodedDictionary:" title="formEncodedDictionary:"></a>
+	<h3 class="subsubtitle method-title">formEncodedDictionary:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Encodes a dictionary according to RFC 3986, with keys sorted alphabetically and flattened
+into a query string. Dictionary values must be one of <code>NSString</code>, <code>NSArray</code>, or <code>NSDictionary</code>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (NSString *)formEncodedDictionary:(NSDictionary *)<em>dictionary</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>dictionary</em></dt>
+			<dd><p>A dictionary to encode.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An encoded string.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Identical to <a href="#//api/name/encodedDictionary:">encodedDictionary:</a> but with <code>+</code> replacing spaces instead of <code>%20</code>.</p>
+
+<h3>Example</h3>
+
+<pre><code> NSDictionary *params = @{
+     @"make": @"Ferrari",
+     @"model": @"458 Italia",
+     @"options": @[ @"heated seats", @"cup holders" ]
+ };
+
+ NSString *escaped = [JXURLEncoding encodedDictionary:params];
+ // make=Ferrari&amp;model=458+Italia&amp;options[0]=heated+seats&amp;options[1]=cup+holders
+</code></pre>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">JXURLEncoding.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/formEncodedString:" title="formEncodedString:"></a>
+	<h3 class="subsubtitle method-title">formEncodedString:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Encodes a string according to RFC 3986, but with <code>+</code> replacing spaces instead of <code>%20</code>.
+Commonly used by web browsers to submit forms. When in doubt, use <a href="#//api/name/encodedString:">encodedString:</a>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (NSString *)formEncodedString:(NSString *)<em>string</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>string</em></dt>
+			<dd><p>A string to encode.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An encoded string.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">JXURLEncoding.h</code><br />
 	</div>				
 	
 	
@@ -401,68 +430,6 @@ request bodies directly from disk, with any content type.</p>
 					</div>
 					
 					
-					
-					<div class="section section-methods">
-						<a title="Instance Methods" name="instance_methods"></a>
-						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/initWithFilePath:contentType:" title="initWithFilePath:contentType:"></a>
-	<h3 class="subsubtitle method-title">initWithFilePath:contentType:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPFileBody</code> with the given local file path.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (instancetype)initWithFilePath:(NSString *)<em>filePath</em> contentType:(NSString *)<em>contentType</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>filePath</em></dt>
-			<dd><p>The local path of the file.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>contentType</em></dt>
-			<dd><p>The MIME content type of the file.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPFileBody.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
 					
 					
 				</div>
@@ -475,7 +442,7 @@ request bodies directly from disk, with any content type.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-03-21)</span><br />
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-04-02)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

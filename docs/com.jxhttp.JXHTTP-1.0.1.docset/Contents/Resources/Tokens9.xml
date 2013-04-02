@@ -102,6 +102,30 @@ response data to an NSOutputStream and counting the bytes transferred.</Abstract
 		</Token>
 		
 		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setRunLoopModes:</TokenIdentifier>
+			<Abstract type="html">The run loop modes in which the connection and output stream will be scheduled.
+Defaults to a single-member set with NSDefaultRunLoopMode.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSSet *runLoopModes</Declaration>
+			
+			
+			<Anchor>//api/name/runLoopModes</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/JXURLConnectionOperation/runLoopModes</TokenIdentifier>
+			<Abstract type="html">The run loop modes in which the connection and output stream will be scheduled.
+Defaults to a single-member set with NSDefaultRunLoopMode.</Abstract>
+			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic) NSSet *runLoopModes</Declaration>
+			
+			
+			<Anchor>//api/name/runLoopModes</Anchor>
+		</Token>
+		
+		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/JXURLConnectionOperation/setBytesDownloaded:</TokenIdentifier>
 			<Abstract type="html">The number of bytes downloaded.</Abstract>
 			<DeclaredIn>JXURLConnectionOperation.h</DeclaredIn>			

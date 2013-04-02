@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name          = 'JXHTTP'
-  s.version       = '1.0.0'
+  s.version       = '1.0.1'
   s.source_files  = 'JXHTTP/*.{h,m}'
   s.homepage      = 'http://jxhttp.com'
   s.summary       = 'Networking for iOS and OS X.'
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
       '--company-id', 'com.jxhttp',
       '--project-name', 'JXHTTP',
       '--project-company', 'JSTN',
-      '--project-version', '1.0.0',
+      '--project-version', '1.0.1',
       '--docset-min-xcode-version', '4.3',
       '--docset-bundle-name', '%PROJECT',
       '--docset-bundle-id', '%COMPANYID.%PROJECTID',
