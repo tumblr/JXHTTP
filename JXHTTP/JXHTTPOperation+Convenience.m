@@ -112,8 +112,16 @@
     NSData *data = [self.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
     if (data)
         return data;
-    
-    return [NSData dataWithContentsOfMappedFile:self.responseDataFilePath];
+
+    if ([self.responseDataFilePath length]) {
+        NSError *error = nil;
+        data = [[NSData alloc] initWithContentsOfFile:self.responseDataFilePath
+                                              options:NSDataReadingMappedIfSafe
+                                                error:&error];
+        JXError(error);
+    }
+
+    return data ? data : [[NSData alloc] init];
 }
 
 - (NSString *)responseString
