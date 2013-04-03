@@ -25,11 +25,11 @@
         self.request = nil;
         self.response = nil;
         self.error = nil;
-        self.outputStream = nil;
 
         self.bytesDownloaded = 0LL;
         self.bytesUploaded = 0LL;
-
+        
+        self.outputStream = [[NSOutputStream alloc] initToMemory];
         self.runLoopModes = [[NSSet alloc] initWithObjects:NSDefaultRunLoopMode, nil];
     }
     return self;
@@ -62,19 +62,6 @@
 
 #pragma mark - Scheduling
 
-- (void)setRunLoopModes:(NSSet *)runLoopModes
-{
-    if ([NSThread currentThread] != [[self class] sharedThread]) {
-        [self performSelector:@selector(setRunLoopModes:) onThread:[[self class] sharedThread] withObject:runLoopModes waitUntilDone:YES];
-        return;
-    }
-
-    if (self.connection)
-        return;
-
-    _runLoopModes = runLoopModes;
-}
-
 - (void)startConnection
 {
     if ([NSThread currentThread] != [[self class] sharedThread]) {
@@ -86,9 +73,6 @@
         return;
 
     self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
-    
-    if (!self.outputStream)
-        self.outputStream = [[NSOutputStream alloc] initToMemory];
 
     for (NSString *mode in self.runLoopModes) {
         [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];

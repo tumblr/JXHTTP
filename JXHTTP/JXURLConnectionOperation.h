@@ -57,12 +57,9 @@
 @property (strong, readonly) NSError *error;
 
 /**
- The stream to which downloaded bytes will be written.
- 
- This can be set to any `NSOutputStream` or subclass thereof, providing that
- it is new and unopened. If this property is `nil` when the operation starts
- an `outputStreamToMemory` is created by default.
- 
+ The stream to which downloaded bytes will be written. This can be any `NSOutputStream` or
+ subclass thereof, providing that it is new and unopened.
+
  Safe to access from any thread at any time.
  
  @warning Do not change this property after the operation has started.
@@ -73,9 +70,11 @@
  The run loop modes in which the connection and output stream will be scheduled.
  Defaults to a single-member set with `NSDefaultRunLoopMode`.
  
- @warning This property cannot be changed once the connection has started.
+ Safe to access from any thread at any time.
+ 
+ @warning Do not change this property after the operation has started.
  */
-@property (strong, nonatomic) NSSet *runLoopModes;
+@property (strong) NSSet *runLoopModes;
 
 /// @name Progress
 
