@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
       '--company-id', 'com.jxhttp',
       '--project-name', 'JXHTTP',
       '--project-company', 'JSTN',
-      '--project-version', '1.0.1',
+      '--project-version', '1.0.0',
       '--docset-min-xcode-version', '4.3',
       '--docset-bundle-name', '%PROJECT',
       '--docset-bundle-id', '%COMPANYID.%PROJECTID',

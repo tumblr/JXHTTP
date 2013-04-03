@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>JXHTTPDataBody Class Reference</title>
+		<title>JXHTTPJSONBody Class Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">JXHTTPDataBody Class Reference</h1>
+				<h1 class="hideInXcode">JXHTTPJSONBody Class Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -38,27 +38,22 @@
 	
 	
 	
-	<option value="properties">Properties</option>
-	
-	<option value="//api/name/data">&nbsp;&nbsp;&nbsp;&nbsp;data</option>
-	
-	<option value="//api/name/httpContentType">&nbsp;&nbsp;&nbsp;&nbsp;httpContentType</option>
-	
-	
 	
 	
 	<option value="class_methods">Class Methods</option>
 	
 	<option value="//api/name/withData:">&nbsp;&nbsp;&nbsp;&nbsp;+ withData:</option>
 	
-	<option value="//api/name/withData:contentType:">&nbsp;&nbsp;&nbsp;&nbsp;+ withData:contentType:</option>
+	<option value="//api/name/withJSONObject:">&nbsp;&nbsp;&nbsp;&nbsp;+ withJSONObject:</option>
+	
+	<option value="//api/name/withString:">&nbsp;&nbsp;&nbsp;&nbsp;+ withString:</option>
 	
 	
 	
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/initWithData:contentType:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithData:contentType:</option>
+	<option value="//api/name/initWithData:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithData:</option>
 	
 	
 	
@@ -82,21 +77,15 @@
 
 
 
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/data">data</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/httpContentType">httpContentType</a></span></li>
-	
-</ul></li>
-
 
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withData:">withData:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withData:contentType:">withData:contentType:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withJSONObject:">withJSONObject:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/withString:">withString:</a></span></li>
 	
 </ul></li>
 
@@ -104,7 +93,7 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithData:contentType:">initWithData:contentType:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithData:">initWithData:</a></span></li>
 	
 </ul></li>
 
@@ -113,7 +102,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="JXHTTPDataBody Class Reference" name="top"></a>
+				<a title="JXHTTPJSONBody Class Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -122,7 +111,7 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">JXHTTPDataBody Class Reference</h1>
+						<h1 class="title title-header">JXHTTPJSONBody Class Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
@@ -136,7 +125,7 @@
 	<td class="specification-value"><a href="../Protocols/JXHTTPRequestBody.html">JXHTTPRequestBody</a></td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">JXHTTPDataBody.h</td>
+	<td class="specification-value">JXHTTPJSONBody.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -146,8 +135,10 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>JXHTTPDataBody</code> conforms to <a href="../Protocols/JXHTTPRequestBody.html">JXHTTPRequestBody</a> and provides functionality for streaming
-request bodies directly from memory, with any content type.</p>
+						<p><code>JXHTTPJSONBody</code> conforms to <a href="../Protocols/JXHTTPRequestBody.html">JXHTTPRequestBody</a> and provides functionality for JSON
+POST request bodies.</p>
+
+<p>Reports its content type as <code>application/json; charset=utf-8</code>.</p>
 					</div>
 					
 					
@@ -165,36 +156,29 @@ request bodies directly from memory, with any content type.</p>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/data">&nbsp;&nbsp;data</a></code>
-		<span class="tooltip"><p>The data to upload.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/httpContentType">&nbsp;&nbsp;httpContentType</a></code>
-		<span class="tooltip"><p>The MIME content type of the data to upload.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
 		<code><a href="#//api/name/withData:">+&nbsp;withData:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPDataBody</code> with the given data.</p></span>
+		<span class="tooltip"><p>Creates a new <code>JXHTTPJSONBody</code>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/withData:contentType:">+&nbsp;withData:contentType:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPDataBody</code> with the given data and MIME content type.</p></span>
+		<code><a href="#//api/name/withString:">+&nbsp;withString:</a></code>
+		<span class="tooltip"><p>Creates a new <code>JXHTTPJSONBody</code>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/initWithData:contentType:">&ndash;&nbsp;initWithData:contentType:</a></code>
-		<span class="tooltip"><p>Creates a new <code>JXHTTPDataBody</code> with the given data and MIME content type.</p></span>
+		<code><a href="#//api/name/withJSONObject:">+&nbsp;withJSONObject:</a></code>
+		<span class="tooltip"><p>Creates a new <code>JXHTTPJSONBody</code>.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithData:">&ndash;&nbsp;initWithData:</a></code>
+		<span class="tooltip"><p>Creates a new <code>JXHTTPJSONBody</code>.</p></span>
 	</span>
 	
 	
@@ -206,84 +190,6 @@ request bodies directly from memory, with any content type.</p>
 					
 					
 					
-					
-					<div class="section section-methods">
-						<a title="Properties" name="properties"></a>
-						<h2 class="subtitle subtitle-methods">Properties</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/data" title="data"></a>
-	<h3 class="subsubtitle method-title">data</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The data to upload.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) NSData *data</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPDataBody.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/httpContentType" title="httpContentType"></a>
-	<h3 class="subsubtitle method-title">httpContentType</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The MIME content type of the data to upload.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (copy, nonatomic) NSString *httpContentType</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPDataBody.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
 					
 					
 					
@@ -298,7 +204,7 @@ request bodies directly from memory, with any content type.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPDataBody</code> with the given data.</p>
+		<p>Creates a new <code>JXHTTPJSONBody</code>.</p>
 	</div>		
 	
     
@@ -312,7 +218,7 @@ request bodies directly from memory, with any content type.</p>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>data</em></dt>
-			<dd><p>The data to upload.</p></dd>
+			<dd><p>The UTF-8 data of a previously serialized JSON string.</p></dd>
 		</dl>
 		
 	</div>
@@ -321,7 +227,7 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
+		<p>A JSON request body.</p>
 	</div>
 	
 	
@@ -336,25 +242,25 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPDataBody.h</code><br />
+		<code class="declared-in-ref">JXHTTPJSONBody.h</code><br />
 	</div>				
 	
 	
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/withData:contentType:" title="withData:contentType:"></a>
-	<h3 class="subsubtitle method-title">withData:contentType:</h3>
+	<a name="//api/name/withJSONObject:" title="withJSONObject:"></a>
+	<h3 class="subsubtitle method-title">withJSONObject:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPDataBody</code> with the given data and MIME content type.</p>
+		<p>Creates a new <code>JXHTTPJSONBody</code>.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>+ (instancetype)withData:(NSData *)<em>data</em> contentType:(NSString *)<em>contentType</em></code></div>
+	<div class="method-subsection method-declaration"><code>+ (instancetype)withJSONObject:(id)<em>dictionaryOrArray</em></code></div>
 
     
 	
@@ -362,13 +268,8 @@ request bodies directly from memory, with any content type.</p>
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>data</em></dt>
-			<dd><p>The data to upload.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>contentType</em></dt>
-			<dd><p>The MIME content type of the data to upload.</p></dd>
+			<dt><em>dictionaryOrArray</em></dt>
+			<dd><p>A dictionary or array, which will be serialized into a JSON string.</p></dd>
 		</dl>
 		
 	</div>
@@ -377,7 +278,7 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
+		<p>A JSON request body.</p>
 	</div>
 	
 	
@@ -392,7 +293,58 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPDataBody.h</code><br />
+		<code class="declared-in-ref">JXHTTPJSONBody.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/withString:" title="withString:"></a>
+	<h3 class="subsubtitle method-title">withString:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates a new <code>JXHTTPJSONBody</code>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (instancetype)withString:(NSString *)<em>string</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>string</em></dt>
+			<dd><p>A previously serialized JSON string.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A JSON request body.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">JXHTTPJSONBody.h</code><br />
 	</div>				
 	
 	
@@ -407,18 +359,18 @@ request bodies directly from memory, with any content type.</p>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/initWithData:contentType:" title="initWithData:contentType:"></a>
-	<h3 class="subsubtitle method-title">initWithData:contentType:</h3>
+	<a name="//api/name/initWithData:" title="initWithData:"></a>
+	<h3 class="subsubtitle method-title">initWithData:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates a new <code>JXHTTPDataBody</code> with the given data and MIME content type.</p>
+		<p>Creates a new <code>JXHTTPJSONBody</code>.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (instancetype)initWithData:(NSData *)<em>data</em> contentType:(NSString *)<em>contentType</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (instancetype)initWithData:(NSData *)<em>data</em></code></div>
 
     
 	
@@ -427,12 +379,7 @@ request bodies directly from memory, with any content type.</p>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>data</em></dt>
-			<dd><p>The data to upload.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>contentType</em></dt>
-			<dd><p>The MIME content type of the data to upload.</p></dd>
+			<dd><p>The UTF-8 data of a previously serialized JSON string.</p></dd>
 		</dl>
 		
 	</div>
@@ -441,7 +388,7 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A request body.</p>
+		<p>A JSON request body.</p>
 	</div>
 	
 	
@@ -456,7 +403,7 @@ request bodies directly from memory, with any content type.</p>
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXHTTPDataBody.h</code><br />
+		<code class="declared-in-ref">JXHTTPJSONBody.h</code><br />
 	</div>				
 	
 	
@@ -475,7 +422,7 @@ request bodies directly from memory, with any content type.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-04-02)</span><br />
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-04-03)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
