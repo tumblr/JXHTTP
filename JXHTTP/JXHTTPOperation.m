@@ -212,11 +212,8 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     _responseDataFilePath = [filePath copy];
 
-    if ([self.responseDataFilePath length]) {
+    if ([self.responseDataFilePath length])
         self.outputStream = [NSOutputStream outputStreamToFileAtPath:self.responseDataFilePath append:NO];
-    } else {
-        self.outputStream = nil;
-    }
 }
 
 - (NSTimeInterval)elapsedSeconds
