@@ -119,16 +119,18 @@
                                               options:NSDataReadingMappedIfSafe
                                                 error:&error];
         JXError(error);
+    } else {
+        data = nil;
     }
 
-    return data ? data : [[NSData alloc] init];
+    return data;
 }
 
 - (NSString *)responseString
 {
     NSData *data = [self responseData];
     if (![data length])
-        return @"";
+        return nil;
 
     NSStringEncoding encoding = NSUTF8StringEncoding;
 
