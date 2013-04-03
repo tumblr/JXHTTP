@@ -270,7 +270,7 @@ typedef enum {
     }
 
     self.httpOutputStream.delegate = self;
-    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [self.httpOutputStream open];
 }
 
