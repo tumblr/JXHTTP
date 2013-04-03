@@ -208,12 +208,12 @@ typedef enum {
 
 - (void)httpOperationWillNeedNewBodyStream:(JXHTTPOperation *)operation
 {
-    [self recreateStreams];
+    [self recreateStreamsForOperation:operation];
 }
 
 - (void)httpOperationWillStart:(JXHTTPOperation *)operation
 {
-    [self recreateStreams];
+    [self recreateStreamsForOperation:operation];
 }
 
 - (void)httpOperationDidFinishLoading:(JXHTTPOperation *)operation
@@ -228,7 +228,7 @@ typedef enum {
 
 #pragma mark - Private Methods
 
-- (void)recreateStreams
+- (void)recreateStreamsForOperation:(JXHTTPOperation *)operation
 {
     self.bodyDataBuffer = [[NSMutableData alloc] initWithCapacity:self.streamBufferLength];
     self.httpContentLength = NSURLResponseUnknownLength;
@@ -249,8 +249,7 @@ typedef enum {
         self.httpOutputStream = (__bridge_transfer NSOutputStream *)writeStream;
         
         self.httpOutputStream.delegate = self;
-        [self scheduleOutputStreamOnThread:[JXHTTPOperation sharedThread]];
-        [self.httpOutputStream open];
+        [self scheduleOutputStreamForOperation:operation];
 
         readStream = NULL;
         writeStream = NULL;
@@ -262,18 +261,21 @@ typedef enum {
         CFRelease(writeStream);
 }
 
-- (void)scheduleOutputStreamOnThread:(NSThread *)thread
+- (void)scheduleOutputStreamForOperation:(JXHTTPOperation *)operation
 {
-    if (thread && thread != [NSThread currentThread]) {
-        [self performSelector:@selector(scheduleOutputStreamOnThread:) onThread:thread withObject:nil waitUntilDone:YES];
+    NSThread *sharedThread = [[operation class] sharedThread];
+
+    if (sharedThread && sharedThread != [NSThread currentThread]) {
+        [self performSelector:@selector(scheduleOutputStreamForOperation:) onThread:sharedThread withObject:operation waitUntilDone:YES];
         return;
     }
 
-    self.httpOutputStream.delegate = self;
-    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    for (NSString *mode in operation.runLoopModes) {
+        [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    }
+
     [self.httpOutputStream open];
 }
-
 
 - (void)setPartWithType:(JXHTTPMultipartPartType)type forKey:(NSString *)key contentType:(NSString *)contentTypeOrNil fileName:(NSString *)fileNameOrNil data:(NSData *)data
 {
