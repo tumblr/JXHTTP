@@ -80,11 +80,6 @@
     }
 }
 
-- (void)main
-{
-    NSAssert(NO, @"subclasses must implement and eventually call finish", nil);
-}
-
 #pragma mark - Public Methods
 
 - (BOOL)isConcurrent
