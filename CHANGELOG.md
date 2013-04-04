@@ -1,5 +1,6 @@
 ### 1.0.2 -- 2013 April 04 ###
 
+- scrapped run loop mode configurability in favor of simplicity
 - connection and streams are scheduled in `NSRunLoopCommonModes`
 - refactored `sharedThread` as `networkThread`
 
