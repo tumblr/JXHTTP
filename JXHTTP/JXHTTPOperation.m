@@ -189,7 +189,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
                                                 userInfo:nil
                                                  repeats:NO];
     
-    [[NSRunLoop mainRunLoop] addTimer:JXHTTPActivityTimer forMode:NSRunLoopCommonModes];
+    [[NSRunLoop mainRunLoop] addTimer:JXHTTPActivityTimer forMode:NSDefaultRunLoopMode];
 
     #endif
 }
