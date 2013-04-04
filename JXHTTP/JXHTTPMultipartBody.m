@@ -249,7 +249,7 @@ typedef enum {
         self.httpOutputStream = (__bridge_transfer NSOutputStream *)writeStream;
         
         self.httpOutputStream.delegate = self;
-        [self scheduleOutputStreamForOperation:operation];
+        [self scheduleOutputStreamOnThread:[[operation class] networkThread]];
 
         readStream = NULL;
         writeStream = NULL;
@@ -261,18 +261,14 @@ typedef enum {
         CFRelease(writeStream);
 }
 
-- (void)scheduleOutputStreamForOperation:(JXHTTPOperation *)operation
+- (void)scheduleOutputStreamOnThread:(NSThread *)thread
 {
-    NSThread *sharedThread = [[operation class] sharedThread];
-
-    if (sharedThread && sharedThread != [NSThread currentThread]) {
-        [self performSelector:@selector(scheduleOutputStreamForOperation:) onThread:sharedThread withObject:operation waitUntilDone:YES];
+    if (thread && thread != [NSThread currentThread]) {
+        [self performSelector:@selector(scheduleOutputStreamForOperation:) onThread:thread withObject:thread waitUntilDone:YES];
         return;
     }
 
-    for (NSString *mode in operation.runLoopModes) {
-        [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    }
+    [self.httpOutputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 
     [self.httpOutputStream open];
 }

@@ -3,11 +3,11 @@
  `NSURLConnection`. It implements a basic set of delegate methods for writing
  response data to an `NSOutputStream` and counting the bytes transferred.
  
- All connections and streams are scheduled on the runloop of a <sharedThread>
- that never exits. This is preferable to using the runloop of a thread provided
+ All connections and streams are scheduled on the run loop of a shared <networkThread>
+ that never exits. This is preferable to using the run loop of a thread provided
  by a queue because GCD manages its threads dynamically and there's no guarantee
  about the lifetime of a GCD thread. There is also evidence that manipulating
- the runloop of a GCD thread confuses the GCD scheduler. For more discussion:
+ the run loop of a GCD thread confuses the GCD scheduler. For more discussion:
  
  <http://stackoverflow.com/questions/7213845/>
  
@@ -66,16 +66,6 @@
  */
 @property (strong) NSOutputStream *outputStream;
 
-/**
- The run loop modes in which the connection and output stream will be scheduled.
- Defaults to a single-member set with `NSDefaultRunLoopMode`.
- 
- Safe to access from any thread at any time.
- 
- @warning Do not change this property after the operation has started.
- */
-@property (strong) NSSet *runLoopModes;
-
 /// @name Progress
 
 /**
@@ -102,7 +92,7 @@
  
  @returns The shared thread used by all connections and streams.
  */
-+ (NSThread *)sharedThread;
++ (NSThread *)networkThread;
 
 /**
  Creates a new operation with a specified URL.

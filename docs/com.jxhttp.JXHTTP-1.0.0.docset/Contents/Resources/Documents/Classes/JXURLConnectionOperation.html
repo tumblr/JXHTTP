@@ -52,14 +52,12 @@
 	
 	<option value="//api/name/response">&nbsp;&nbsp;&nbsp;&nbsp;response</option>
 	
-	<option value="//api/name/runLoopModes">&nbsp;&nbsp;&nbsp;&nbsp;runLoopModes</option>
-	
 	
 	
 	
 	<option value="class_methods">Class Methods</option>
 	
-	<option value="//api/name/sharedThread">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedThread</option>
+	<option value="//api/name/networkThread">&nbsp;&nbsp;&nbsp;&nbsp;+ networkThread</option>
 	
 	
 	
@@ -110,15 +108,13 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/response">response</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/runLoopModes">runLoopModes</a></span></li>
-	
 </ul></li>
 
 
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedThread">sharedThread</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/networkThread">networkThread</a></span></li>
 	
 </ul></li>
 
@@ -172,11 +168,11 @@
 <code>NSURLConnection</code>. It implements a basic set of delegate methods for writing
 response data to an <code>NSOutputStream</code> and counting the bytes transferred.</p>
 
-<p>All connections and streams are scheduled on the runloop of a <a href="#//api/name/sharedThread">sharedThread</a>
-that never exits. This is preferable to using the runloop of a thread provided
+<p>All connections and streams are scheduled on the run loop of a shared <a href="#//api/name/networkThread">networkThread</a>
+that never exits. This is preferable to using the run loop of a thread provided
 by a queue because GCD manages its threads dynamically and there&rsquo;s no guarantee
 about the lifetime of a GCD thread. There is also evidence that manipulating
-the runloop of a GCD thread confuses the GCD scheduler. For more discussion:</p>
+the run loop of a GCD thread confuses the GCD scheduler. For more discussion:</p>
 
 <p><a href="http://stackoverflow.com/questions/7213845/">http://stackoverflow.com/questions/7213845/</a></p>
 
@@ -236,15 +232,8 @@ And so we provide our own thread.</p>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/outputStream">&nbsp;&nbsp;outputStream</a></code>
-		<span class="tooltip"><p>The stream to which downloaded bytes will be written.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/runLoopModes">&nbsp;&nbsp;runLoopModes</a></code>
-		<span class="tooltip"><p>The run loop modes in which the connection and output stream will be scheduled.
-Defaults to a single-member set with <code>NSDefaultRunLoopMode</code>.</p></span>
+		<span class="tooltip"><p>The stream to which downloaded bytes will be written. This can be any <code>NSOutputStream</code> or
+subclass thereof, providing that it is new and unopened.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -280,7 +269,7 @@ Defaults to a single-member set with <code>NSDefaultRunLoopMode</code>.</p></spa
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/sharedThread">+&nbsp;sharedThread</a></code>
+		<code><a href="#//api/name/networkThread">+&nbsp;networkThread</a></code>
 		<span class="tooltip"><p>A shared thread that never exits. All connections and streams are scheduled
 on this thread&rsquo;s runloop.</p></span>
 	</span>
@@ -436,7 +425,8 @@ on this thread&rsquo;s runloop.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The stream to which downloaded bytes will be written.</p>
+		<p>The stream to which downloaded bytes will be written. This can be any <code>NSOutputStream</code> or
+subclass thereof, providing that it is new and unopened.</p>
 	</div>		
 	
     
@@ -453,11 +443,7 @@ on this thread&rsquo;s runloop.</p></span>
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This can be set to any <code>NSOutputStream</code> or subclass thereof, providing that
-it is new and unopened. If this property is <code>nil</code> when the operation starts
-an <code>outputStreamToMemory</code> is created by default.</p>
-
-<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Do not change this property after the operation has started.</p></div>
+		<p>Safe to access from any thread at any time.</p><div class="warning"><p><strong>Warning:</strong> Do not change this property after the operation has started.</p></div>
 	</div>
 	
 	
@@ -556,48 +542,6 @@ an <code>outputStreamToMemory</code> is created by default.</p>
 	
 </div>
 						
-						<div class="section-method">
-	<a name="//api/name/runLoopModes" title="runLoopModes"></a>
-	<h3 class="subsubtitle method-title">runLoopModes</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The run loop modes in which the connection and output stream will be scheduled.
-Defaults to a single-member set with <code>NSDefaultRunLoopMode</code>.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) NSSet *runLoopModes</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> This property cannot be changed once the connection has started.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">JXURLConnectionOperation.h</code><br />
-	</div>				
-	
-	
-</div>
-						
 					</div>
 					
 					
@@ -607,8 +551,8 @@ Defaults to a single-member set with <code>NSDefaultRunLoopMode</code>.</p>
 						<h2 class="subtitle subtitle-methods">Class Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/sharedThread" title="sharedThread"></a>
-	<h3 class="subsubtitle method-title">sharedThread</h3>
+	<a name="//api/name/networkThread" title="networkThread"></a>
+	<h3 class="subsubtitle method-title">networkThread</h3>
 	
 	
 	
@@ -619,7 +563,7 @@ on this thread&rsquo;s runloop.</p>
 	
     
 
-	<div class="method-subsection method-declaration"><code>+ (NSThread *)sharedThread</code></div>
+	<div class="method-subsection method-declaration"><code>+ (NSThread *)networkThread</code></div>
 
     
 	
@@ -725,7 +669,7 @@ on this thread&rsquo;s runloop.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-04-03)</span><br />
+						<p><span class="copyright">&copy; 2013 JSTN. All rights reserved. (Last updated: 2013-04-04)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						

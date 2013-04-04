@@ -30,7 +30,6 @@
         self.bytesUploaded = 0LL;
         
         self.outputStream = [[NSOutputStream alloc] initToMemory];
-        self.runLoopModes = [[NSSet alloc] initWithObjects:NSDefaultRunLoopMode, nil];
     }
     return self;
 }
@@ -64,41 +63,36 @@
 
 - (void)startConnection
 {
-    if ([NSThread currentThread] != [[self class] sharedThread]) {
-        [self performSelector:@selector(startConnection) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:YES];
+    if ([NSThread currentThread] != [[self class] networkThread]) {
+        [self performSelector:@selector(startConnection) onThread:[[self class] networkThread] withObject:nil waitUntilDone:YES];
         return;
     }
     
     if ([self isCancelled])
         return;
 
+    [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+
     self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
-
-    for (NSString *mode in self.runLoopModes) {
-        [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-        [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    }
-
+    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection start];
 }
 
 - (void)stopConnection
 {
-    if ([NSThread currentThread] != [[self class] sharedThread]) {
-        [self performSelector:@selector(stopConnection) onThread:[[self class] sharedThread] withObject:nil waitUntilDone:YES];
+    if ([NSThread currentThread] != [[self class] networkThread]) {
+        [self performSelector:@selector(stopConnection) onThread:[[self class] networkThread] withObject:nil waitUntilDone:YES];
         return;
     }
 
-    for (NSString *mode in self.runLoopModes) {
-        [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-        [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
-    }
-    
+    [self.connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.connection cancel];
+
+    [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [self.outputStream close];
 }
 
-+ (NSThread *)sharedThread
++ (NSThread *)networkThread
 {
     static NSThread *thread = nil;
     static dispatch_once_t predicate;
