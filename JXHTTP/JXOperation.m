@@ -72,7 +72,7 @@
         }
     });
     
-    if (!shouldStart || [self isCancelled])
+    if (!shouldStart)
         return;
 
     @autoreleasepool {
