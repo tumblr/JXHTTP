@@ -48,11 +48,6 @@
     return self;
 }
 
-+ (instancetype)operation
-{
-    return [[self alloc] init];
-}
-
 #pragma mark - NSOperation
 
 - (void)start

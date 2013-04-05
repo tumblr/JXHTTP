@@ -52,15 +52,6 @@
  */
 @property (assign) BOOL continuesInAppBackground;
 
-/// @name Initialization
-
-/**
- Creates a new operation.
- 
- @returns An operation.
- */
-+ (instancetype)operation;
-
 /// @name Starting & Finishing
 
 /**
