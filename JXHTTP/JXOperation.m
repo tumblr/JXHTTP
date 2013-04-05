@@ -60,7 +60,7 @@
     __block BOOL shouldStart = YES;
     
     dispatch_sync(self.stateQueue, ^{
-        if (![self isReady] || [self isCancelled] || self.isExecuting || self.isFinished) {
+        if ([self isCancelled] || ![self isReady] || self.isExecuting || self.isFinished) {
             shouldStart = NO;
         } else {
             [self willChangeValueForKey:@"isExecuting"];
