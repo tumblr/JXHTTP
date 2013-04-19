@@ -353,12 +353,12 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
             long long bytesUploaded = 0LL;
             long long expectedUploadBytes = 0LL;
 
-            for (NSString *opString in [self.bytesUploadedPerOperation allKeys]) {
-                bytesUploaded += [[self.bytesUploadedPerOperation objectForKey:opString] longLongValue];
+            for (NSString *opString in [strongSelf.bytesUploadedPerOperation allKeys]) {
+                bytesUploaded += [[strongSelf.bytesUploadedPerOperation objectForKey:opString] longLongValue];
             }
 
-            for (NSString *opString in [self.expectedUploadBytesPerOperation allKeys]) {
-                expectedUploadBytes += [[self.expectedUploadBytesPerOperation objectForKey:opString] longLongValue];
+            for (NSString *opString in [strongSelf.expectedUploadBytesPerOperation allKeys]) {
+                expectedUploadBytes += [[strongSelf.expectedUploadBytesPerOperation objectForKey:opString] longLongValue];
             }
 
             strongSelf.bytesUploaded = @(bytesUploaded);
