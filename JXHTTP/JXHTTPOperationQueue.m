@@ -115,9 +115,13 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
     if (!block)
         return;
+    
+    __weak JXHTTPOperationQueue *weakSelf = self;
 
     dispatch_async(self.performsBlocksOnMainQueue ? dispatch_get_main_queue() : self.blockQueue, ^{
-        block(self);
+        JXHTTPOperationQueue *strongSelf = weakSelf;
+        if (strongSelf)
+            block(strongSelf);
     });
 }
 
@@ -229,16 +233,6 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
         for (JXHTTPOperation *operation in removedArray) {
             if (![operation isKindOfClass:[JXHTTPOperation class]])
                 continue;
-            
-            dispatch_sync(self.observationQueue, ^{
-                if ([self.observedOperationSet containsObject:operation]) {
-                    [operation removeObserver:self forKeyPath:@"bytesDownloaded" context:JXHTTPOperationQueueContext];
-                    [operation removeObserver:self forKeyPath:@"bytesUploaded" context:JXHTTPOperationQueueContext];
-                    [operation removeObserver:self forKeyPath:@"response" context:JXHTTPOperationQueueContext];
-
-                    [self.observedOperationSet removeObject:operation];
-                }
-            });
 
             if ([operation isCancelled]) {
                 NSString *uniqueString = [operation.uniqueString copy];
@@ -254,6 +248,16 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                     [strongSelf.bytesUploadedPerOperation removeObjectForKey:uniqueString];
                 });
             }
+            
+            dispatch_sync(self.observationQueue, ^{
+                if ([self.observedOperationSet containsObject:operation]) {
+                    [operation removeObserver:self forKeyPath:@"bytesDownloaded" context:JXHTTPOperationQueueContext];
+                    [operation removeObserver:self forKeyPath:@"bytesUploaded" context:JXHTTPOperationQueueContext];
+                    [operation removeObserver:self forKeyPath:@"response" context:JXHTTPOperationQueueContext];
+                    
+                    [self.observedOperationSet removeObject:operation];
+                }
+            });
         }
 
         if (starting) {
@@ -298,41 +302,34 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
 
     if ([keyPath isEqualToString:@"bytesDownloaded"]) {
         JXHTTPOperation *operation = (JXHTTPOperation *)object;
-        long long bytesDownloaded = operation.bytesDownloaded;
+        long long downloaded = operation.bytesDownloaded;
         NSString *uniqueString = [operation.uniqueString copy];
 
         __weak JXHTTPOperationQueue *weakSelf = self;
-        
+
         dispatch_barrier_async(self.progressQueue, ^{
             JXHTTPOperationQueue *strongSelf = weakSelf;
-            [strongSelf.bytesDownloadedPerOperation setObject:@(bytesDownloaded) forKey:uniqueString];
-        });
-
-        dispatch_sync(self.progressQueue, ^{
+            if (!strongSelf)
+                return;
+            
+            [strongSelf.bytesDownloadedPerOperation setObject:@(downloaded) forKey:uniqueString];
+            
             long long bytesDownloaded = 0LL;
             long long expectedDownloadBytes = 0LL;
-
-            for (NSString *opString in [self.bytesDownloadedPerOperation allKeys]) {
-                bytesDownloaded += [[self.bytesDownloadedPerOperation objectForKey:opString] longLongValue];
-            }
-
-            for (NSString *opString in [self.expectedDownloadBytesPerOperation allKeys]) {
-                expectedDownloadBytes += [[self.expectedDownloadBytesPerOperation objectForKey:opString] longLongValue];
+            
+            for (NSString *opString in [strongSelf.bytesDownloadedPerOperation allKeys]) {
+                bytesDownloaded += [[strongSelf.bytesDownloadedPerOperation objectForKey:opString] longLongValue];
             }
             
-            __weak JXHTTPOperationQueue *weakSelf = self;
-
-            dispatch_barrier_async(self.progressQueue, ^{
-                JXHTTPOperationQueue *strongSelf = weakSelf;
-                if (!strongSelf)
-                    return;
-                
-                strongSelf.bytesDownloaded = @(bytesDownloaded);
-                strongSelf.expectedDownloadBytes = @(expectedDownloadBytes);
-                strongSelf.downloadProgress = expectedDownloadBytes ? @(bytesDownloaded / (float)expectedDownloadBytes) : @0.0f;
-                [strongSelf performDelegateMethod:@selector(httpOperationQueueDidUpload:)];
-                [strongSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
-            });
+            for (NSString *opString in [strongSelf.expectedDownloadBytesPerOperation allKeys]) {
+                expectedDownloadBytes += [[strongSelf.expectedDownloadBytesPerOperation objectForKey:opString] longLongValue];
+            }
+            
+            strongSelf.bytesDownloaded = @(bytesDownloaded);
+            strongSelf.expectedDownloadBytes = @(expectedDownloadBytes);
+            strongSelf.downloadProgress = expectedDownloadBytes ? @(bytesDownloaded / (float)expectedDownloadBytes) : @0.0f;
+            [strongSelf performDelegateMethod:@selector(httpOperationQueueDidUpload:)];
+            [strongSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
         });
 
         return;
@@ -341,17 +338,18 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     if ([keyPath isEqualToString:@"bytesUploaded"]) {
         JXHTTPOperation *operation = (JXHTTPOperation *)object;
 
-        long long bytesUploaded = operation.bytesUploaded;
+        long long uploaded = operation.bytesUploaded;
         NSString *uniqueString = [operation.uniqueString copy];
 
         __weak JXHTTPOperationQueue *weakSelf = self;
-        
+
         dispatch_barrier_async(self.progressQueue, ^{
             JXHTTPOperationQueue *strongSelf = weakSelf;
-            [strongSelf.bytesUploadedPerOperation setObject:@(bytesUploaded) forKey:uniqueString];
-        });
-
-        dispatch_sync(self.progressQueue, ^{
+            if (!strongSelf)
+                return;
+            
+            [strongSelf.bytesUploadedPerOperation setObject:@(uploaded) forKey:uniqueString];
+            
             long long bytesUploaded = 0LL;
             long long expectedUploadBytes = 0LL;
 
@@ -363,19 +361,11 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
                 expectedUploadBytes += [[self.expectedUploadBytesPerOperation objectForKey:opString] longLongValue];
             }
 
-            __weak JXHTTPOperationQueue *weakSelf = self;
-            
-            dispatch_barrier_async(self.progressQueue, ^{
-                JXHTTPOperationQueue *strongSelf = weakSelf;
-                if (!strongSelf)
-                    return;
-                
-                strongSelf.bytesUploaded = @(bytesUploaded);
-                strongSelf.expectedUploadBytes = @(expectedUploadBytes);
-                strongSelf.uploadProgress = expectedUploadBytes ? @(bytesUploaded / (float)expectedUploadBytes) : @0.0f;
-                [strongSelf performDelegateMethod:@selector(httpOperationQueueDidDownload:)];
-                [strongSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
-            });
+            strongSelf.bytesUploaded = @(bytesUploaded);
+            strongSelf.expectedUploadBytes = @(expectedUploadBytes);
+            strongSelf.uploadProgress = expectedUploadBytes ? @(bytesUploaded / (float)expectedUploadBytes) : @0.0f;
+            [strongSelf performDelegateMethod:@selector(httpOperationQueueDidDownload:)];
+            [strongSelf performDelegateMethod:@selector(httpOperationQueueDidMakeProgress:)];
         });
 
         return;
