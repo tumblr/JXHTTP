@@ -10,6 +10,7 @@
 
     JXRemoteImageView *remoteImageView = [[JXRemoteImageView alloc] initWithFrame:self.window.rootViewController.view.bounds];
     remoteImageView.imageURL = [[NSURL alloc] initWithString:@"http://upload.wikimedia.org/wikipedia/commons/6/62/Sts114_033.jpg"];
+    remoteImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     [self.window.rootViewController.view addSubview:remoteImageView];
     [self.window makeKeyAndVisible];

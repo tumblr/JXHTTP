@@ -16,10 +16,7 @@
 {
     _imageURL = imageURL;
     
-    if (self.operation) {
-        [self.operation cancel];
-        self.operation = nil;
-    }
+    [self.operation cancel];
     
     if (!self.imageURL) {
         self.image = nil;
@@ -33,12 +30,10 @@
 
     self.operation.didFinishLoadingBlock = ^(JXHTTPOperation *op) {
         weakSelf.image = [[UIImage alloc] initWithData:[op responseData]];
-        weakSelf.operation = nil;
     };
     
     self.operation.didFailBlock = ^(JXHTTPOperation *op) {
         NSLog(@"load failed! received %lld bytes. error: %@", op.bytesDownloaded, op.error);
-        weakSelf.operation = nil;
     };
     
     [[JXHTTPOperationQueue sharedQueue] addOperation:self.operation];
