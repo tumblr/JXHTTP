@@ -264,7 +264,7 @@ typedef enum {
 - (void)scheduleOutputStreamOnThread:(NSThread *)thread
 {
     if (thread && thread != [NSThread currentThread]) {
-        [self performSelector:@selector(scheduleOutputStreamForOperation:) onThread:thread withObject:thread waitUntilDone:YES];
+        [self performSelector:@selector(scheduleOutputStreamOnThread:) onThread:thread withObject:thread waitUntilDone:YES];
         return;
     }
 
