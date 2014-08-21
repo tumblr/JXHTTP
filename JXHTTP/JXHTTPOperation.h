@@ -67,6 +67,14 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 @property (strong) NSObject <JXHTTPRequestBody> *requestBody;
 
 /**
+ * Applies the `requestBody` to the rest of the operation, including the `request`.
+ *
+ * This method is already called internally by the operation, but is exposed as a convenience
+ * to consumers who wish to have more access into the generated `request`.
+ */
+- (void)finalizeRequestBody;
+
+/**
  A string guaranteed to be unique for the lifetime of the application process, useful
  for keying operations stored in a collection.
  
