@@ -114,6 +114,31 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
     });
 }
 
+- (void)finalizeRequestBody {
+    if (self.requestBody) {
+        NSInputStream *inputStream = [self.requestBody httpInputStream];
+        if (inputStream)
+            self.request.HTTPBodyStream = inputStream;
+
+        if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
+            [self.request setHTTPMethod:@"POST"];
+
+        NSString *contentType = [self.requestBody httpContentType];
+        if (![contentType length])
+            contentType = @"application/octet-stream";
+
+        if (![self.request valueForHTTPHeaderField:@"Content-Type"])
+            [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
+
+        if (![self.request valueForHTTPHeaderField:@"User-Agent"])
+            [self.request setValue:@"JXHTTP" forHTTPHeaderField:@"User-Agent"];
+
+        long long expectedLength = [self.requestBody httpContentLength];
+        if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
+            [self.request setValue:[[NSString alloc] initWithFormat:@"%lld", expectedLength] forHTTPHeaderField:@"Content-Length"];
+    }
+}
+
 - (JXHTTPBlock)blockForSelector:(SEL)selector
 {
     if (selector == @selector(httpOperationWillStart:))
@@ -237,28 +262,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
     [self incrementOperationCount];
 
-    if (self.requestBody) {
-        NSInputStream *inputStream = [self.requestBody httpInputStream];
-        if (inputStream)
-            self.request.HTTPBodyStream = inputStream;
-
-        if ([[[self.request HTTPMethod] uppercaseString] isEqualToString:@"GET"])
-            [self.request setHTTPMethod:@"POST"];
-
-        NSString *contentType = [self.requestBody httpContentType];
-        if (![contentType length])
-            contentType = @"application/octet-stream";
-
-        if (![self.request valueForHTTPHeaderField:@"Content-Type"])
-            [self.request setValue:contentType forHTTPHeaderField:@"Content-Type"];
-
-        if (![self.request valueForHTTPHeaderField:@"User-Agent"])
-            [self.request setValue:@"JXHTTP" forHTTPHeaderField:@"User-Agent"];
-
-        long long expectedLength = [self.requestBody httpContentLength];
-        if (expectedLength > 0LL && expectedLength != NSURLResponseUnknownLength)
-            [self.request setValue:[[NSString alloc] initWithFormat:@"%lld", expectedLength] forHTTPHeaderField:@"Content-Length"];
-    }
+    [self finalizeRequestBody];
 
     self.startDate = [[NSDate alloc] init];
 
