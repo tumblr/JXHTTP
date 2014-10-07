@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name          = 'JXHTTP'
   s.version       = '1.0.3'
   s.source_files  = 'JXHTTP/*.{h,m}'
-  s.homepage      = 'http://jxhttp.com'
+  s.homepage      = 'http://justinouellette.com'
   s.summary       = 'Networking for iOS and OS X.'
   s.authors       = { 'Justin Ouellette' => 'justin.ouellette@gmail.com' }
   s.authors       = { 'Bryan Irace' => 'bryan@tumblr.com' }
