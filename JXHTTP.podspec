@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage      = 'http://justinouellette.com'
   s.summary       = 'Networking for iOS and OS X.'
   s.authors       = { 'Justin Ouellette' => 'justin.ouellette@gmail.com' }
-  s.authors       = { 'Bryan Irace' => 'bryan@tumblr.com' }
+  s.authors       = { 'Bryan Irace' => 'bryan.irace@gmail.com' }
   s.source        = { :git => 'https://github.com/jstn/JXHTTP.git', :tag => "#{s.version}" }
   s.license       = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.requires_arc  = true
