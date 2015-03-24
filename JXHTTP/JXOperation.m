@@ -11,7 +11,7 @@
 @property (assign) dispatch_queue_t stateQueue;
 #endif
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0 && !__has_feature(attribute_availability_app_extension)
 @property (assign) UIBackgroundTaskIdentifier backgroundTaskID;
 #endif
 
@@ -41,7 +41,7 @@
         self.isFinished = NO;
         self.continuesInAppBackground = NO;
         
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0 && !__has_feature(attribute_availability_app_extension)
         self.backgroundTaskID = UIBackgroundTaskInvalid;
         #endif
     }
@@ -127,7 +127,7 @@
 
 - (void)startAppBackgroundTask
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0 && !__has_feature(attribute_availability_app_extension)
     
     if (self.backgroundTaskID != UIBackgroundTaskInvalid || [self isCancelled])
         return;
@@ -153,7 +153,7 @@
 
 - (void)endAppBackgroundTask
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0 && !__has_feature(attribute_availability_app_extension)
     
     UIBackgroundTaskIdentifier taskID = self.backgroundTaskID;
     if (taskID == UIBackgroundTaskInvalid)
