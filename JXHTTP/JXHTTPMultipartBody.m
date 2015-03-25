@@ -9,7 +9,7 @@
  *
  *  @return `NSUInteger` representing the `long long` arugment if within range, otherwise `0`.
  */
-static NSUInteger NSUIntegerFromLongLong(long long longLong) {
+static inline NSUInteger NSUIntegerFromLongLong(long long longLong) {
     if (longLong >= 0 && longLong <= NSUIntegerMax) {
         return (NSUInteger)longLong;
     }
