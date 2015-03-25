@@ -8,7 +8,7 @@
 
 @interface JXHTTPOperation (JXHTTPOperationConvenience)
 
-@property (assign, nonatomic) NSURLCacheStoragePolicy requestCachePolicy;
+@property (assign, nonatomic) NSURLRequestCachePolicy requestCachePolicy;
 @property (assign, nonatomic) BOOL requestShouldUsePipelining;
 @property (strong, nonatomic) NSURL *requestMainDocumentURL;
 @property (assign, nonatomic) NSTimeInterval requestTimeoutInterval;

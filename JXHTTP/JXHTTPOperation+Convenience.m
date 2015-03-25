@@ -5,12 +5,12 @@
 
 #pragma mark - Request
 
-- (NSURLCacheStoragePolicy)requestCachePolicy
+- (NSURLRequestCachePolicy)requestCachePolicy
 {
     return self.request.cachePolicy;
 }
 
-- (void)setRequestCachePolicy:(NSURLCacheStoragePolicy)requestCachePolicy
+- (void)setRequestCachePolicy:(NSURLRequestCachePolicy)requestCachePolicy
 {
     self.request.cachePolicy = requestCachePolicy;
 }
