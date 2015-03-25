@@ -32,7 +32,7 @@
 
 - (long long)httpContentLength
 {
-    return (long long)[self.data length];
+    return [self.data length];
 }
 
 @end

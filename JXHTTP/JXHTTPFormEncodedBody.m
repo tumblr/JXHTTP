@@ -51,7 +51,7 @@
 
 - (long long)httpContentLength
 {
-    return (long long)[[self requestData] length];
+    return [[self requestData] length];
 }
 
 @end
