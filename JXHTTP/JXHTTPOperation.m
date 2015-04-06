@@ -1,7 +1,7 @@
 #import "JXHTTPOperation.h"
 #import "JXURLEncoding.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0 && defined(__clang) && defined(__has_feature) && !__has_feature(attribute_availability_app_extension)
 
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
@@ -170,7 +170,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)incrementOperationCount
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0 && defined(__clang) && defined(__has_feature) && !__has_feature(attribute_availability_app_extension)
     
     dispatch_once(&_incrementCountOnce, ^{
         if (!self.updatesNetworkActivityIndicator)
@@ -190,7 +190,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 - (void)decrementOperationCount
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0 && defined(__clang) && defined(__has_feature) && !__has_feature(attribute_availability_app_extension)
     
     if (!self.didIncrementCount)
         return;
@@ -210,7 +210,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 + (void)restartActivityTimer
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0 && defined(__clang) && defined(__has_feature) && !__has_feature(attribute_availability_app_extension)
     
     JXHTTPActivityTimer = [NSTimer timerWithTimeInterval:JXHTTPActivityTimerInterval
                                                   target:self
@@ -225,7 +225,7 @@ static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
 
 + (void)networkActivityTimerDidFire:(NSTimer *)timer
 {
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0 && defined(__clang) && defined(__has_feature) && !__has_feature(attribute_availability_app_extension)
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
