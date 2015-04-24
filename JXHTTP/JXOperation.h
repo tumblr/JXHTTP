@@ -54,8 +54,6 @@
  */
 @property (assign) BOOL continuesInAppBackground;
 
-@property (nonatomic) id <JXBackgroundTaskManager> backgroundTaskManager;
-
 /// @name Starting & Finishing
 
 /**
@@ -86,5 +84,9 @@
  different thread.
  */
 - (void)finish;
+
+/// @name Background task management
+
++ (void)setBackgroundTaskManager:(id <JXBackgroundTaskManager>)backgroundTaskManager;
 
 @end

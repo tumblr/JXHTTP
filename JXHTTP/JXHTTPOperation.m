@@ -7,9 +7,10 @@
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
-static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorManager;
 
 #endif
+
+static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorManager;
 
 @interface JXHTTPOperation ()
 @property (assign) BOOL didIncrementCount;

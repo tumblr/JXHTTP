@@ -1,6 +1,8 @@
 #import "JXBackgroundTaskManager.h"
 #import "JXOperation.h"
 
+static id <JXBackgroundTaskManager> JXHTTPBackgroundTaskManager;
+
 @interface JXOperation ()
 
 @property (assign) BOOL isExecuting;
@@ -124,12 +126,16 @@
     [tempQueue waitUntilAllOperationsAreFinished];
 }
 
-#pragma mark - Private Methods
+#pragma mark - Background task management
+
++ (void)setBackgroundTaskManager:(id <JXBackgroundTaskManager>)backgroundTaskManager {
+    JXHTTPBackgroundTaskManager = backgroundTaskManager;
+}
 
 - (void)startAppBackgroundTask
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-    if (self.backgroundTaskManager) {
+    if (JXHTTPBackgroundTaskManager) {
         if (self.backgroundTaskID != UIBackgroundTaskInvalid || [self isCancelled])
             return;
         
@@ -141,7 +147,7 @@
             if (!strongSelf || [strongSelf isCancelled] || strongSelf.isFinished)
                 return;
 
-            strongSelf.backgroundTaskID = [strongSelf.backgroundTaskManager beginBackgroundTask];
+            strongSelf.backgroundTaskID = [JXHTTPBackgroundTaskManager beginBackgroundTask];
         });
     }
     #endif
@@ -150,7 +156,7 @@
 - (void)endAppBackgroundTask
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
-    if (self.backgroundTaskManager) {
+    if (JXHTTPBackgroundTaskManager) {
         UIBackgroundTaskIdentifier taskID = self.backgroundTaskID;
         if (taskID == UIBackgroundTaskInvalid)
             return;
@@ -158,7 +164,7 @@
         self.backgroundTaskID = UIBackgroundTaskInvalid;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.backgroundTaskManager endBackgroundTask:taskID];
+            [JXHTTPBackgroundTaskManager endBackgroundTask:taskID];
         });
     }
     #endif
