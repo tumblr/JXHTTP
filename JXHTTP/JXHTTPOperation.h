@@ -39,6 +39,7 @@
 #import "JXURLConnectionOperation.h"
 #import "JXHTTPOperationDelegate.h"
 #import "JXHTTPRequestBody.h"
+@protocol JXNetworkActivityIndicatorManager;
 
 typedef void (^JXHTTPBlock)(JXHTTPOperation *operation);
 typedef NSCachedURLResponse * (^JXHTTPCacheBlock)(JXHTTPOperation *operation, NSCachedURLResponse *response);
@@ -292,5 +293,9 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  @returns An operation.
  */
 + (instancetype)withURLString:(NSString *)urlString queryParameters:(NSDictionary *)parameters;
+
+/// @name Network activity indication
+
++ (void)setNetworkActivityIndicatorManager:(id <JXNetworkActivityIndicatorManager>)networkActivityIndicatorManager;
 
 @end

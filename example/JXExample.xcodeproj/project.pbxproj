@@ -27,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		93E151C61AEA8B3C00CCD447 /* JXBackgroundTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXBackgroundTaskManager.h; sourceTree = "<group>"; };
+		93E151C71AEA8CDA00CCD447 /* JXNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
 		D04867A316EE75E000473908 /* JXHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTP.h; sourceTree = "<group>"; };
 		D04867A416EE75E000473908 /* JXHTTPDataBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPDataBody.h; sourceTree = "<group>"; };
 		D04867A516EE75E000473908 /* JXHTTPDataBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPDataBody.m; sourceTree = "<group>"; };
@@ -109,6 +111,8 @@
 				D04867BA16EE75E000473908 /* JXURLConnectionOperation.m */,
 				D04867BB16EE75E000473908 /* JXURLEncoding.h */,
 				D04867BC16EE75E000473908 /* JXURLEncoding.m */,
+				93E151C61AEA8B3C00CCD447 /* JXBackgroundTaskManager.h */,
+				93E151C71AEA8CDA00CCD447 /* JXNetworkActivityIndicatorManager.h */,
 			);
 			name = JXHTTP;
 			path = ../../JXHTTP;

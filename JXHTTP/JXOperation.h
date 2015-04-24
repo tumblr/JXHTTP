@@ -1,3 +1,5 @@
+@protocol JXBackgroundTaskManager;
+
 /**
  `JXOperation` is an abstract `NSOperation` subclass that implements all the
  methods necessary for what Apple calls "concurrent" operations. See the sections
@@ -51,6 +53,8 @@
  have no effect. Changing it to `NO` will discontinue background execution.
  */
 @property (assign) BOOL continuesInAppBackground;
+
+@property (nonatomic) id <JXBackgroundTaskManager> backgroundTaskManager;
 
 /// @name Starting & Finishing
 
