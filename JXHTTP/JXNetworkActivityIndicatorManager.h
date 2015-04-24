@@ -8,6 +8,6 @@
 
 @protocol JXNetworkActivityIndicatorManager <NSObject>
 
-@property (nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible;
+@property (nonatomic) BOOL networkActivityIndicatorVisible;
 
 @end
