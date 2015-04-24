@@ -296,6 +296,11 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 
 /// @name Network activity indication
 
+/**
+ Set a global manager to be used for showing or hiding the network activity indicator.
+ 
+ @param networkActivityIndicatorManager Network activity indicator manager manager.
+ */
 + (void)setNetworkActivityIndicatorManager:(id <JXNetworkActivityIndicatorManager>)networkActivityIndicatorManager;
 
 @end
