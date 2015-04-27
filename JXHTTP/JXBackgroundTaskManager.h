@@ -6,6 +6,12 @@
 //  Copyright (c) 2015 JXHTTP. All rights reserved.
 //
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+#import <UIKit/UIKit.h>
+#else
+typedef NSUInteger UIBackgroundTaskIdentifier;
+#endif
+
 /**
  A protocol that classes who can begin and end background tasks can conform to. This protocol provides an abstraction in 
  order to avoid referencing `+ [UIApplication sharedApplication]` from within an iOS application extension.
