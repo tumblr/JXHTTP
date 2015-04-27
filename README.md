@@ -1,10 +1,10 @@
 # JXHTTP #
 
-JXHTTP is a networking library for iOS. It leverages operation queues and GCD to provide a powerful wrapper for Cocoa's built-in `NSURLConnection` object, adding many useful features like block response objects and progress tracking across multiple requests. It strives to be as lightweight and readable as possible, making it easy to use or customize for advanced behavior.
+JXHTTP is a networking library for iOS and OS X. It leverages operation queues and GCD to provide a powerful wrapper for Cocoa's built-in `NSURLConnection` object, adding many useful features like block response objects and progress tracking across multiple requests. It strives to be as lightweight and readable as possible, making it easy to use or customize for advanced behavior.
 
 To get started, simply [download the latest tag](https://github.com/jstn/JXHTTP/tags) and drop the `JXHTTP` folder into your Xcode project. There are zero external dependencies or special compiler flags, just `#import "JXHTTP.h"` somewhere convenient. A complete docset is included for use in Xcode or [Dash](http://kapeli.com/dash/), and available online at [jxhttp.com](http://jxhttp.com/docs/html/). JXHTTP is also available as a [CocoaPod](http://cocoapods.org/?q=name%3AJXHTTP).
 
-JXHTTP requires iOS 5.0 or newer.
+JXHTTP requires iOS 5.0 or OS X 10.7 or newer.
 
 ## Advantages ##
 
