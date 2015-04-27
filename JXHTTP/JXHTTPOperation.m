@@ -2,9 +2,13 @@
 #import "JXNetworkActivityIndicatorManager.h"
 #import "JXURLEncoding.h"
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
 static NSUInteger JXHTTPOperationCount = 0;
 static NSTimer * JXHTTPActivityTimer = nil;
 static NSTimeInterval JXHTTPActivityTimerInterval = 0.25;
+
+#endif
 
 static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorManager;
 
@@ -169,6 +173,8 @@ static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorMana
 
 - (void)incrementOperationCount
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     dispatch_once(&_incrementCountOnce, ^{
         if (!(self.updatesNetworkActivityIndicator && JXHTTPNetworkActivityIndicatorManager))
             return;
@@ -182,10 +188,14 @@ static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorMana
 
         self.didIncrementCount = YES;
     });
+    
+    #endif
 }
 
 - (void)decrementOperationCount
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     if (!self.didIncrementCount)
         return;
     
@@ -198,10 +208,14 @@ static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorMana
                 [JXHTTPOperation restartActivityTimer];
         });
     });
+
+    #endif
 }
 
 + (void)restartActivityTimer
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+    
     JXHTTPActivityTimer = [NSTimer timerWithTimeInterval:JXHTTPActivityTimerInterval
                                                   target:self
                                                 selector:@selector(networkActivityTimerDidFire:)
@@ -209,11 +223,17 @@ static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorMana
                                                  repeats:NO];
     
     [[NSRunLoop mainRunLoop] addTimer:JXHTTPActivityTimer forMode:NSRunLoopCommonModes];
+
+    #endif
 }
 
 + (void)networkActivityTimerDidFire:(NSTimer *)timer
 {
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
     JXHTTPNetworkActivityIndicatorManager.networkActivityIndicatorVisible = NO;
+    
+    #endif
 }
 
 #pragma mark - Accessors
