@@ -1,3 +1,5 @@
+@protocol JXBackgroundTaskManager;
+
 /**
  `JXOperation` is an abstract `NSOperation` subclass that implements all the
  methods necessary for what Apple calls "concurrent" operations. See the sections
@@ -82,5 +84,14 @@
  different thread.
  */
 - (void)finish;
+
+/// @name Background task management
+
+/**
+ Set a global manager to be used for setting up/tearing down any background tasks needed by JXHTTP.
+ 
+ @param backgroundTaskManager Background task manager.
+ */
++ (void)setBackgroundTaskManager:(id <JXBackgroundTaskManager>)backgroundTaskManager;
 
 @end
