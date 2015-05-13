@@ -88,8 +88,10 @@ static id <JXBackgroundTaskManager> JXHTTPBackgroundTaskManager;
 - (void)cancel
 {
     [super cancel];
-
-    [self finish];
+    
+    @synchronized(self) {
+        [self finish];
+    }
 }
 
 - (void)willFinish
