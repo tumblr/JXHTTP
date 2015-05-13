@@ -1,4 +1,6 @@
-# JXHTTP #
+# JXHTTP
+
+:warning: :warning: :warning: **JXHTTP IS NO LONGER BEING ACTIVELY MAINTAINED. We will be phasing it out of [TMTumblrSDK](https://github.com/tumblr/TMTumblrSDK) **
 
 JXHTTP is a networking library for iOS and OS X. It leverages operation queues and GCD to provide a powerful wrapper for Cocoa's built-in `NSURLConnection` object, adding many useful features like block response objects and progress tracking across multiple requests. It strives to be as lightweight and readable as possible, making it easy to use or customize for advanced behavior.
 
