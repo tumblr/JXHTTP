@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name          = 'JXHTTP'
-  s.version       = '2.0.1'
+  s.version       = '2.0.2'
   s.source_files  = 'JXHTTP/*.{h,m}'
-  s.homepage      = 'http://justinouellette.com'
+  s.homepage      = 'https://github.com/tumblr/JXHTTP'
   s.summary       = 'Networking for iOS and OS X.'
   s.authors       = { 'Justin Ouellette' => 'justin.ouellette@gmail.com',
                       'Bryan Irace' => 'bryan.irace@gmail.com' }
-  s.source        = { :git => 'https://github.com/jstn/JXHTTP.git', :tag => "#{s.version}" }
+  s.source        = { :git => 'https://github.com/tumblr/JXHTTP.git', :tag => "#{s.version}" }
   s.license       = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.requires_arc  = true
   s.frameworks    = 'Foundation'
