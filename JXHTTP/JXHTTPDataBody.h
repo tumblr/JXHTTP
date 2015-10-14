@@ -3,6 +3,7 @@
  request bodies directly from memory, with any content type.
  */
 
+@import Foundation;
 #import "JXHTTPRequestBody.h"
 
 @interface JXHTTPDataBody : NSObject <JXHTTPRequestBody>

@@ -4,6 +4,7 @@
  
  These methods may be called from different threads.
  */
+@import Foundation;
 @class JXHTTPOperation;
 
 @protocol JXHTTPOperationDelegate <NSObject>

@@ -9,6 +9,7 @@
 
 #import "JXHTTPOperationDelegate.h"
 
+@import Foundation;
 @protocol JXHTTPRequestBody <JXHTTPOperationDelegate>
 @required
 

@@ -1,3 +1,5 @@
+@import Foundation;
+
 /**
  `JXURLEncoding` is an abstract class providing methods for encoding strings according
  to [RFC 3986]( http://www.ietf.org/rfc/rfc3986.txt ) (aka "percent escaping").
