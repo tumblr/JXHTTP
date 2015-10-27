@@ -1,0 +1,495 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2D474E301BCF1BD900458B3C /* JXHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E2F1BCF1BD900458B3C /* JXHTTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E371BCF1BD900458B3C /* JXHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D474E2C1BCF1BD900458B3C /* JXHTTP.framework */; settings = {ASSET_TAGS = (); }; };
+		2D474E521BCF1E4200458B3C /* JXBackgroundTaskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E461BCF1E4200458B3C /* JXBackgroundTaskManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E531BCF1E4200458B3C /* JXHTTPDataBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E471BCF1E4200458B3C /* JXHTTPDataBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E541BCF1E4200458B3C /* JXHTTPDataBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E481BCF1E4200458B3C /* JXHTTPDataBody.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E551BCF1E4200458B3C /* JXHTTPFileBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E491BCF1E4200458B3C /* JXHTTPFileBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E561BCF1E4200458B3C /* JXHTTPFileBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E4A1BCF1E4200458B3C /* JXHTTPFileBody.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E571BCF1E4200458B3C /* JXHTTPFormEncodedBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E4B1BCF1E4200458B3C /* JXHTTPFormEncodedBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E581BCF1E4200458B3C /* JXHTTPFormEncodedBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E4C1BCF1E4200458B3C /* JXHTTPFormEncodedBody.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E591BCF1E4200458B3C /* JXHTTPJSONBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E4D1BCF1E4200458B3C /* JXHTTPJSONBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E5A1BCF1E4200458B3C /* JXHTTPJSONBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E4E1BCF1E4200458B3C /* JXHTTPJSONBody.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E5B1BCF1E4200458B3C /* JXHTTPMultipartBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E4F1BCF1E4200458B3C /* JXHTTPMultipartBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E5C1BCF1E4200458B3C /* JXHTTPMultipartBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E501BCF1E4200458B3C /* JXHTTPMultipartBody.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E5D1BCF1E4200458B3C /* JXURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E511BCF1E4200458B3C /* JXURLEncoding.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E6D1BCF1E5200458B3C /* JXHTTPOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E5E1BCF1E5200458B3C /* JXHTTPOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E6E1BCF1E5200458B3C /* JXHTTPOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E5F1BCF1E5200458B3C /* JXHTTPOperation.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E6F1BCF1E5200458B3C /* JXHTTPOperation+Convenience.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E601BCF1E5200458B3C /* JXHTTPOperation+Convenience.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E701BCF1E5200458B3C /* JXHTTPOperation+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E611BCF1E5200458B3C /* JXHTTPOperation+Convenience.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E711BCF1E5200458B3C /* JXHTTPOperationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E621BCF1E5200458B3C /* JXHTTPOperationDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E721BCF1E5200458B3C /* JXHTTPOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E631BCF1E5200458B3C /* JXHTTPOperationQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E731BCF1E5200458B3C /* JXHTTPOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E641BCF1E5200458B3C /* JXHTTPOperationQueue.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E741BCF1E5200458B3C /* JXHTTPOperationQueueDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E651BCF1E5200458B3C /* JXHTTPOperationQueueDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E751BCF1E5200458B3C /* JXHTTPRequestBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E661BCF1E5200458B3C /* JXHTTPRequestBody.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E761BCF1E5200458B3C /* JXNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E671BCF1E5200458B3C /* JXNetworkActivityIndicatorManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E771BCF1E5200458B3C /* JXOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E681BCF1E5200458B3C /* JXOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E781BCF1E5200458B3C /* JXOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E691BCF1E5200458B3C /* JXOperation.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E791BCF1E5200458B3C /* JXURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E6A1BCF1E5200458B3C /* JXURLConnectionOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D474E7A1BCF1E5200458B3C /* JXURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D474E6B1BCF1E5200458B3C /* JXURLConnectionOperation.m */; settings = {ASSET_TAGS = (); }; };
+		2D474E7B1BCF1E5200458B3C /* JXURLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D474E6C1BCF1E5200458B3C /* JXURLEncoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2D474E381BCF1BD900458B3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D474E231BCF1BD900458B3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D474E2B1BCF1BD900458B3C;
+			remoteInfo = JXHTTP;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2D474E2C1BCF1BD900458B3C /* JXHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JXHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D474E2F1BCF1BD900458B3C /* JXHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXHTTP.h; sourceTree = "<group>"; };
+		2D474E311BCF1BD900458B3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2D474E361BCF1BD900458B3C /* JXHTTPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JXHTTPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D474E3D1BCF1BD900458B3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2D474E461BCF1E4200458B3C /* JXBackgroundTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXBackgroundTaskManager.h; sourceTree = "<group>"; };
+		2D474E471BCF1E4200458B3C /* JXHTTPDataBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPDataBody.h; sourceTree = "<group>"; };
+		2D474E481BCF1E4200458B3C /* JXHTTPDataBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPDataBody.m; sourceTree = "<group>"; };
+		2D474E491BCF1E4200458B3C /* JXHTTPFileBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPFileBody.h; sourceTree = "<group>"; };
+		2D474E4A1BCF1E4200458B3C /* JXHTTPFileBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPFileBody.m; sourceTree = "<group>"; };
+		2D474E4B1BCF1E4200458B3C /* JXHTTPFormEncodedBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPFormEncodedBody.h; sourceTree = "<group>"; };
+		2D474E4C1BCF1E4200458B3C /* JXHTTPFormEncodedBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPFormEncodedBody.m; sourceTree = "<group>"; };
+		2D474E4D1BCF1E4200458B3C /* JXHTTPJSONBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPJSONBody.h; sourceTree = "<group>"; };
+		2D474E4E1BCF1E4200458B3C /* JXHTTPJSONBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPJSONBody.m; sourceTree = "<group>"; };
+		2D474E4F1BCF1E4200458B3C /* JXHTTPMultipartBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPMultipartBody.h; sourceTree = "<group>"; };
+		2D474E501BCF1E4200458B3C /* JXHTTPMultipartBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPMultipartBody.m; sourceTree = "<group>"; };
+		2D474E511BCF1E4200458B3C /* JXURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXURLEncoding.m; sourceTree = "<group>"; };
+		2D474E5E1BCF1E5200458B3C /* JXHTTPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPOperation.h; sourceTree = "<group>"; };
+		2D474E5F1BCF1E5200458B3C /* JXHTTPOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPOperation.m; sourceTree = "<group>"; };
+		2D474E601BCF1E5200458B3C /* JXHTTPOperation+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JXHTTPOperation+Convenience.h"; sourceTree = "<group>"; };
+		2D474E611BCF1E5200458B3C /* JXHTTPOperation+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JXHTTPOperation+Convenience.m"; sourceTree = "<group>"; };
+		2D474E621BCF1E5200458B3C /* JXHTTPOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPOperationDelegate.h; sourceTree = "<group>"; };
+		2D474E631BCF1E5200458B3C /* JXHTTPOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPOperationQueue.h; sourceTree = "<group>"; };
+		2D474E641BCF1E5200458B3C /* JXHTTPOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXHTTPOperationQueue.m; sourceTree = "<group>"; };
+		2D474E651BCF1E5200458B3C /* JXHTTPOperationQueueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPOperationQueueDelegate.h; sourceTree = "<group>"; };
+		2D474E661BCF1E5200458B3C /* JXHTTPRequestBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXHTTPRequestBody.h; sourceTree = "<group>"; };
+		2D474E671BCF1E5200458B3C /* JXNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		2D474E681BCF1E5200458B3C /* JXOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXOperation.h; sourceTree = "<group>"; };
+		2D474E691BCF1E5200458B3C /* JXOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXOperation.m; sourceTree = "<group>"; };
+		2D474E6A1BCF1E5200458B3C /* JXURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXURLConnectionOperation.h; sourceTree = "<group>"; };
+		2D474E6B1BCF1E5200458B3C /* JXURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXURLConnectionOperation.m; sourceTree = "<group>"; };
+		2D474E6C1BCF1E5200458B3C /* JXURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXURLEncoding.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2D474E281BCF1BD900458B3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D474E331BCF1BD900458B3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D474E371BCF1BD900458B3C /* JXHTTP.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D474E221BCF1BD900458B3C = {
+			isa = PBXGroup;
+			children = (
+				2D474E2E1BCF1BD900458B3C /* JXHTTP */,
+				2D474E3A1BCF1BD900458B3C /* JXHTTPTests */,
+				2D474E2D1BCF1BD900458B3C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D474E2D1BCF1BD900458B3C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D474E2C1BCF1BD900458B3C /* JXHTTP.framework */,
+				2D474E361BCF1BD900458B3C /* JXHTTPTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2D474E2E1BCF1BD900458B3C /* JXHTTP */ = {
+			isa = PBXGroup;
+			children = (
+				2D474E2F1BCF1BD900458B3C /* JXHTTP.h */,
+				2D474E5E1BCF1E5200458B3C /* JXHTTPOperation.h */,
+				2D474E5F1BCF1E5200458B3C /* JXHTTPOperation.m */,
+				2D474E601BCF1E5200458B3C /* JXHTTPOperation+Convenience.h */,
+				2D474E611BCF1E5200458B3C /* JXHTTPOperation+Convenience.m */,
+				2D474E621BCF1E5200458B3C /* JXHTTPOperationDelegate.h */,
+				2D474E631BCF1E5200458B3C /* JXHTTPOperationQueue.h */,
+				2D474E641BCF1E5200458B3C /* JXHTTPOperationQueue.m */,
+				2D474E651BCF1E5200458B3C /* JXHTTPOperationQueueDelegate.h */,
+				2D474E661BCF1E5200458B3C /* JXHTTPRequestBody.h */,
+				2D474E671BCF1E5200458B3C /* JXNetworkActivityIndicatorManager.h */,
+				2D474E681BCF1E5200458B3C /* JXOperation.h */,
+				2D474E691BCF1E5200458B3C /* JXOperation.m */,
+				2D474E6A1BCF1E5200458B3C /* JXURLConnectionOperation.h */,
+				2D474E6B1BCF1E5200458B3C /* JXURLConnectionOperation.m */,
+				2D474E6C1BCF1E5200458B3C /* JXURLEncoding.h */,
+				2D474E461BCF1E4200458B3C /* JXBackgroundTaskManager.h */,
+				2D474E471BCF1E4200458B3C /* JXHTTPDataBody.h */,
+				2D474E481BCF1E4200458B3C /* JXHTTPDataBody.m */,
+				2D474E491BCF1E4200458B3C /* JXHTTPFileBody.h */,
+				2D474E4A1BCF1E4200458B3C /* JXHTTPFileBody.m */,
+				2D474E4B1BCF1E4200458B3C /* JXHTTPFormEncodedBody.h */,
+				2D474E4C1BCF1E4200458B3C /* JXHTTPFormEncodedBody.m */,
+				2D474E4D1BCF1E4200458B3C /* JXHTTPJSONBody.h */,
+				2D474E4E1BCF1E4200458B3C /* JXHTTPJSONBody.m */,
+				2D474E4F1BCF1E4200458B3C /* JXHTTPMultipartBody.h */,
+				2D474E501BCF1E4200458B3C /* JXHTTPMultipartBody.m */,
+				2D474E511BCF1E4200458B3C /* JXURLEncoding.m */,
+				2D474E311BCF1BD900458B3C /* Info.plist */,
+			);
+			path = JXHTTP;
+			sourceTree = "<group>";
+		};
+		2D474E3A1BCF1BD900458B3C /* JXHTTPTests */ = {
+			isa = PBXGroup;
+			children = (
+				2D474E3D1BCF1BD900458B3C /* Info.plist */,
+			);
+			path = JXHTTPTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2D474E291BCF1BD900458B3C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D474E761BCF1E5200458B3C /* JXNetworkActivityIndicatorManager.h in Headers */,
+				2D474E301BCF1BD900458B3C /* JXHTTP.h in Headers */,
+				2D474E521BCF1E4200458B3C /* JXBackgroundTaskManager.h in Headers */,
+				2D474E6D1BCF1E5200458B3C /* JXHTTPOperation.h in Headers */,
+				2D474E6F1BCF1E5200458B3C /* JXHTTPOperation+Convenience.h in Headers */,
+				2D474E591BCF1E4200458B3C /* JXHTTPJSONBody.h in Headers */,
+				2D474E791BCF1E5200458B3C /* JXURLConnectionOperation.h in Headers */,
+				2D474E7B1BCF1E5200458B3C /* JXURLEncoding.h in Headers */,
+				2D474E771BCF1E5200458B3C /* JXOperation.h in Headers */,
+				2D474E751BCF1E5200458B3C /* JXHTTPRequestBody.h in Headers */,
+				2D474E711BCF1E5200458B3C /* JXHTTPOperationDelegate.h in Headers */,
+				2D474E551BCF1E4200458B3C /* JXHTTPFileBody.h in Headers */,
+				2D474E741BCF1E5200458B3C /* JXHTTPOperationQueueDelegate.h in Headers */,
+				2D474E571BCF1E4200458B3C /* JXHTTPFormEncodedBody.h in Headers */,
+				2D474E721BCF1E5200458B3C /* JXHTTPOperationQueue.h in Headers */,
+				2D474E531BCF1E4200458B3C /* JXHTTPDataBody.h in Headers */,
+				2D474E5B1BCF1E4200458B3C /* JXHTTPMultipartBody.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2D474E2B1BCF1BD900458B3C /* JXHTTP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D474E401BCF1BD900458B3C /* Build configuration list for PBXNativeTarget "JXHTTP" */;
+			buildPhases = (
+				2D474E271BCF1BD900458B3C /* Sources */,
+				2D474E281BCF1BD900458B3C /* Frameworks */,
+				2D474E291BCF1BD900458B3C /* Headers */,
+				2D474E2A1BCF1BD900458B3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JXHTTP;
+			productName = JXHTTP;
+			productReference = 2D474E2C1BCF1BD900458B3C /* JXHTTP.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2D474E351BCF1BD900458B3C /* JXHTTPTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D474E431BCF1BD900458B3C /* Build configuration list for PBXNativeTarget "JXHTTPTests" */;
+			buildPhases = (
+				2D474E321BCF1BD900458B3C /* Sources */,
+				2D474E331BCF1BD900458B3C /* Frameworks */,
+				2D474E341BCF1BD900458B3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2D474E391BCF1BD900458B3C /* PBXTargetDependency */,
+			);
+			name = JXHTTPTests;
+			productName = JXHTTPTests;
+			productReference = 2D474E361BCF1BD900458B3C /* JXHTTPTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2D474E231BCF1BD900458B3C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Tyler Tape";
+				TargetAttributes = {
+					2D474E2B1BCF1BD900458B3C = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					2D474E351BCF1BD900458B3C = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 2D474E261BCF1BD900458B3C /* Build configuration list for PBXProject "JXHTTP" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2D474E221BCF1BD900458B3C;
+			productRefGroup = 2D474E2D1BCF1BD900458B3C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2D474E2B1BCF1BD900458B3C /* JXHTTP */,
+				2D474E351BCF1BD900458B3C /* JXHTTPTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2D474E2A1BCF1BD900458B3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D474E341BCF1BD900458B3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D474E271BCF1BD900458B3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D474E541BCF1E4200458B3C /* JXHTTPDataBody.m in Sources */,
+				2D474E781BCF1E5200458B3C /* JXOperation.m in Sources */,
+				2D474E5A1BCF1E4200458B3C /* JXHTTPJSONBody.m in Sources */,
+				2D474E5D1BCF1E4200458B3C /* JXURLEncoding.m in Sources */,
+				2D474E731BCF1E5200458B3C /* JXHTTPOperationQueue.m in Sources */,
+				2D474E7A1BCF1E5200458B3C /* JXURLConnectionOperation.m in Sources */,
+				2D474E701BCF1E5200458B3C /* JXHTTPOperation+Convenience.m in Sources */,
+				2D474E581BCF1E4200458B3C /* JXHTTPFormEncodedBody.m in Sources */,
+				2D474E561BCF1E4200458B3C /* JXHTTPFileBody.m in Sources */,
+				2D474E5C1BCF1E4200458B3C /* JXHTTPMultipartBody.m in Sources */,
+				2D474E6E1BCF1E5200458B3C /* JXHTTPOperation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D474E321BCF1BD900458B3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2D474E391BCF1BD900458B3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D474E2B1BCF1BD900458B3C /* JXHTTP */;
+			targetProxy = 2D474E381BCF1BD900458B3C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2D474E3E1BCF1BD900458B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2D474E3F1BCF1BD900458B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2D474E411BCF1BD900458B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JXHTTP/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tumblr.JXHTTP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2D474E421BCF1BD900458B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JXHTTP/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tumblr.JXHTTP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2D474E441BCF1BD900458B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JXHTTPTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tumblr.JXHTTPTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2D474E451BCF1BD900458B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JXHTTPTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tumblr.JXHTTPTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D474E261BCF1BD900458B3C /* Build configuration list for PBXProject "JXHTTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D474E3E1BCF1BD900458B3C /* Debug */,
+				2D474E3F1BCF1BD900458B3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D474E401BCF1BD900458B3C /* Build configuration list for PBXNativeTarget "JXHTTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D474E411BCF1BD900458B3C /* Debug */,
+				2D474E421BCF1BD900458B3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D474E431BCF1BD900458B3C /* Build configuration list for PBXNativeTarget "JXHTTPTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D474E441BCF1BD900458B3C /* Debug */,
+				2D474E451BCF1BD900458B3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2D474E231BCF1BD900458B3C /* Project object */;
+}

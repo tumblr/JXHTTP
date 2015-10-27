@@ -1,3 +1,4 @@
+@import Foundation;
 /**
  `JXHTTPOperationQueueDelegate` is a protocol that allows any object to receive synchronous
  callbacks about the progress of a `JXHTTPOperationQueue`.
