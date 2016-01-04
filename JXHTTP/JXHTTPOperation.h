@@ -303,4 +303,10 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  */
 + (void)setNetworkActivityIndicatorManager:(id <JXNetworkActivityIndicatorManager>)networkActivityIndicatorManager;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
++ (NSUInteger)JXHTTPOperationCount;
+
+#endif
+
 @end
