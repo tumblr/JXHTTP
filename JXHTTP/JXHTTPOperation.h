@@ -305,6 +305,12 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 
+/**
+ *  The number of active operations.
+ *  This is used to determine whether or not the activity indicator of the device is shown.
+ *
+ *  @return The number of active operations.
+ */
 + (NSUInteger)JXHTTPOperationCount;
 
 #endif
