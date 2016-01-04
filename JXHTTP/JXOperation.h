@@ -1,4 +1,5 @@
-@import UIKit;
+
+#import <Foundation/Foundation.h>
 @protocol JXBackgroundTaskManager;
 
 /**
