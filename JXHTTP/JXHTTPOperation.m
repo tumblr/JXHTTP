@@ -33,8 +33,8 @@ static id <JXNetworkActivityIndicatorManager> JXHTTPNetworkActivityIndicatorMana
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
 
-+ (NSUInteger)JXHTTPOperationCount {
-    return JXHTTPOperationCount;
++ (BOOL)hasActiveOperationsThatUpdateNetworkActivityIndicator {
+    return JXHTTPOperationCount > 0;
 }
 
 #endif
