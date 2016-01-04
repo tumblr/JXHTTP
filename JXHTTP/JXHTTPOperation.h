@@ -303,4 +303,15 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  */
 + (void)setNetworkActivityIndicatorManager:(id <JXNetworkActivityIndicatorManager>)networkActivityIndicatorManager;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_2_0
+
+/**
+ *  Whether or not there are active operations that are updating the device's network activity indicator.
+ *
+ *  @return Whether or not there are active operations that are updating the device's network activity indicator.
+ */
+@property (readonly) BOOL hasActiveOperationsThatUpdateNetworkActivityIndicator;
+
+#endif
+
 @end

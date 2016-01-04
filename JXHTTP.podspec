@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name          = 'JXHTTP'
-  s.version       = '2.0.2'
+  s.version       = '2.0.3'
   s.source_files  = 'JXHTTP/*.{h,m}'
   s.homepage      = 'https://github.com/tumblr/JXHTTP'
   s.summary       = 'Networking for iOS and OS X.'
