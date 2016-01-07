@@ -310,7 +310,7 @@ typedef NSURLRequest * (^JXHTTPRedirectBlock)(JXHTTPOperation *operation, NSURLR
  *
  *  @return Whether or not there are active operations that are updating the device's network activity indicator.
  */
-@property (readonly) BOOL hasActiveOperationsThatUpdateNetworkActivityIndicator;
++ (BOOL)hasActiveOperationsThatUpdateNetworkActivityIndicator;
 
 #endif
 
