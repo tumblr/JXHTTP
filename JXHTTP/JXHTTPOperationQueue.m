@@ -154,7 +154,7 @@ static NSInteger JXHTTPOperationQueueDefaultMaxOps = 4;
     }
 
     if (object == self && [keyPath isEqualToString:@"operations"]) {
-        if (![[change objectForKey:NSKeyValueChangeKindKey] intValue] == NSKeyValueChangeSetting)
+        if ([[change objectForKey:NSKeyValueChangeKindKey] intValue] != NSKeyValueChangeSetting)
             return;
         
         NSDate *now = [[NSDate alloc] init];
